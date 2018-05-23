@@ -178,7 +178,7 @@ class board  {
     static eraser(context){
         context.beginPath();
         context.fillStyle = "white";
-        context.arc(boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, board.boardTools.eraser.size, 0, 2 * Math.PI);
+        context.arc(boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.eraser.size, 0, 2 * Math.PI);
         context.fill();
 
     }
@@ -188,16 +188,16 @@ class board  {
         switch(t) {
 
             case 'pencil':
-                boardTools.ctx.lineWidth = board.boardTools.pencil.lineWidth;
-                document.getElementById("size").value=board.boardTools.pencil.lineWidth;
+                boardTools.ctx.lineWidth = boardTools.pencil.lineWidth;
+                document.getElementById("size").value=boardTools.pencil.lineWidth;
                 boardTools.draw={
                     type: 'pencil',
                     data: []
                 }
                 break
             case 'marker':
-                boardTools.ctx.lineWidth = board.boardTools.marker.size;
-                document.getElementById("size").value=parseInt(board.boardTools.marker.size) - parseInt(board.boardTools.marker.defaultSize);
+                boardTools.ctx.lineWidth = boardTools.marker.size;
+                document.getElementById("size").value=parseInt(boardTools.marker.size) - parseInt(boardTools.marker.defaultSize);
                 boardTools.draw={
                     type: 'marker',
                     data: []}
@@ -211,8 +211,8 @@ class board  {
                 document.getElementById("textControl").style.visibility="visible";
                 break
             default:
-                boardTools.ctx.lineWidth = board.boardTools.shape.lineWidth;
-                document.getElementById("size").value=board.boardTools.shape.lineWidth;
+                boardTools.ctx.lineWidth = boardTools.shape.lineWidth;
+                document.getElementById("size").value=boardTools.shape.lineWidth;
                 break
         }
         boardTools.tool = t;
@@ -617,7 +617,7 @@ for(var i=0;i<document.getElementsByClassName("txtFontStyle").length;i++) {
 }
 
 document.getElementById("txtFontSize").addEventListener("change",function () {
-    board.boardTools.text.fontSize = this.value;
+    boardTools.text.fontSize = this.value;
 });
 
 function handleFileSelect(evt) {
