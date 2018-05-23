@@ -75,7 +75,10 @@ io.on('connection', (socket) => {
 	socket.on('drawing', (data) => {
 		//нужна проверка по шаблону
 		var user = users.getUser(socket.id);
-		users.setData(user.room, data)
+		try {
+            users.setData(user.room, data)
+        }catch(e){
+		}
 		socket.broadcast.to(user.room).emit('drawing', data)
 	});
 
