@@ -19,6 +19,7 @@ var tools={
                     params["name"] = sessionStorage.getItem("name")
                     console.log(params)
                     rtSocket.join(params)
+                    tools.socket.on('drawingRestore', rtSocket.restoreDraw);
                 }
                 else {
                    var result = prompt("Введите имя", "anonimous");
@@ -26,6 +27,7 @@ var tools={
                     params["name"] = result
                     sessionStorage.setItem("name",result)
                     rtSocket.join(params)
+                    tools.socket.on('drawingRestore', rtSocket.restoreDraw);
                 }
             }
             else {
@@ -38,9 +40,10 @@ var tools={
                 window.history.pushState(null, null, "w.html?" + params["room"])
                 console.log(params)
                 rtSocket.join(params)
+                tools.socket.on('drawingRestore', rtSocket.restoreDraw);
             }
 
-            tools.socket.on('drawingRestore', rtSocket.restoreDraw);
+
             tools.socket.on('drawing', rtSocket.drawFromSocket);
         }
 
