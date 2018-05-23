@@ -653,7 +653,9 @@
         }
 
        document.getElementById("size").addEventListener("change",function () {
-           board.changeSize(this.value);
+           if(this.value>0 && this.value<6) {
+               board.changeSize(this.value);
+           }
        });
 
        document.getElementById("txtInsert").addEventListener("click",function () {
