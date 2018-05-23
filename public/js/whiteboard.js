@@ -203,7 +203,7 @@ class board  {
                     data: []}
                 break
             case'eraser':
-                boardTools.ctx.lineWidth = board.boardTools.eraser.lineWidth;
+                boardTools.ctx.lineWidth = boardTools.eraser.lineWidth;
                 document.getElementById("size").value=parseInt(boardTools.eraser.size) / 10;
                 break
 
