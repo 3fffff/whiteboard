@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <canvas id="canvas" height="750" width="1500"></canvas>
+    <canvas id="canvas"></canvas>
         <div class="toolbar__box--middle-left">
             <div id="main-toolbar" class="toolbar toolbar--vertical">
                 <ul class="tools__menu">
@@ -213,5 +213,7 @@
     <script>rtSocket.createSocket()
     rtSocket.broadcastMessage()
         rtSocket.broadcastFile()
+        document.getElementById("canvas").width=document.body.clientWidth
+    document.getElementById("canvas").height=document.body.clientHeight
     </script>
 </body></html>

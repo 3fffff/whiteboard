@@ -58,11 +58,10 @@ class rtSocket  {
     }
 
     static restoreDraw(data){
-
         var image=new Image()
         image.onload=function() {
             console.log(image)
-            board.drawImageRot(boardTools.ctx,image,0,0,boardTools.width,boardTools.height,0)
+            board.drawImageRot(boardTools.ctx,image,0,0,document.body.clientWidth,document.body.clientHeight,0)
         }
         image.src=data
     }

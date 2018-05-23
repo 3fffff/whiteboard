@@ -99,9 +99,6 @@ socket.on('recover', function (msg) {
         console.log('восстановление от ' + user.name);
         socket.username = user.name;
         users.setData(user.room, msg.boardData)
-        var get = users.getData(user.room, msg.boardData)
-        console.log("картинка восстановления")
-        console.log(get)
     }
     catch(e){
 

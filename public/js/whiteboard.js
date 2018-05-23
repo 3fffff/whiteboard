@@ -36,8 +36,6 @@ var boardTools= {
         },
         text:{top:0,left:0}
     },
-    height: window.screen.availHeight,
-    width: window.screen.availWidth,
     tool: 'pencil',
     draw: {},
 }
@@ -47,8 +45,8 @@ class board  {
         var xmlns = "http://www.w3.org/2000/svg";
         var svg= document.createElementNS(xmlns, "svg");
         svg.id="dop"
-        svg.style.width=board.width
-        svg.style.height=board.height
+        svg.style.width=document.body.clientWidth-10
+        svg.style.height=document.body.clientHeight-10
         svg.innerHTML+= "  <"+stroke + " style=\"fill:rgba(152,255,226,0.5);stroke-width:3;stroke:#00efff\" />\n"
         document.body.appendChild(svg)
     }
@@ -62,9 +60,7 @@ class board  {
     }
 
     static marker (context, x1, y1, x2, y2, size, color) {
-
         context.globalAlpha = boardTools.marker.opacity;
-
         context.strokeStyle = color;
         context.beginPath();
         context.moveTo(x1, y1);
@@ -115,14 +111,10 @@ class board  {
         var rad = deg * Math.PI / 180;
         console.log(context)
         context.translate(x + width / 2, y + height / 2);
-
         context.rotate(rad);
-
         context.drawImage(img, width / 2 * (-1), height / 2 * (-1), width, height);
-
         context.rotate(rad * (-1));
         context.translate((x + width / 2) * (-1), (y + height / 2) * (-1));
-
     }
 
     static rect (context, x, y, w, h) {
@@ -130,10 +122,8 @@ class board  {
     }
 
     static  circle (context, x1, y1, x2, y2) {
-
         var x = (x2 + x1) / 2;
         var y = (y2 + y1) / 2;
-
         var radius = Math.max(
             Math.abs(x2 - x1),
             Math.abs(y2 - y1)
@@ -149,19 +139,15 @@ class board  {
         context.beginPath();
         context.ellipse(x+w/2, y+h/2, Math.abs(w/2), Math.abs(h/2), 0, 0, 2 * Math.PI);
         context.stroke();
-
     }
 
     static  line (context, x1, y1, x2, y2) {
-
         context.beginPath();
         context.moveTo(x1, y1);
         context.lineTo(x2, y2);
         context.stroke();
-
     }
     static arrow (context, x1, y1, x2, y2) {
-
         context.beginPath();
         context.moveTo(x1, y1);
         context.lineTo(x2, y2);
@@ -277,8 +263,8 @@ function drawStart (e) {
             document.getElementById("txtText").style.top=boardTools.mouse.pos.final.y+"px"
             document.getElementById("textControl").style.marginLeft=boardTools.mouse.pos.final.x+"px"
             document.getElementById("textControl").style.marginTop=boardTools.mouse.pos.final.y+"px"
-            var x=boardTools.width-boardTools.mouse.pos.final.x
-            var y=boardTools.height-boardTools.mouse.pos.final.y
+            var x=document.body.clientWidth-boardTools.mouse.pos.final.x
+            var y=document.body.clientHeight-boardTools.mouse.pos.final.y
             document.getElementById("txtText").style.width=x+"px"
             document.getElementById("txtText").style.height=y+"px"
             boardTools.mouse.text.top=boardTools.mouse.pos.final.y;
