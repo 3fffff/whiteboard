@@ -1,0 +1,449 @@
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: crosshair;
+    z-index:2;
+}
+
+#loadImage{
+    display: block;
+    position:relative;
+    overflow:hidden;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+#loadImage input[type=file]{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transform: scale(20);
+    letter-spacing: 10em;     /* IE 9 fix */
+    -ms-transform: scale(20); /* IE 9 fix */
+    opacity: 0;
+    cursor: pointer
+}
+#dop{
+    position:absolute;
+    z-index: 5;
+    touch-action:none;
+    pointer-events: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+img{
+    touch-action:none;
+     pointer-events: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+#main-toolbar{
+    background-color:#c3f8eb
+}
+#LoadedImage{
+    position:absolute;
+    display:none;
+    left:0;
+    right:0;
+    bottom:0;
+    top:0;
+    z-index:100;
+    touch-action: none;
+}
+#imgRot{
+    position:relative;
+    top:5px;
+    left:5px;
+}
+.drop{
+    position:absolute;
+
+}
+.drop .grip,
+.drop .rotator {
+    background-color: #fff;
+    position: absolute
+}
+
+.drop .grip {
+    width: 9px;
+    height: 9px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    border: 1px solid #b3b3b3
+}
+
+.drop .grip.grip--tl {
+    top: -5px;
+    left: -5px;
+    cursor: nw-resize
+}
+
+.drop .grip.grip--tc {
+    top: -5px;
+    left: 50%;
+    margin-left: -5px;
+    cursor: nw-resize
+}
+
+.drop .grip.grip--tr {
+    top: -5px;
+    right: -5px;
+    cursor: nw-resize
+}
+
+.drop .grip.grip--ml {
+    top: 50%;
+    margin-top: -5px;
+    left: -5px;
+    cursor: nw-resize
+}
+
+.drop .grip.grip--mr {
+    top: 50%;
+    margin-top: -5px;
+    right: -5px;
+    cursor: nw-resize
+}
+
+.drop .grip.grip--bl {
+    bottom: -5px;
+    left: -5px;
+    cursor: nw-resize
+}
+
+.drop .grip.grip--bc {
+    bottom: -5px;
+    left: 50%;
+    margin-left: -5px;
+    cursor: nw-resize
+}
+
+.drop .grip.grip--br {
+    bottom: -5px;
+    right: -5px;
+    cursor: nw-resize
+}
+
+.drop .rotator {
+    cursor: pointer;
+    left: 50%;
+    top: -67px;
+    margin-left: -16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 100px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .2);
+    border: 1px solid #b3b3b3
+}
+
+.drop .rotator::after {
+    position: absolute;
+    content: "";
+    width: 1px;
+    height: 20px;
+    bottom: -26px;
+    left: 50%;
+    margin-left: -1px;
+    background-color: #b3b3b3
+}
+
+.drop__buttons {
+    z-index: 30;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: 0 0;
+    min-width: 200px
+}
+
+.drop__buttons .button {
+    border-radius: 8px
+}
+
+.drop__buttons .button--whitered {
+    width: 48px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center
+}
+
+.drop__buttons .button--whitered>img {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    min-height: 22px
+}
+
+.drop__buttons {
+    height: 70px;
+    bottom: -80px;
+    top: initial;
+    left: 50%;
+    right: initial;
+    -ms-transform: translate(-50%, 0);
+    transform: translate(-50%, 0)
+}
+
+.boardBtn {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    font-size: 15px;
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+}
+
+.boardBtn img {
+    height: 25px;
+    width: 25px;
+}
+
+.boardBtn:hover {
+    color: black;
+}
+
+.boardBtnSelected {
+    border-color: blue;
+}
+#txtText{
+    position:absolute;
+    display:block;
+    background:0;
+    resize:none;
+    border:0;
+    cursor:text;
+    z-index:3;
+}
+
+#textControl {
+    position: absolute;
+    top: -50px;
+    left: -200px;
+    z-index: 3;
+    background-color: whitesmoke;
+    padding: 5px;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, .5);
+}
+.no--select {
+    -webkit-tap-highlight-color: transparent
+}
+
+ul {
+    list-style-type: none
+}
+
+body{
+    width: 95%;
+    height: 95%
+}
+
+.tools__item .visible:after {
+    position: absolute;
+    top: 20px;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 15px solid #00b0ff;
+    border-left: 15px solid transparent;
+    left: -15px;
+}
+
+.toolbar {
+    border: 1px solid #ddd;
+    border-radius: 8px
+}
+
+.toolbar__box--middle-left {
+    position: absolute;
+    z-index: 10;
+    left: 12px;
+    top: 76px
+}
+
+
+.toolbar--colored {
+    background: #56C376;
+    border: #56C376
+}
+
+.toolbar--vertical {
+    width: 70px;
+    height: auto
+}
+
+.toolbar--mini {
+    border: none;
+    width: 48px !important
+}
+
+.tools__menu {
+    padding: 7px;
+    width: 100%
+}
+
+.tools__menu--colors .tools__item {
+    margin: 0 2px
+}
+
+.tools__item {
+    margin-top: 12px;
+    position: relative;
+    border-radius: 8px
+}
+
+.tools__item:first-child {
+    margin-top: 0
+}
+
+.tools__item--button {
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative
+}
+
+.tools__item--button:hover {
+    background-color: #77edfb
+}
+
+.tools__item--button:hover:after {
+    position: absolute;
+    width: 76px;
+    height: 24px;
+    border-radius: 24px;
+    line-height: 22px;
+    font-size: 14px;
+    text-align: center;
+    bottom: -24px;
+    left: 50%;
+    margin-left: -38px;
+    overflow: hidden;
+    z-index: 12
+}
+
+.tools__menu--inline .tools__item--button:hover:after {
+    margin-left: 0;
+    min-width: 76px;
+    padding: 0 10px;
+    width: auto;
+    white-space: nowrap;
+    bottom: -16px;
+    left: 50% !important;
+    -ms-transform: translate(-50%, 0) !important;
+    transform: translate(-50%, 0) !important
+}
+
+.picked__color {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #000;
+    z-index: 11;
+    bottom: 6px;
+    right: 5px;
+    border-radius: 7px
+}
+
+.tools__item--button img {
+    display: inline-block;
+    padding: 5px;
+    max-width: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    max-height: 42px
+}
+
+.tools__item--button.is--selected {
+    background-color: #D6D6D6
+}
+
+.tools__item--button.is--disabled {
+    cursor: default
+}
+
+.tools__item--button.is--disabled:hover {
+    background-color: transparent
+}
+
+.tools__colorwheel {
+    display: none;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 20px 0
+}
+
+.tools__colorwheel--inner {
+    position: relative
+}
+
+.tools__colorwheel--inner .color--spectre {
+    width: 100%;
+    display: block
+}
+
+.tools__colorwheel--picker {
+    cursor: pointer;
+    border-radius: 9px;
+    position: absolute;
+    margin-left: 50px;
+    margin-top: 50px;
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    background-color: #fafafa;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, .2), 0 0 1px 0 rgba(0, 0, 0, .3)
+}
+
+.toolbox {
+    display: none;
+    position: absolute;
+    top: -10px;
+    left: 75px;
+    border-radius: 12px;
+    background-color: #9cd9e6;
+    border: 1px solid #ddd;
+    padding: 5px;
+    white-space: nowrap;
+    z-index: 100
+}
+
+.tools__item--button .predefined__color {
+    width: 22px;
+    height: 22px;
+    border-radius: 11px
+}
+.visible {
+    display: block
+}

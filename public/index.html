@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Вход</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body class="centered-form">
+  <div id="left">
+  <div class="centered-form__form">
+    <form action="/w.html">
+      <div class="form-field">
+        <h3>Войти</h3>
+      </div>
+      <div class="form-field">
+        <label for="form-name">Ваше имя</label> <input id="form-name" type="text" name="name" autofocus>
+      </div>
+      <div class="form-field">
+        <label for="form-room">Название комнаты</label> <input id="form-room" type="text" name="room">
+      </div>
+      <p> не отображать в поиске? <input type="checkbox" name="visible" value="false" /></p>
+
+
+      <div class="form-field">
+        <button>Войти</button>
+      </div>
+    </form>
+  </div>
+  </div>
+  <div id="right">
+    <div class="centered-form__form find">
+      <form action="/w.html">
+        <div class="form-field">
+          <h3>Поиск</h3>
+        </div>
+        <div class="form-field">
+          <label >Введите название комнаты:</label>
+          <input list="rooms" id="find_name" name="name" />
+        </div>
+        <datalist id="rooms">
+          <option value="Chrome">
+          <option value="Firefox">
+          <option value="Internet Explorer">
+          <option value="Opera">
+          <option value="Safari">
+          <option value="Microsoft Edge">
+        </datalist>
+      </form>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+      document.getElementById("find_name").addEventListener("click",function(){
+          console.log("поиск")
+      })
+  </script>
+</body>
+</html>

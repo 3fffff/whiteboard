@@ -1,0 +1,220 @@
+﻿<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Whiteboard</title>
+    <link rel="stylesheet" href="css/fontawesome.css">
+    <link rel="stylesheet" href="css/board.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/emoji.min.css" >
+
+</head>
+
+<body>
+    <canvas id="canvas" height="750" width="1500"></canvas>
+        <div class="toolbar__box--middle-left">
+            <div id="main-toolbar" class="toolbar toolbar--vertical">
+                <ul class="tools__menu">
+					<li  class="tools__item  boardBtn">
+                            <div class="tools__item--button dropRight"><img src="assets/pencilup.png" alt="Select"></div>
+							   <div class="toolbox fadeInLeft">
+                                <ul class="tools__menu">
+								    <li id="pencil" class="tools__item  tool">
+                                        <div class="tools__item--button"><img src="assets/pen.png" alt="Pencil"></div>
+                                    </li>
+                                    <li id="chalk" class="tools__item  tool">
+                                        <div  class="tools__item--button"><img src="assets/" alt="Pen"></div>
+                                    </li>
+                                    <li id="marker" class="tools__item  tool">
+                                        <div  class="tools__item--button"><img src="assets/marker.png" alt="Marker"></div>
+                                    </li>
+									<li id="line" class="tools__item  tool">
+                                        <div  class="tools__item--button"><img src="ict-marker.svg" alt="Line"></div>
+                                    </li>
+                                </ul>
+                            </div>
+                    </li>
+					<li class="tools__item  boardBtn">
+                            <div class="tools__item--button dropRight"><img src="assets/color.png" alt="color">
+                                <div style="" class="picked__color"></div>
+                            </div>
+                            <div class="toolbox fadeInLeft">
+                                <ul class="tools__menu">
+                                    <li id="color-0" class="tools__item">
+                                        <div class="tools__item--button">
+                                            <div style="background-color: #000000;" class="predefined__color"></div>
+                                        </div>
+                                    </li>
+                                    <li id="color-1" class="tools__item">
+                                        <div class="tools__item--button">
+                                            <div style="background-color: #f7412d;" class="predefined__color"></div>
+                                        </div>
+                                    </li>
+                                    <li id="color-2" class="tools__item">
+                                        <div class="tools__item--button">
+                                            <div style="background-color: #47b04b;" class="predefined__color"></div>
+                                        </div>
+                                    </li>
+                                    <li id="color-3" class="tools__item">
+                                        <div class="tools__item--button">
+                                            <div style="background-color: #1194f6;" class="predefined__color"></div>
+                                        </div>
+                                    </li>
+                                    <li id="color-4" class="tools__item">
+                                        <div class="tools__item--button">
+                                            <div style="background-color: #ffc200;" class="predefined__color"></div>
+                                        </div>
+                                    </li>
+                                    <li id="color-5" class="tools__item">
+                                        <div class="tools__item--button">
+                                            <div style="background-color: #9d1bb2;" class="predefined__color"></div>
+                                        </div>
+                                    </li>
+                                    <li id="color-6" class="tools__item">
+                                        <div class="tools__item--button">
+                                            <div style="background-color: #ec1561;" class="predefined__color"></div>
+                                        </div>
+                                    </li>
+                                    <li id="color-7" class="tools__item">
+                                        <div class="tools__item--button">
+                                            <div style="background-color: #7a5547;" class="predefined__color"></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+					<li id="text" class="tools__item tool boardBtn">
+                            <div class="tools__item--button"><img src="assets/alp.png" alt="Text"></div>
+                    </li>
+					<li id="eraser" class="tools__item tool boardBtn">
+                            <div class="tools__item--button"><img src="assets/eraser.png" alt="Eraser"></div>
+                    </li>
+					
+					<li  class="tools__item  boardBtn">
+                            <div class="tools__item--button dropRight"><img src="assets/rectangle.png" alt="Select"></div>
+							   <div class="toolbox fadeInLeft">
+                                <ul class="tools__menu">
+								    <li id="rectangle" class="tools__item  tool">
+                                        <div class="tools__item--button"><img src="assets/rect.png" alt="Rectangle"></div>
+                                    </li>
+                                    <li id="circle" class="tools__item  tool">
+                                        <div  class="tools__item--button"><img src="assets/el.png" alt="Circle"></div>
+                                    </li>
+                                    <li id="ellipse" class="tools__item  tool">
+                                        <div  class="tools__item--button"><img src="el.svg" alt="Ellipse"></div>
+                                    </li>
+									<li id="arrow" class="tools__item  tool">
+                                        <div  class="tools__item--button"><img src="ict-marker.svg" alt="Arrow"></div>
+                                    </li>
+                                </ul>
+                            </div>
+                    </li>
+
+                    <li   class="tools__item boardBtn">
+                        <div class="tools__item--button dropRight"><img src="assets/load.png" alt="Select"></div>
+                        <div class="toolbox fadeInLeft">
+                            <ul class="tools__menu tools__menu--inline">
+                                <li id="loadImage" class="tools__item  tool">
+                                    <div class="tools__item--button"><img src="assets/download.png" alt="Circle"><input id="ImageLoad" type="file"/></div>
+                                </li>
+                                <li id="saveImage" class="tools__item  tool">
+                                    <a  id="ImgSave" class="tools__item--button"><img src="assets/upload.png" alt="Circle"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+					<br>					
+					<label>Размер:</label>
+					<select id="size" class="boardBtn">
+						<option selected="selected">1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</select>
+				</ul>
+			</div>
+        </div>
+
+    <div id="LoadedImage" class="no--select">
+        <div  class="drop">
+            <div id="rotation" style="transform:rotate(0deg)">
+                <div class="drop__elements">
+                    <div class="rotator flex--middle"><img id="imgRot" src="img/ic-rotate.svg" alt=""></div>
+                    <div class="grip grip--tl"></div>
+                    <div class="grip grip--tc"></div>
+                    <div class="grip grip--tr"></div>
+                    <div class="grip grip--ml"></div>
+                    <div class="grip grip--mr"></div>
+                    <div class="grip grip--bl"></div>
+                    <div class="grip grip--bc"></div>
+                    <div class="grip grip--br"></div>
+
+                </div>
+
+                <img id="preloadImg">
+                <div class="drop__buttons"><a href="#" id="CancelCanvas"><img src="red.svg"></a><a href="#" id="ImgLoadCanvas"><img src="green.svg"></a></div>
+            </div>
+        </div>
+    </div>
+
+	<div class="floating-chat enter">
+    <i class="fa fa-comments" aria-hidden="true" style="display: none;"></i>
+    <div class="chat">
+        <div class="header">
+            <span class="title">
+                Чат
+            </span>
+            <button id="closeChat">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+                         
+        </div>
+        <ul class="messages">
+        </ul>
+        <table class="tooltip" style="visibility:hidden">
+            <tr>
+                <td><a class="ec ec-sob"></a></td>
+                <td><a class="ec ec-sleeping"></a></td>
+                <td><a class="ec ec-smiling-imp"></a></td>
+                <td><a class="ec ec-zipper-mouth-face"></a></td>
+            </tr>
+            <tr>
+                <td><a class='ec ec-sparkling-heart'></a></td>
+                <td><a class="ec ec-yum"></a></td>
+                <td><a class="ec ec-blush"></a></td>
+                <td><a class="ec ec-confounded"></a></td>
+            </tr>
+        </table>
+        <div class="footer">
+
+            <div class="text-box" disabled="true" contenteditable="true"></div>
+			<button class="smiley">
+
+            </button>
+			<div class="file_upload">
+				<button class="attach" type="button"></button>
+				<input id="files" type="file">
+			</div>
+            <button id="sendMessage" class="send" ></button>
+			
+        </div>
+	</div>
+	</div>
+    <div id="textControl" style="visibility: hidden;">
+        <input class="boardBtn" id="txtText" placeholder="Enter text here" type="text">
+        <button class="boardBtn txtFontStyle" data-value="bold" title="Bold"><i class="fa fa-bold"></i></button>
+        <button class="boardBtn txtFontStyle" data-value="italic" title="Italic"><i class="fa fa-italic"></i></button>
+        <button class="boardBtn txtFontStyle" data-value="" title="Normal">N</button>
+        <input id="txtFontSize" class="boardBtn" value="12" max="72" min="8" type="number">
+        <button class="boardBtn" id="txtInsert">Вставить</button>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="js/whiteboard.js"></script>
+	<script type="text/javascript" src="js/realtime.js"></script>
+    <script type="text/javascript" src="js/chat.js"></script>
+    <script>rtMan.createSocket()
+    rtMan.broadcastMessage()
+        rtMan.broadcastFile()
+    </script>
+</body></html>
