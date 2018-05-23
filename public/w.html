@@ -21,9 +21,6 @@
 								    <li id="pencil" class="tools__item  tool">
                                         <div class="tools__item--button"><img src="assets/pen.png" alt="Pencil"></div>
                                     </li>
-                                    <li id="chalk" class="tools__item  tool">
-                                        <div  class="tools__item--button"><img src="assets/" alt="Pen"></div>
-                                    </li>
                                     <li id="marker" class="tools__item  tool">
                                         <div  class="tools__item--button"><img src="assets/marker.png" alt="Marker"></div>
                                     </li>
@@ -103,7 +100,7 @@
                                         <div  class="tools__item--button"><img src="el.svg" alt="Ellipse"></div>
                                     </li>
 									<li id="arrow" class="tools__item  tool">
-                                        <div  class="tools__item--button"><img src="ict-marker.svg" alt="Arrow"></div>
+                                        <div  class="tools__item--button"><img src="assets/cist.png" alt="Arrow"></div>
                                     </li>
                                 </ul>
                             </div>
@@ -114,10 +111,10 @@
                         <div class="toolbox fadeInLeft">
                             <ul class="tools__menu tools__menu--inline">
                                 <li id="loadImage" class="tools__item  tool">
-                                    <div class="tools__item--button"><img src="assets/download.png" alt="Circle"><input id="ImageLoad" type="file"/></div>
+                                    <div class="tools__item--button"><img src="assets/upload.png" alt="Circle"><input id="ImageLoad" type="file"/></div>
                                 </li>
                                 <li id="saveImage" class="tools__item  tool">
-                                    <a  id="ImgSave" class="tools__item--button"><img src="assets/upload.png" alt="Circle"></a>
+                                    <a  id="ImgSave" class="tools__item--button"><img src="assets/download.png" alt="Circle"></a>
                                 </li>
                             </ul>
                         </div>
@@ -153,7 +150,7 @@
                 </div>
 
                 <img id="preloadImg">
-                <div class="drop__buttons"><a href="#" id="CancelCanvas"><img src="red.svg"></a><a href="#" id="ImgLoadCanvas"><img src="green.svg"></a></div>
+                <div class="drop__buttons"><a href="#" id="CancelCanvas"><img src="ic-close-red.svg"></a><a href="#" id="ImgLoadCanvas">разместить</a></div>
             </div>
         </div>
     </div>
@@ -213,8 +210,8 @@
     <script type="text/javascript" src="js/whiteboard.js"></script>
 	<script type="text/javascript" src="js/realtime.js"></script>
     <script type="text/javascript" src="js/chat.js"></script>
-    <script>rtMan.createSocket()
-    rtMan.broadcastMessage()
-        rtMan.broadcastFile()
+    <script>rtSocket.createSocket()
+    rtSocket.broadcastMessage()
+        rtSocket.broadcastFile()
     </script>
 </body></html>
