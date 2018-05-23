@@ -59,22 +59,13 @@ var tools={
         }
 
         static restoreDraw(data){
-          //  console.log("данные восстановления")
-           tools.data=data
-            rtSocket.drawFromSocket(data[0]);
-        }
-        static restoreDrawCall(initial){
-         //   console.log("вызов")
-       //     console.log(this.rtSocket.data)
-            tools.data.shift()
-       //     console.log(this.rtSocket.data[0])
-            if(initial!==undefined) {
-                boardTools.ctx.strokeStyle = initial.strokeStyle;
-                boardTools.ctx.fillStyle = initial.strokeStyle;
-                boardTools.ctx.lineWidth = initial.lineWidth;
-                boardTools.ctx.font = initial.font;
+
+            var image=new Image()
+            image.onload=function() {
+                console.log(image)
+                board.drawImageRot(boardTools.ctx,image,0,0,boardTools.width,boardTools.height,0)
             }
-            rtSocket.drawFromSocket(tools.data[0]);
+            image.src=data
         }
         static broadcastFile(){
             tools.socket.on('base64 file', function(message) {
@@ -132,53 +123,44 @@ var tools={
                         var image = new Image()
                         image.onload = function () {
                             board.drawImageRot(boardTools.ctx, image, dataDraw.data.points[0].x, dataDraw.data.points[0].y, dataDraw.data.points[0].w, dataDraw.data.points[0].h, dataDraw.data.points[0].deg)
-                            rtSocket.restoreDrawCall(initial)
                         }
                         image.src = dataDraw.data.src
                         break;
 
                     case 'line':
                         board.line(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2);
-                        rtSocket.restoreDrawCall(initial)
                         break;
 
                     case 'rectangle':
                         board.rect(boardTools.ctx, dataDraw.data.x, dataDraw.data.y, dataDraw.data.w, dataDraw.data.h);
-                        rtSocket.restoreDrawCall(initial)
                         break;
 
                     case 'ellipse':
                         board.ellipse(boardTools.ctx, dataDraw.data.x, dataDraw.data.y, dataDraw.data.w, dataDraw.data.h);
-                        rtSocket.restoreDrawCall(initial)
                         break;
 
                     case 'circle':
                         board.circle(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2);
-                        trtSocket.restoreDrawCall(initial)
                         break;
 
                     case 'arrow':
                         board.arrow(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2);
-                        rtSocket.restoreDrawCall(initial)
                         break;
 
                     case 'text':
                         board.text(boardTools.ctx, dataDraw.data.text, dataDraw.data.x, dataDraw.data.y);
-                        rtSocket.restoreDrawCall(initial)
                         break;
 
                     case 'pencil':
                         for (i = dataDraw.data.points.length - 2; i >= 0; i--) {
                             board.pencil(boardTools.ctx, dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.points[i + 1].x, dataDraw.data.points[i + 1].y);
                         }
-                        rtSocket.restoreDrawCall(initial)
                         break;
 
                     case 'marker':
                         for (i = dataDraw.data.points.length - 2; i >= 0; i--) {
                             board.marker(boardTools.ctx, dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.points[i + 1].x, dataDraw.data.points[i + 1].y, dataDraw.data.size, dataDraw.data.strokeStyle);
                         }
-                        rtSocket.restoreDrawCall(initial)
                         break;
                     case 'eraser':
                         for (i = dataDraw.data.points.length - 1; i >= 0; i--) {
@@ -188,13 +170,10 @@ var tools={
                             boardTools.ctx.arc(dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.size, 0, 2 * Math.PI);
                             boardTools.ctx.fill();
                         }
-                        rtSocket.restoreDrawCall(initial)
                         break;
                     default:
-                        rtSocket.restoreDrawCall(initial)
                         break;
                 }
             }
-           // else this.rtSocket.restoreDrawCall(initial)
         }
     }

@@ -17,7 +17,7 @@ class Users {
             var d = {
                 id,
                 room,
-                data: [],
+                data:null,
                 visible
             }
             this.rooms.push(d)
@@ -52,14 +52,12 @@ class Users {
     }
     getData(room) {
         var res = this.rooms.filter((x) => x.room === room)
-        //  console.log(this.rooms)
-        console.log(res[0].data[0])
         return res[0].data
     }
 
     setData(room, data) {
         var dt = this.rooms.filter((x) => x.room === room)
-        dt[0].data.push(data)
+        dt[0].data=data
         this.rooms = this.rooms.filter((x) => x.room !== room)
         this.rooms.push(dt[0])
     }

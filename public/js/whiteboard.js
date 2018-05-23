@@ -108,7 +108,8 @@ class board  {
                 }
             }
         };
-        reader.readAsDataURL(data);
+        if(data)
+            reader.readAsDataURL(data);
     }
     static  drawImageRot (context,img,x,y,width,height,deg){
         var rad = deg * Math.PI / 180;
@@ -418,6 +419,12 @@ function drawEnd() {
     console.log("отправка")
     tools.socket.emit('drawing', {
         boardData: boardTools.draw,
+        room: tools.roomname,
+        from: tools.username
+    });
+    var url = boardTools.canvas.toDataURL()
+    tools.socket.emit('recover', {
+        boardData: url,
         room: tools.roomname,
         from: tools.username
     });

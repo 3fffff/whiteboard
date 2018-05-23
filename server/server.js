@@ -76,11 +76,9 @@ io.on('connection', (socket) => {
 		//нужна проверка по шаблону
 		var user = users.getUser(socket.id);
 		try {
-            users.setData(user.room, data)
             socket.broadcast.to(user.room).emit('drawing', data)
         }catch(e){
 		}
-
 	});
 
 	//файлы
@@ -95,6 +93,15 @@ io.on('connection', (socket) => {
 			type: msg.type
 		});
 	});
+socket.on('recover', function (msg) {
+    var user = users.getUser(socket.id)
+    console.log('восстановление от ' + user.name);
+    socket.username = user.name;
+    users.setData(user.room, msg.boardData)
+    var get=users.getData(user.room, msg.boardData)
+	console.log("картинка восстановления")
+	console.log(get)
+});
 	/* Клиент отключился от сервера */
 	socket.on('disconnect', () => {
 		var user = users.removeUser(socket.id);
