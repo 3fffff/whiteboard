@@ -77,9 +77,10 @@ io.on('connection', (socket) => {
 		var user = users.getUser(socket.id);
 		try {
             users.setData(user.room, data)
+            socket.broadcast.to(user.room).emit('drawing', data)
         }catch(e){
 		}
-		socket.broadcast.to(user.room).emit('drawing', data)
+
 	});
 
 	//файлы
