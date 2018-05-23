@@ -55,7 +55,7 @@ io.on('connection', (socket) => {
 		var draw = users.getData(params.room)
 		//console.log(draw)
 		//восстановление сохранения пойдет))
-		io.to(params.room).emit('drawingRestore', draw)
+		io.sockets.connected[socket.id].emit('drawingRestore', draw)
 		callback();
 	});
 
