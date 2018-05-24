@@ -38,7 +38,7 @@ function readThenSendFile(data){
         msg.file = evt.target.result;
         msg.fileName = data.name;
         msg.type=data.type
-        rtMan.socket.emit('base64 file', msg);
+        rtSocket.socket.emit('base64 file', msg);
         var image=0
         var messagesContainer = document.getElementsByClassName('messages')[0];
         for(var i=0;i<img.length;i++) {
@@ -69,7 +69,7 @@ function sendNewMessage() {
 
     var messagesContainer = document.getElementsByClassName('messages')[0];
 
-    rtMan.socket.emit('createMessage', {
+    rtSocket.socket.emit('createMessage', {
         from: 'User',
         text: newMessage
     });
