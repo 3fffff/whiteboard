@@ -109,6 +109,11 @@ class rtSocket  {
         initial["lineWidth"] = boardTools.ctx.lineWidth;
         initial["strokeStyle"] = boardTools.ctx.strokeStyle;
         initial["font"] = boardTools.ctx.font;
+
+        boardTools.W=parseInt(boardTools.scaleW/dd.width)
+        boardTools.H=parseInt(boardTools.scaleH/dd.height)
+        console.log(boardTools.W)
+        console.log(boardTools.H)
         var dataDraw=dd.boardData
         if(dataDraw!==undefined) {
             boardTools.ctx.lineWidth = dataDraw.data.lineWidth;

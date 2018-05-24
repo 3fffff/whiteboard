@@ -40,7 +40,8 @@ var boardTools= {
     draw: {},
     scaleH:document.body.clientWidth*0.51,
     scaleW:document.body.clientWidth,
-    scale:document.body.clientWidth/1920
+    H:0,
+    W:0,
 }
 class board  {
 
@@ -56,7 +57,7 @@ class board  {
 
     static pencil (context, x1, y1, x2, y2,scale=false) {
         if(scale)
-            context.scale(boardTools.scale,boardTools.scale);
+            context.scale(boardTools.W,boardTools.H);
         context.beginPath();
         context.moveTo(x1, y1);
         context.lineTo(x2, y2);
@@ -66,7 +67,7 @@ class board  {
 
     static marker (context, x1, y1, x2, y2, size, color,scale=false) {
         if(scale)
-            context.scale(boardTools.scale,boardTools.scale);
+            context.scale(boardTools.W,boardTools.H);
         context.globalAlpha = boardTools.marker.opacity;
         context.strokeStyle = color;
         context.beginPath();
@@ -81,7 +82,7 @@ class board  {
 
     static text (context, text, x, y,scale=false) {
         if(scale)
-            context.scale(boardTools.scale,boardTools.scale);
+            context.scale(boardTools.W,boardTools.H);
         context.fillText(text, x, y);
     }
 
@@ -128,13 +129,13 @@ class board  {
 
     static rect (context, x, y, w, h,scale=false) {
         if(scale)
-            context.scale(boardTools.scale,boardTools.scale);
+            context.scale(boardTools.W,boardTools.H);
         context.strokeRect(x, y, w, h);
     }
 
     static  circle (context, x1, y1, x2, y2,scale=false) {
         if(scale)
-            context.scale(boardTools.scale,boardTools.scale);
+            context.scale(boardTools.W,boardTools.H);
         var x = (x2 + x1) / 2;
         var y = (y2 + y1) / 2;
         var radius = Math.max(
@@ -150,7 +151,7 @@ class board  {
 
     static  ellipse (context, x, y, w, h,scale=false) {
         if(scale)
-            context.scale(boardTools.scale,boardTools.scale);
+            context.scale(boardTools.W,boardTools.H);
         context.beginPath();
         context.ellipse(x+w/2, y+h/2, Math.abs(w/2), Math.abs(h/2), 0, 0, 2 * Math.PI);
         context.stroke();
@@ -158,7 +159,7 @@ class board  {
 
     static  line (context, x1, y1, x2, y2,scale=false) {
         if(scale)
-            context.scale(boardTools.scale,boardTools.scale);
+            context.scale(boardTools.W,boardTools.H);
         context.beginPath();
         context.moveTo(x1, y1);
         context.lineTo(x2, y2);
@@ -166,7 +167,7 @@ class board  {
     }
     static arrow (context, x1, y1, x2, y2,scale=false) {
         if(scale)
-            context.scale(boardTools.scale,boardTools.scale);
+            context.scale(boardTools.W,boardTools.H);
         context.beginPath();
         context.moveTo(x1, y1);
         context.lineTo(x2, y2);
@@ -183,7 +184,7 @@ class board  {
     }
     static eraser(context,scale){
         if(scale)
-            context.scale(boardTools.scale,boardTools.scale);
+            context.scale(boardTools.W,boardTools.H);
         context.beginPath();
         context.fillStyle = "white";
         context.arc(boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.eraser.size, 0, 2 * Math.PI);
@@ -426,7 +427,9 @@ function drawEnd() {
     tools.socket.emit('drawing', {
         boardData: boardTools.draw,
         room: tools.roomname,
-        from: tools.username
+        from: tools.username,
+        width:document.body.clientWidth,
+        height:document.body.clientWidth*0.51
     });
     var url = boardTools.canvas.toDataURL()
     tools.socket.emit('recover', {
