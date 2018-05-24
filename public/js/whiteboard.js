@@ -38,6 +38,9 @@ var boardTools= {
     },
     tool: 'pencil',
     draw: {},
+    scaleH:document.body.clientWidth*0.51,
+    scaleW:document.body.clientWidth,
+    scale:document.body.clientWidth/1920
 }
 class board  {
 
@@ -51,7 +54,9 @@ class board  {
         document.body.appendChild(svg)
     }
 
-    static pencil (context, x1, y1, x2, y2) {
+    static pencil (context, x1, y1, x2, y2,scale=false) {
+        if(scale)
+            context.scale(boardTools.scale,boardTools.scale);
         context.beginPath();
         context.moveTo(x1, y1);
         context.lineTo(x2, y2);
@@ -59,7 +64,9 @@ class board  {
 
     }
 
-    static marker (context, x1, y1, x2, y2, size, color) {
+    static marker (context, x1, y1, x2, y2, size, color,scale=false) {
+        if(scale)
+            context.scale(boardTools.scale,boardTools.scale);
         context.globalAlpha = boardTools.marker.opacity;
         context.strokeStyle = color;
         context.beginPath();
@@ -72,7 +79,9 @@ class board  {
 
     }
 
-    static text (context, text, x, y) {
+    static text (context, text, x, y,scale=false) {
+        if(scale)
+            context.scale(boardTools.scale,boardTools.scale);
         context.fillText(text, x, y);
     }
 
@@ -117,11 +126,15 @@ class board  {
         context.translate((x + width / 2) * (-1), (y + height / 2) * (-1));
     }
 
-    static rect (context, x, y, w, h) {
+    static rect (context, x, y, w, h,scale=false) {
+        if(scale)
+            context.scale(boardTools.scale,boardTools.scale);
         context.strokeRect(x, y, w, h);
     }
 
-    static  circle (context, x1, y1, x2, y2) {
+    static  circle (context, x1, y1, x2, y2,scale=false) {
+        if(scale)
+            context.scale(boardTools.scale,boardTools.scale);
         var x = (x2 + x1) / 2;
         var y = (y2 + y1) / 2;
         var radius = Math.max(
@@ -135,19 +148,25 @@ class board  {
         context.closePath();
     }
 
-    static  ellipse (context, x, y, w, h) {
+    static  ellipse (context, x, y, w, h,scale=false) {
+        if(scale)
+            context.scale(boardTools.scale,boardTools.scale);
         context.beginPath();
         context.ellipse(x+w/2, y+h/2, Math.abs(w/2), Math.abs(h/2), 0, 0, 2 * Math.PI);
         context.stroke();
     }
 
-    static  line (context, x1, y1, x2, y2) {
+    static  line (context, x1, y1, x2, y2,scale=false) {
+        if(scale)
+            context.scale(boardTools.scale,boardTools.scale);
         context.beginPath();
         context.moveTo(x1, y1);
         context.lineTo(x2, y2);
         context.stroke();
     }
-    static arrow (context, x1, y1, x2, y2) {
+    static arrow (context, x1, y1, x2, y2,scale=false) {
+        if(scale)
+            context.scale(boardTools.scale,boardTools.scale);
         context.beginPath();
         context.moveTo(x1, y1);
         context.lineTo(x2, y2);
@@ -162,7 +181,9 @@ class board  {
 
         context.stroke();
     }
-    static eraser(context){
+    static eraser(context,scale){
+        if(scale)
+            context.scale(boardTools.scale,boardTools.scale);
         context.beginPath();
         context.fillStyle = "white";
         context.arc(boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.eraser.size, 0, 2 * Math.PI);
@@ -171,7 +192,6 @@ class board  {
     }
 
     static changeTool (t) {
-
         switch(t) {
 
             case 'pencil':
@@ -801,34 +821,11 @@ document.getElementById("CancelCanvas").addEventListener("click",function(){
     boardTools.tool = "pencil";
 })
 document.getElementById("saveImage").addEventListener("click",function(){
-    var url = boardTools.canvas.toDataURL()
-    console.log("картинка")
-    console.log(url)
-    var img=dataURItoBlob(url)
-    console.log(img)
-
-    document.getElementById("ImgSave").href = url;
+    document.getElementById("ImgSave").href = boardTools.canvas.toDataURL();
     document.getElementById("ImgSave").download = "image.png";
     boardTools.tool = "pencil";
 })
 
-function dataURItoBlob(dataURI) {
-    var byteString = atob(dataURI.split(',')[1]);
-
-    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-
-    var ab = new ArrayBuffer(byteString.length);
-
-    var ia = new Uint8Array(ab);
-
-    for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-
-    var blob = new Blob([ab], {type: mimeString});
-    return blob;
-
-}
 document.getElementsByClassName("smiley")[0].addEventListener("click",function(){
     if(document.getElementsByClassName("tooltip")[0].style.visibility==="hidden")
         document.getElementsByClassName("tooltip")[0].style.visibility="visible"
