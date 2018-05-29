@@ -1,3 +1,4 @@
+
 var boardTools= {
     pencil: {
         lineWidth: 1
@@ -16,8 +17,8 @@ var boardTools= {
     text: {
         color: 'black',
         text: '',
-        fontFamily: 'cursive',
-        fontSize: 12,
+        fontFamily: 'Arial',
+        fontSize: 16,
         fontStyle: 'normal'
     },
     shape: {
@@ -47,8 +48,8 @@ var boardTools= {
 }
 class board  {
     static zoom(ctx,delta){
-        var pt = ctx.transformedPoint(boardTools.lastX,boardTools.lastY);
         ctx.save()
+        var pt = ctx.transformedPoint(boardTools.lastX,boardTools.lastY);
         ctx.translate(pt.x,pt.y);
         var factor = Math.pow(boardTools.scaleFactor,delta);
         ctx.scale(factor,factor);
@@ -80,10 +81,35 @@ class board  {
             return scale.call(ctx,sx,sy);
         };
 
+        var rotate = ctx.rotate;
+        ctx.rotate = function(radians){
+            xform = xform.rotate(radians*180/Math.PI);
+            return rotate.call(ctx,radians);
+        };
+
         var translate = ctx.translate;
         ctx.translate = function(dx,dy){
             xform = xform.translate(dx,dy);
             return translate.call(ctx,dx,dy);
+        };
+
+        var transform = ctx.transform;
+        ctx.transform = function(a,b,c,d,e,f){
+            var m2 = svg.createSVGMatrix();
+            m2.a=a; m2.b=b; m2.c=c; m2.d=d; m2.e=e; m2.f=f;
+            xform = xform.multiply(m2);
+            return transform.call(ctx,a,b,c,d,e,f);
+        };
+
+        var setTransform = ctx.setTransform;
+        ctx.setTransform = function(a,b,c,d,e,f){
+            xform.a = a;
+            xform.b = b;
+            xform.c = c;
+            xform.d = d;
+            xform.e = e;
+            xform.f = f;
+            return setTransform.call(ctx,a,b,c,d,e,f);
         };
 
         var pt  = svg.createSVGPoint();
@@ -238,6 +264,7 @@ class board  {
         switch(t) {
 
             case 'pencil':
+
                 boardTools.ctx.lineWidth = boardTools.pencil.lineWidth;
                 document.getElementById("size").value=boardTools.pencil.lineWidth;
                 boardTools.last={
@@ -276,8 +303,6 @@ class board  {
     }
 
     static changeSize (size) {
-        if(size<1 || size>6)
-            return
         switch(boardTools.tool) {
             case 'pencil':
                 boardTools.pencil.lineWidth = size;
@@ -312,18 +337,15 @@ function removeBlockClass(del)
 }
 function drawStart (e) {
     removeBlockClass("fadeInLeft")
-   // board.restoreScale()
+    // board.restoreScale()
     boardTools.mouse.mouseDown = true;
     boardTools.mouse.pos.initial.x = e.pageX
     boardTools.mouse.pos.initial.y = e.pageY
     document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
-    boardTools.lastX = e.offsetX || (e.pageX - canvas.offsetLeft);
-    boardTools.lastY = e.offsetY || (e.pageY - canvas.offsetTop);
+    boardTools.lastX = e.offsetX || (e.pageX - boardTools.canvas.offsetLeft);
+    boardTools.lastY = e.offsetY || (e.pageY - boardTools.canvas.offsetTop);
     if(boardTools.dragged)
-    {
         boardTools.dragStart = boardTools.ctx.transformedPoint(boardTools.lastX,boardTools.lastY);
-        console.log(boardTools.dragStart)
-    }
     else {
         switch (boardTools.tool) {
             case 'text':
@@ -336,8 +358,9 @@ function drawStart (e) {
                 document.getElementById("textControl").style.marginLeft = boardTools.mouse.pos.final.x + "px"
                 document.getElementById("textControl").style.marginTop = boardTools.mouse.pos.final.y + "px"
                 document.getElementById("txtText").style.fontWeight="normal"
-                document.getElementById("txtText").style.fontStyle="normal"
-                document.getElementById("txtText").style.fontSize="16px"
+                document.getElementById("txtText").style.fontStyle=boardTools.text.fontStyle
+                document.getElementById("txtText").style.fontSize=boardTools.text.fontSize
+                document.getElementById("txtText").style.fontFamily=boardTools.text.fontFamily
                 var x = document.body.clientWidth - boardTools.mouse.pos.final.x
                 var y = document.body.clientHeight - boardTools.mouse.pos.final.y
                 document.getElementById("txtText").style.width = x + "px"
@@ -346,6 +369,7 @@ function drawStart (e) {
                 boardTools.mouse.text.left = boardTools.mouse.pos.final.x;
                 break
             case 'pencil':
+                removeBlock("txtText")
                 boardTools.last={
                     type: 'pencil',
                     data: {
@@ -359,6 +383,7 @@ function drawStart (e) {
                 }
                 break
             case 'marker':
+                removeBlock("txtText")
                 boardTools.last = {
                     type: 'marker',
                     data: {
@@ -373,6 +398,7 @@ function drawStart (e) {
                 }
                 break
             case 'eraser':
+                removeBlock("txtText")
                 boardTools.last = {
                     type: 'eraser',
                     data: {
@@ -395,6 +421,7 @@ function drawEnd() {
         switch (boardTools.tool) {
             case 'line':
                 removeBlock("dop")
+                removeBlock("txtText")
                 board.line(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
                 boardTools.last = {
                     type: 'line',
@@ -410,6 +437,7 @@ function drawEnd() {
                 break
             case'rectangle':
                 removeBlock("dop")
+                removeBlock("txtText")
                 board.rect(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x, boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y);
                 boardTools.last = {
                     type: 'rectangle',
@@ -425,6 +453,7 @@ function drawEnd() {
                 break
             case 'circle':
                 removeBlock("dop")
+                removeBlock("txtText")
                 board.circle(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
                 boardTools.last = {
                     type: 'circle',
@@ -440,6 +469,7 @@ function drawEnd() {
                 break
             case 'ellipse':
                 removeBlock("dop")
+                removeBlock("txtText")
                 board.ellipse(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x, boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y);
                 boardTools.last = {
                     type: 'ellipse',
@@ -454,6 +484,7 @@ function drawEnd() {
                 }
                 break
             case 'arrow':
+                removeBlock("txtText")
                 removeBlock("dop")
                 board.arrow(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
                 boardTools.last = {
@@ -491,16 +522,16 @@ function drawRealT (e) {
     //board.restoreScale()
     boardTools.mouse.pos.final.x = e.pageX;
     boardTools.mouse.pos.final.y = e.pageY;
-    lastX = e.offsetX || (e.pageX - canvas.offsetLeft);
-    lastY = e.offsetY || (e.pageY - canvas.offsetTop);
+    boardTools.lastX = e.offsetX || (e.pageX - boardTools.canvas.offsetLeft);
+    boardTools.lastY = e.offsetY || (e.pageY - boardTools.canvas.offsetTop);
 
     if (boardTools.mouse.mouseDown) {
 
         if (boardTools.dragged) {
-            var pt = boardTools.ctx.transformedPoint(lastX, lastY);
+            var pt = boardTools.ctx.transformedPoint(boardTools.lastX, boardTools.lastY);
             boardTools.ctx.translate(pt.x - boardTools.dragStart.x, pt.y - boardTools.dragStart.y);
             console.log("dragged")
-             board.redraw(boardTools.ctx);
+            board.redraw(boardTools.ctx);
         }
         else {
             switch (boardTools.tool) {
@@ -658,11 +689,12 @@ document.getElementById("size").addEventListener("change",function () {
     board.changeSize(this.value);
 });
 
+
 document.getElementById("txtInsert").addEventListener("click",function () {
     boardTools.text.text = document.getElementById("txtText").value;
     boardTools.ctx.font = boardTools.text.fontStyle + " " + boardTools.text.fontSize + "px " + boardTools.text.fontFamily;
-    board.text(boardTools.ctx, document.getElementById("txtText").value, boardTools.mouse.text.left+5, boardTools.mouse.text.top+5);
-    tools.socket.emit('drawing', {
+    board.text(boardTools.ctx, document.getElementById("txtText").value, boardTools.mouse.text.left, boardTools.mouse.text.top+15);
+    var res= {
         boardData: {
             type: 'text',
             data: {
@@ -670,12 +702,14 @@ document.getElementById("txtInsert").addEventListener("click",function () {
                 fillStyle: boardTools.ctx.fillStyle,
                 text: document.getElementById("txtText").value,
                 x: boardTools.mouse.text.left+5,
-                y: boardTools.mouse.text.top+5
+                y: boardTools.mouse.text.top+15
             }
         },
         room: tools.roomname,
         from: tools.username
-    });
+    }
+    boardTools.draw.push(res)
+    tools.socket.emit('drawing',res);
     document.getElementById("txtText").value=""
     removeBlock("txtText")
 });
@@ -851,11 +885,11 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
     var image=new Image()
     image.onload=function() {
         board.drawImageRot(boardTools.ctx,image,x,y,w,h,deg)
-        rtSocket.socket.emit('drawing', {
+        let res={
             boardData: {
                 type:"image",
                 data: {
-                    src: document.getElementById("preloadImg").src.toString(),
+                    src: image.src,
                     points: [{
                         x: x,
                         y: y,
@@ -865,11 +899,11 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
                     }]
                 }
             },
-            room: this.rtSocket.roomname,
-            from: this.rtSocket.username
-        });
-        document.getElementById("LoadedImage").style.display="none"
-        document.getElementById("preloadImg").src=""
+            room: tools.roomname,
+            from: tools.username
+        }
+        tools.socket.emit('drawing', res);
+        boardTools.draw.push(res)
     }
     image.src=document.getElementById("preloadImg").src
     document.getElementById("rotation").style.transform="rotate("+0+"deg)"

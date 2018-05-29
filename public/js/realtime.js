@@ -64,8 +64,7 @@ class rtSocket  {
         var image=new Image()
         boardTools.draw.push(data)
         image.onload=function() {
-            console.log(image)
-            board.drawImageRot(boardTools.ctx,image,0,0,boardTools.scaleW,boardTools.scaleH,0)
+            board.drawImageRot(boardTools.ctx,image,0,0,document.body.clientWidth,document.body.clientHeight,0)
         }
         image.src=data
     }
