@@ -105,6 +105,9 @@
                                 </ul>
                             </div>
                     </li>
+                    <li  id="drag" class="tools__item boardBtn">
+                        <div class="tools__item--button"><img src="assets/load.png" alt="Select"></div>
+                    </li>
 
                     <li   class="tools__item boardBtn">
                         <div class="tools__item--button dropRight"><img src="assets/load.png" alt="Select"></div>
@@ -212,12 +215,9 @@
     <script type="text/javascript" src="js/chat.js"></script>
     <script>rtSocket.createSocket()
     rtSocket.broadcastMessage()
-        rtSocket.broadcastFile()
-    var w=document.body.clientWidth
-    var h=w*0.51
-        document.getElementById("canvas").width=boardTools.scaleW
-    document.getElementById("canvas").height=boardTools.scaleH
-        console.log(document.body.clientWidth)
-        console.log(boardTools.scaleW)
+    rtSocket.broadcastFile()
+    document.getElementById("canvas").width=document.body.clientWidth
+    document.getElementById("canvas").height=document.body.clientHeight
+    board.trackTransforms(boardTools.ctx)
     </script>
 </body></html>

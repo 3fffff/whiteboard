@@ -25,6 +25,7 @@ class rtSocket  {
                 params["name"] = result
                 sessionStorage.setItem("name",result)
                 rtSocket.join(params)
+                tools.socket.on('drawingRestore', rtSocket.restoreDraw);
             }
         }
         else {
@@ -39,7 +40,6 @@ class rtSocket  {
             rtSocket.join(params)
 
         }
-        tools.socket.on('drawingRestore', rtSocket.restoreDraw);
         tools.socket.on('drawing', rtSocket.drawFromSocket);
     }
 
@@ -59,6 +59,7 @@ class rtSocket  {
 
     static restoreDraw(data){
         var image=new Image()
+        boardTools.draw.push(data)
         image.onload=function() {
             console.log(image)
             board.drawImageRot(boardTools.ctx,image,0,0,boardTools.scaleW,boardTools.scaleH,0)
@@ -99,10 +100,7 @@ class rtSocket  {
     static drawFromSocket (dd) {
         if(dd===undefined)
             return
-        var keys=Object.keys(dd)
-        //  console.log(keys)
-        if(keys.length===2)
-            this.rtSocket.restoreDrawCall()
+
 
         console.log(dd)
         var initial={}
@@ -110,10 +108,6 @@ class rtSocket  {
         initial["strokeStyle"] = boardTools.ctx.strokeStyle;
         initial["font"] = boardTools.ctx.font;
 
-        boardTools.W=parseInt(boardTools.scaleW/dd.width)
-        boardTools.H=parseInt(boardTools.scaleH/dd.height)
-        console.log(boardTools.W)
-        console.log(boardTools.H)
         var dataDraw=dd.boardData
         if(dataDraw!==undefined) {
             boardTools.ctx.lineWidth = dataDraw.data.lineWidth;
@@ -131,23 +125,24 @@ class rtSocket  {
                     break;
 
                 case 'line':
-                    board.line(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2,true);
+                    board.line(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2);
+                    console.log("линия")
                     break;
 
                 case 'rectangle':
-                    board.rect(boardTools.ctx, dataDraw.data.x, dataDraw.data.y, dataDraw.data.w, dataDraw.data.h,true);
+                    board.rect(boardTools.ctx, dataDraw.data.x, dataDraw.data.y, dataDraw.data.w, dataDraw.data.h);
                     break;
 
                 case 'ellipse':
-                    board.ellipse(boardTools.ctx, dataDraw.data.x, dataDraw.data.y, dataDraw.data.w, dataDraw.data.h,true);
+                    board.ellipse(boardTools.ctx, dataDraw.data.x, dataDraw.data.y, dataDraw.data.w, dataDraw.data.h);
                     break;
 
                 case 'circle':
-                    board.circle(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2,true);
+                    board.circle(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2);
                     break;
 
                 case 'arrow':
-                    board.arrow(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2,true);
+                    board.arrow(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2);
                     break;
 
                 case 'text':
@@ -156,13 +151,13 @@ class rtSocket  {
 
                 case 'pencil':
                     for (i = dataDraw.data.points.length - 2; i >= 0; i--) {
-                        board.pencil(boardTools.ctx, dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.points[i + 1].x, dataDraw.data.points[i + 1].y,true);
+                        board.pencil(boardTools.ctx, dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.points[i + 1].x, dataDraw.data.points[i + 1].y);
                     }
                     break;
 
                 case 'marker':
                     for (i = dataDraw.data.points.length - 2; i >= 0; i--) {
-                        board.marker(boardTools.ctx, dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.points[i + 1].x, dataDraw.data.points[i + 1].y, dataDraw.data.size, dataDraw.data.strokeStyle,true);
+                        board.marker(boardTools.ctx, dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.points[i + 1].x, dataDraw.data.points[i + 1].y, dataDraw.data.size, dataDraw.data.strokeStyle);
                     }
                     break;
                 case 'eraser':
@@ -170,7 +165,7 @@ class rtSocket  {
                         boardTools.ctx.beginPath();
                         boardTools.ctx.fillStyle = "white";
                         boardTools.ctx.opacity=0
-                        boardTools.ctx.arc(dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.size, 0, 2 * Math.PI,true);
+                        boardTools.ctx.arc(dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.size, 0, 2 * Math.PI);
                         boardTools.ctx.fill();
                     }
                     break;
