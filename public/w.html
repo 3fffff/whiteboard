@@ -213,11 +213,13 @@
     <script type="text/javascript" src="js/whiteboard.js"></script>
 	<script type="text/javascript" src="js/realtime.js"></script>
     <script type="text/javascript" src="js/chat.js"></script>
-    <script>rtSocket.createSocket()
+    <script>
+        board.trackTransforms(boardTools.ctx)
+        rtSocket.createSocket()
     rtSocket.broadcastMessage()
     rtSocket.broadcastFile()
     document.getElementById("canvas").width=document.body.clientWidth
     document.getElementById("canvas").height=document.body.clientHeight
-    board.trackTransforms(boardTools.ctx)
+
     </script>
 </body></html>

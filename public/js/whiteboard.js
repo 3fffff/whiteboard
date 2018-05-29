@@ -43,11 +43,12 @@ var boardTools= {
     dragged:false,
     lastX:document.body.clientWidth/2,
     lastY:document.body.clientHeight/2,
-    scaleFactor:1.1
+    scaleFactor:1.1,
+    factor:1
 }
 class board  {
     static zoom(ctx,delta){
-        var pt = ctx.transformedPoint(lastX,lastY);
+        var pt = ctx.transformedPoint(boardTools.lastX,boardTools.lastY);
         ctx.translate(pt.x,pt.y);
         var factor = Math.pow(boardTools.scaleFactor,delta);
         ctx.scale(factor,factor);
@@ -332,9 +333,10 @@ function removeBlockClass(del)
 }
 function drawStart (e) {
     removeBlockClass("fadeInLeft")
+   // board.restoreScale()
     boardTools.mouse.mouseDown = true;
-    boardTools.mouse.pos.initial.x = e.pageX;
-    boardTools.mouse.pos.initial.y = e.pageY;
+    boardTools.mouse.pos.initial.x = e.pageX
+    boardTools.mouse.pos.initial.y = e.pageY
     document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
     boardTools.lastX = e.offsetX || (e.pageX - canvas.offsetLeft);
     boardTools.lastY = e.offsetY || (e.pageY - canvas.offsetTop);
@@ -411,9 +413,8 @@ function drawStart (e) {
 }
 
 function drawEnd() {
-
     boardTools.mouse.mouseDown = false;
-
+    //board.restoreScale()
     if(!boardTools.dragged) {
         switch (boardTools.tool) {
             case 'line':
@@ -513,12 +514,10 @@ function drawEnd() {
             from: tools.username
         });
         boardTools.draw.push(result)
-        console.log(boardTools.last)
-        console.log(boardTools.draw)
     }
 }
 function drawRealT (e) {
-
+    //board.restoreScale()
     boardTools.mouse.pos.final.x = e.pageX;
     boardTools.mouse.pos.final.y = e.pageY;
     lastX = e.offsetX || (e.pageX - canvas.offsetLeft);
@@ -737,25 +736,31 @@ function start(e) {
         x: ref.left + (ref.width / 2),
         y: ref.top + (ref.height / 2)
     };
-    x = e.clientX - center.x;
-    y = e.clientY - center.y;
+   var x = e.clientX - center.x;
+   var y = e.clientY - center.y;
     startAngle = (180 / Math.PI) * Math.atan2(y, x);
-    return active = true;
+    console.log(startAngle)
+    console.log(angle)
+    active = true;
 }
 
 function rotate(e) {
     var x = e.clientX - center.x;
     var y = e.clientY - center.y;
-    var d = (180 / Math.PI) * Math.atan2(y, x);
-    rotation = d - startAngle;
+
+
     if (active) {
+        var d = (180 / Math.PI) * Math.atan2(y, x);
+        rotation = d - startAngle;
+        console.log(rotation)
+        console.log(angle)
         moveImg = false
         resizeImg = false
         var r = angle + rotation
         document.getElementById("rotation").style.webkitTransform = "rotate(" + r + "deg)";
         console.log("вращение разрешено")
     }
-};
+}
 
 function stop() {
     angle += rotation;
@@ -788,8 +793,6 @@ function sizeChange(evt){
     var x=evt.clientX-changeS.x
     var x1=x-chanL
     var prevw=document.getElementById("preloadImg").style.width
-    console.log(document.getElementById("preloadImg").style.width)
-    console.log(prevw)
     prevw=prevw.substr(0,prevw.length-2)
     prevw=parseFloat(prevw)
     var prevh=document.getElementById("preloadImg").style.height
@@ -879,7 +882,7 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
     var image=new Image()
     image.onload=function() {
         board.drawImageRot(boardTools.ctx,image,x,y,w,h,deg)
-        this.rtSocket.socket.emit('drawing', {
+        rtSocket.socket.emit('drawing', {
             boardData: {
                 type:"image",
                 data: {
@@ -902,6 +905,8 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
     image.src=document.getElementById("preloadImg").src
     document.getElementById("rotation").style.transform="rotate("+0+"deg)"
     angle=0
+    document.getElementById("LoadedImage").style.display="none"
+    document.getElementById("preloadImg").src=""
     boardTools.tool = "pencil";
 })
 document.getElementById("CancelCanvas").addEventListener("click",function(){

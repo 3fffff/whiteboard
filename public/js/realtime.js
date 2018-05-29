@@ -25,7 +25,7 @@ class rtSocket  {
                 params["name"] = result
                 sessionStorage.setItem("name",result)
                 rtSocket.join(params)
-                tools.socket.on('drawingRestore', rtSocket.restoreDraw);
+                tools.socket.on('drawingRestore', this.restoreDraw);
             }
         }
         else {
@@ -40,7 +40,10 @@ class rtSocket  {
             rtSocket.join(params)
 
         }
-        tools.socket.on('drawing', rtSocket.drawFromSocket);
+
+        tools.socket.on('drawing', this.drawFromSocket);
+        tools.socket.on('drawing', this.addData);
+
     }
 
     static join (params) {
@@ -65,6 +68,10 @@ class rtSocket  {
             board.drawImageRot(boardTools.ctx,image,0,0,boardTools.scaleW,boardTools.scaleH,0)
         }
         image.src=data
+    }
+    static addData(data){
+        boardTools.draw.push(data)
+        console.log(data)
     }
     static broadcastFile(){
         tools.socket.on('base64 file', function(message) {
@@ -98,9 +105,8 @@ class rtSocket  {
         });
     }
     static drawFromSocket (dd) {
-        if(dd===undefined)
+        if(!dd)
             return
-
 
         console.log(dd)
         var initial={}
@@ -116,7 +122,7 @@ class rtSocket  {
             boardTools.ctx.font = dataDraw.data.font || '';
 
             switch (dataDraw.type) {
-                case 'image':
+               case 'image':
                     var image = new Image()
                     image.onload = function () {
                         board.drawImageRot(boardTools.ctx, image, dataDraw.data.points[0].x, dataDraw.data.points[0].y, dataDraw.data.points[0].w, dataDraw.data.points[0].h, dataDraw.data.points[0].deg)
