@@ -1,4 +1,3 @@
-
 var boardTools= {
     pencil: {
         lineWidth: 1
@@ -43,90 +42,34 @@ var boardTools= {
     dragged:false,
     lastX:document.body.clientWidth/2,
     lastY:document.body.clientHeight/2,
-    scaleFactor:1.1,
-    factor:1
+    scale:1.0,
+    posScaleI:null
 }
 class board  {
-    static zoom(ctx,delta){
-        ctx.save()
-        var pt = ctx.transformedPoint(boardTools.lastX,boardTools.lastY);
-        ctx.translate(pt.x,pt.y);
-        var factor = Math.pow(boardTools.scaleFactor,delta);
-        ctx.scale(factor,factor);
-        ctx.translate(-pt.x,-pt.y);
-        this.redraw(ctx);
-        ctx.restore()
-    }
-    static trackTransforms(ctx){
-        var svg = document.createElementNS("http://www.w3.org/2000/svg",'svg');
-        var xform = svg.createSVGMatrix();
-        ctx.getTransform = function(){ return xform; };
+    static zoom(ctx){
+        ctx.clearRect(0, 0, boardTools.canvas.clientWidth, boardTools.canvas.clientHeight);
+        ctx.save();
+        ctx.translate(boardTools.canvas.clientWidth/2,  boardTools.canvas.clientHeight/2);
+        ctx.restore();
 
-        var savedTransforms = [];
-        var save = ctx.save;
-        ctx.save = function(){
-            savedTransforms.push(xform.translate(0,0));
-            return save.call(ctx);
-        };
+        ctx.save();
+        ctx.translate(boardTools.canvas.clientWidth/2 , boardTools.canvas.clientHeight/2 );
+        ctx.scale(boardTools.scale, boardTools.scale);
 
-        var restore = ctx.restore;
-        ctx.restore = function(){
-            xform = savedTransforms.pop();
-            return restore.call(ctx);
-        };
-
-        var scale = ctx.scale;
-        ctx.scale = function(sx,sy){
-            xform = xform.scaleNonUniform(sx,sy);
-            return scale.call(ctx,sx,sy);
-        };
-
-        var rotate = ctx.rotate;
-        ctx.rotate = function(radians){
-            xform = xform.rotate(radians*180/Math.PI);
-            return rotate.call(ctx,radians);
-        };
-
-        var translate = ctx.translate;
-        ctx.translate = function(dx,dy){
-            xform = xform.translate(dx,dy);
-            return translate.call(ctx,dx,dy);
-        };
-
-        var transform = ctx.transform;
-        ctx.transform = function(a,b,c,d,e,f){
-            var m2 = svg.createSVGMatrix();
-            m2.a=a; m2.b=b; m2.c=c; m2.d=d; m2.e=e; m2.f=f;
-            xform = xform.multiply(m2);
-            return transform.call(ctx,a,b,c,d,e,f);
-        };
-
-        var setTransform = ctx.setTransform;
-        ctx.setTransform = function(a,b,c,d,e,f){
-            xform.a = a;
-            xform.b = b;
-            xform.c = c;
-            xform.d = d;
-            xform.e = e;
-            xform.f = f;
-            return setTransform.call(ctx,a,b,c,d,e,f);
-        };
-
-        var pt  = svg.createSVGPoint();
-        ctx.transformedPoint = function(x,y){
-            pt.x=x; pt.y=y;
-            return pt.matrixTransform(xform.inverse());
-        }
-    }
-    static redraw(ctx){
-        // Clear the entire canvas
-        var p1 = ctx.transformedPoint(0,0);
-        var p2 = ctx.transformedPoint(boardTools.canvas.width,boardTools.canvas.height);
-        ctx.clearRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
         for(var i=0;i<boardTools.draw.length;i++)
-        {
             rtSocket.drawFromSocket(boardTools.draw[i])
-        }
+        ctx.restore();
+    }
+    static MousePosScale(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        var x = evt.clientX - rect.left;
+        var y = evt.clientY - rect.top;
+        var sx = (x-boardTools.canvas.clientWidth/2)/boardTools.scale;
+        var sy = (y-boardTools.canvas.clientHeight/2)/boardTools.scale;
+        return {
+            sx : sx,
+            sy:sy,
+        };
     }
     static shapeSVG(stroke){
         var xmlns = "http://www.w3.org/2000/svg";
@@ -195,20 +138,18 @@ class board  {
     static  drawImageRot (context,img,x,y,width,height,deg){
         var rad = deg * Math.PI / 180;
         console.log(context)
-        context.translate(x + width / 2, y + height / 2);
+        context.translate(boardTools.scale*(x + width / 2), boardTools.scale*(y + height / 2));
         context.rotate(rad);
-        context.drawImage(img, width / 2 * (-1), height / 2 * (-1), width, height);
+        context.drawImage(img, width / 2 * (-1)*boardTools.scale, height / 2 * (-1)*boardTools.scale, width*boardTools.scale, height*boardTools.scale);
         context.rotate(rad * (-1));
-        context.translate((x + width / 2) * (-1), (y + height / 2) * (-1));
+        context.translate((x + width / 2) * (-1)*boardTools.scale, (y + height / 2) * (-1)*boardTools.scale);
     }
 
     static rect (context, x, y, w, h) {
         context.strokeRect(x, y, w, h);
     }
 
-    static  circle (context, x1, y1, x2, y2,scale=false) {
-        if(scale)
-            context.scale(boardTools.W,boardTools.H);
+    static  circle (context, x1, y1, x2, y2) {
         var x = (x2 + x1) / 2;
         var y = (y2 + y1) / 2;
         var radius = Math.max(
@@ -347,6 +288,7 @@ function drawStart (e) {
     if(boardTools.dragged)
         boardTools.dragStart = boardTools.ctx.transformedPoint(boardTools.lastX,boardTools.lastY);
     else {
+        boardTools.posScaleI=board.MousePosScale(boardTools.canvas,e)
         switch (boardTools.tool) {
             case 'text':
                 var textarea = document.createElement("textarea");
@@ -376,8 +318,8 @@ function drawStart (e) {
                         strokeStyle: boardTools.shape.strokeStyle,
                         lineWidth: boardTools.pencil.lineWidth,
                         points: [{
-                            x: boardTools.mouse.pos.initial.x,
-                            y: boardTools.mouse.pos.initial.y
+                            x: boardTools.posScaleI.sx,
+                            y: boardTools.posScaleI.sy
                         }]
                     }
                 }
@@ -391,8 +333,8 @@ function drawStart (e) {
                         size: boardTools.marker.size,
                         lineWidth: boardTools.marker.size,
                         points: [{
-                            x: boardTools.mouse.pos.initial.x,
-                            y: boardTools.mouse.pos.initial.y
+                            x: boardTools.posScaleI.sx,
+                            y: boardTools.posScaleI.sy
                         }]
                     }
                 }
@@ -404,8 +346,8 @@ function drawStart (e) {
                     data: {
                         size: boardTools.eraser.size,
                         points: [{
-                            x: boardTools.mouse.pos.initial.x,
-                            y: boardTools.mouse.pos.initial.y
+                            x: boardTools.posScaleI.sx,
+                            y: boardTools.posScaleI.sy
                         }]
                     }
                 }
@@ -414,10 +356,11 @@ function drawStart (e) {
     }
 }
 
-function drawEnd() {
+function drawEnd(e) {
     boardTools.mouse.mouseDown = false;
     //board.restoreScale()
     if(!boardTools.dragged) {
+        var posScale=board.MousePosScale(boardTools.canvas,e)
         switch (boardTools.tool) {
             case 'line':
                 removeBlock("dop")
@@ -428,10 +371,10 @@ function drawEnd() {
                     data: {
                         lineWidth: boardTools.shape.lineWidth,
                         strokeStyle: boardTools.shape.strokeStyle,
-                        x1: boardTools.mouse.pos.initial.x,
-                        y1: boardTools.mouse.pos.initial.y,
-                        x2: boardTools.mouse.pos.final.x,
-                        y2: boardTools.mouse.pos.final.y
+                        x1: boardTools.posScaleI.sx,
+                        y1: boardTools.posScaleI.sy,
+                        x2: posScale.sx,
+                        y2: posScale.sy
                     }
                 }
                 break
@@ -444,10 +387,10 @@ function drawEnd() {
                     data: {
                         lineWidth: boardTools.shape.lineWidth,
                         strokeStyle: boardTools.shape.strokeStyle,
-                        x: boardTools.mouse.pos.initial.x,
-                        y: boardTools.mouse.pos.initial.y,
-                        w: boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x,
-                        h: boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y
+                        x: boardTools.posScaleI.sx,
+                        y: boardTools.posScaleI.sy,
+                        w: posScale.sx - boardTools.posScaleI.sx,
+                        h: posScale.sy - boardTools.posScaleI.sy
                     }
                 }
                 break
@@ -460,10 +403,10 @@ function drawEnd() {
                     data: {
                         strokeStyle: boardTools.shape.strokeStyle,
                         lineWidth: boardTools.shape.lineWidth,
-                        x1: boardTools.mouse.pos.initial.x,
-                        y1: boardTools.mouse.pos.initial.y,
-                        x2: boardTools.mouse.pos.final.x,
-                        y2: boardTools.mouse.pos.final.y
+                        x1: boardTools.posScaleI.sx,
+                        y1: boardTools.posScaleI.sy,
+                        x2: posScale.sx,
+                        y2: posScale.sy
                     }
                 }
                 break
@@ -476,10 +419,10 @@ function drawEnd() {
                     data: {
                         strokeStyle: boardTools.shape.strokeStyle,
                         lineWidth: boardTools.shape.lineWidth,
-                        x: boardTools.mouse.pos.initial.x,
-                        y: boardTools.mouse.pos.initial.y,
-                        w: boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x,
-                        h: boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y
+                        x: boardTools.posScaleI.sx,
+                        y: boardTools.posScaleI.sy,
+                        w: posScale.sx - boardTools.posScaleI.sx,
+                        h: posScale.sy - boardTools.posScaleI.sy
                     }
                 }
                 break
@@ -490,12 +433,12 @@ function drawEnd() {
                 boardTools.last = {
                     type: 'arrow',
                     data: {
-                        strokeStyle: boardTools.shape.strokeStyle,
                         lineWidth: boardTools.shape.lineWidth,
-                        x1: boardTools.mouse.pos.initial.x,
-                        y1: boardTools.mouse.pos.initial.y,
-                        x2: boardTools.mouse.pos.final.x,
-                        y2: boardTools.mouse.pos.final.y
+                        strokeStyle: boardTools.shape.strokeStyle,
+                        x1: boardTools.posScaleI.sx,
+                        y1: boardTools.posScaleI.sy,
+                        x2: posScale.sx,
+                        y2: posScale.sy
                     }
                 }
                 break
@@ -506,7 +449,7 @@ function drawEnd() {
             room: tools.roomname,
             from: tools.username,
             width: document.body.clientWidth,
-            height: document.body.clientWidth * 0.51
+            height: document.body.clientHeight
         }
         tools.socket.emit('drawing', result);
         var url = boardTools.canvas.toDataURL()
@@ -534,13 +477,14 @@ function drawRealT (e) {
             board.redraw(boardTools.ctx);
         }
         else {
+            var posScale=board.MousePosScale(boardTools.canvas,e)
             switch (boardTools.tool) {
                 case 'pencil':
                     board.pencil(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
 
                     boardTools.last.data.points.push({
-                        x: boardTools.mouse.pos.final.x,
-                        y: boardTools.mouse.pos.final.y
+                        x: posScale.sx,
+                        y: posScale.sy
                     });
                     boardTools.mouse.pos.initial.x = boardTools.mouse.pos.final.x;
                     boardTools.mouse.pos.initial.y = boardTools.mouse.pos.final.y;
@@ -548,8 +492,8 @@ function drawRealT (e) {
                 case 'marker':
                     board.marker(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.marker.size, boardTools.shape.strokeStyle);
                     boardTools.last.data.points.push({
-                        x: boardTools.mouse.pos.final.x,
-                        y: boardTools.mouse.pos.final.y
+                        x: posScale.sx,
+                        y: posScale.sy
                     });
                     boardTools.mouse.pos.initial.x = boardTools.mouse.pos.final.x;
                     boardTools.mouse.pos.initial.y = boardTools.mouse.pos.final.y;
@@ -634,8 +578,8 @@ function drawRealT (e) {
 
                     board.eraser(boardTools.ctx, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, 3);
                     boardTools.last.data.points.push({
-                        x: boardTools.mouse.pos.final.x,
-                        y: boardTools.mouse.pos.final.y
+                        x: posScale.sx,
+                        y: posScale.sy
                     });
                     boardTools.mouse.pos.initial.x = boardTools.mouse.pos.final.x;
                     boardTools.mouse.pos.initial.y = boardTools.mouse.pos.final.y;
@@ -941,10 +885,17 @@ document.getElementById("drag").addEventListener("click",function(){
         boardTools.dragged=true
     else boardTools.dragged=false
 })
-document.getElementById("canvas").addEventListener('DOMMouseScroll',handleScroll,false);
-document.getElementById("canvas").addEventListener('mousewheel',handleScroll,false);
- function handleScroll(evt){
+document.getElementById("canvas").addEventListener('DOMMouseScroll',Scroll,false);
+document.getElementById("canvas").addEventListener('mousewheel',Scroll,false);
+ function Scroll(evt){
     var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
-    if (delta) board.zoom(boardTools.ctx,delta);
+
+    if (delta>0) {
+         boardTools.scale+=0.1
+    }
+    else{
+        boardTools.scale-=0.1
+    }
+     board.zoom(boardTools.ctx);
     return evt.preventDefault() && false;
 };

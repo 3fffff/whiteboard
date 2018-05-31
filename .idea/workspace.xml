@@ -22,29 +22,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="users.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/users.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="realtime.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/realtime.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2091">
-              <caret line="153" column="45" selection-start-line="153" selection-start-column="43" selection-end-line="153" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="whiteboard.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/js/whiteboard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2938">
-              <caret line="704" column="46" selection-start-line="704" selection-start-column="46" selection-end-line="704" selection-end-column="46" />
+            <state relative-caret-position="439">
+              <caret line="148" column="39" lean-forward="true" selection-start-line="148" selection-start-column="39" selection-end-line="148" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -52,8 +34,17 @@
       <file leaf-file-name="w.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/w.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="203" column="54" selection-start-line="203" selection-start-column="54" selection-end-line="203" selection-end-column="54" />
+            <state relative-caret-position="313">
+              <caret line="213" column="12" selection-start-line="213" selection-start-column="12" selection-end-line="213" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="realtime.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/realtime.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1523">
+              <caret line="67" column="71" selection-start-line="67" selection-start-column="71" selection-end-line="67" selection-end-column="71" />
             </state>
           </provider>
         </entry>
@@ -69,12 +60,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>loadImage</find>
-      <find>drawimage</find>
-      <find>restoreDraw</find>
-      <find>draw</find>
-      <find>drawEnd</find>
-      <find>dragStart</find>
       <find>dragged</find>
       <find>last</find>
       <find>line</find>
@@ -95,10 +80,16 @@
       <find>drawImageRot</find>
       <find>recover</find>
       <find>dragg</find>
-      <find>restore</find>
       <find>enter</find>
-      <find>txtI</find>
       <find>tx</find>
+      <find>txtI</find>
+      <find>ctx.restor</find>
+      <find>scale</find>
+      <find>pt</find>
+      <find>boardTools.mouse</find>
+      <find>restore</find>
+      <find>drag</find>
+      <find>rectangle</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -123,8 +114,8 @@
         <option value="$PROJECT_DIR$/server/users.js" />
         <option value="$PROJECT_DIR$/server/server.js" />
         <option value="$PROJECT_DIR$/public/js/chat.js" />
-        <option value="$PROJECT_DIR$/public/js/realtime.js" />
         <option value="$PROJECT_DIR$/public/w.html" />
+        <option value="$PROJECT_DIR$/public/js/realtime.js" />
         <option value="$PROJECT_DIR$/public/js/whiteboard.js" />
       </list>
     </option>
@@ -143,7 +134,7 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="545" />
     <option name="y" value="85" />
     <option name="width" value="1400" />
@@ -315,12 +306,15 @@
       <workItem from="1527560806530" duration="2293000" />
       <workItem from="1527566974629" duration="8648000" />
       <workItem from="1527582569273" duration="8899000" />
-      <workItem from="1527615484283" duration="8982000" />
+      <workItem from="1527615484283" duration="9283000" />
+      <workItem from="1527699834857" duration="10734000" />
+      <workItem from="1527747384237" duration="13464000" />
+      <workItem from="1527777020709" duration="3478000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="487101000" />
+    <option name="totallyTimeSpent" value="515078000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -628,29 +622,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/users.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
+        <state relative-caret-position="17">
           <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/w.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="203" column="54" selection-start-line="203" selection-start-column="54" selection-end-line="203" selection-end-column="54" />
+        <state relative-caret-position="313">
+          <caret line="213" column="12" selection-start-line="213" selection-start-column="12" selection-end-line="213" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/realtime.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2091">
-          <caret line="153" column="45" selection-start-line="153" selection-start-column="43" selection-end-line="153" selection-end-column="45" />
+        <state relative-caret-position="-1523">
+          <caret line="67" column="71" selection-start-line="67" selection-start-column="71" selection-end-line="67" selection-end-column="71" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/whiteboard.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2938">
-          <caret line="704" column="46" selection-start-line="704" selection-start-column="46" selection-end-line="704" selection-end-column="46" />
+        <state relative-caret-position="439">
+          <caret line="148" column="39" lean-forward="true" selection-start-line="148" selection-start-column="39" selection-end-line="148" selection-end-column="39" />
         </state>
       </provider>
     </entry>

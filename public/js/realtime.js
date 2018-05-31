@@ -25,7 +25,7 @@ class rtSocket  {
                 params["name"] = result
                 sessionStorage.setItem("name",result)
                 rtSocket.join(params)
-                tools.socket.on('drawingRestore', this.restoreDraw);
+
             }
         }
         else {
@@ -40,8 +40,8 @@ class rtSocket  {
             rtSocket.join(params)
 
         }
-
-        tools.socket.on('drawing', this.drawFromSocket);
+        tools.socket.on('drawingRestore', this.restoreDraw);
+     //   tools.socket.on('drawing', this.drawFromSocket);
         tools.socket.on('drawing', this.addData);
 
     }
@@ -63,14 +63,16 @@ class rtSocket  {
     static restoreDraw(data){
         var image=new Image()
         boardTools.draw.push(data)
+        console.log(boardTools.draw)
         image.onload=function() {
-            board.drawImageRot(boardTools.ctx,image,0,0,document.body.clientWidth,document.body.clientHeight,0)
+            board.drawImageRot(boardTools.ctx,image,0,0,data.width,data.height,0)
         }
         image.src=data
     }
     static addData(data){
         boardTools.draw.push(data)
         console.log(data)
+        board.zoom(boardTools.ctx)
     }
     static broadcastFile(){
         tools.socket.on('base64 file', function(message) {
