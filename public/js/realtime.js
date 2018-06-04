@@ -72,7 +72,7 @@ class rtSocket  {
     static addData(data){
         boardTools.draw.push(data)
         console.log(data)
-        board.zoom(boardTools.ctx)
+        board.transform(boardTools.ctx)
     }
     static broadcastFile(){
         tools.socket.on('base64 file', function(message) {
