@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7a7c7a9e-976b-49f8-b5d6-a3c01bdaf8f2" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/realtime.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/realtime.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/whiteboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/whiteboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/w.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/w.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -25,8 +23,26 @@
       <file leaf-file-name="whiteboard.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/js/whiteboard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="439">
-              <caret line="148" column="39" lean-forward="true" selection-start-line="148" selection-start-column="39" selection-end-line="148" selection-end-column="39" />
+            <state relative-caret-position="-7069">
+              <caret line="42" column="19" lean-forward="true" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="board.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/css/board.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="chat.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/chat.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="544">
+              <caret line="32" column="29" selection-start-line="32" selection-start-column="2" selection-end-line="32" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -34,8 +50,8 @@
       <file leaf-file-name="w.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/w.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="213" column="12" selection-start-line="213" selection-start-column="12" selection-end-line="213" selection-end-column="12" />
+            <state relative-caret-position="2227">
+              <caret line="131" column="42" selection-start-line="131" selection-start-column="42" selection-end-line="131" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -43,7 +59,7 @@
       <file leaf-file-name="realtime.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/realtime.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1523">
+            <state relative-caret-position="1139">
               <caret line="67" column="71" selection-start-line="67" selection-start-column="71" selection-end-line="67" selection-end-column="71" />
             </state>
           </provider>
@@ -60,10 +76,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>dragged</find>
-      <find>last</find>
-      <find>line</find>
-      <find>pencil</find>
       <find>marker</find>
       <find>trackTransforms</find>
       <find>mouse.pos</find>
@@ -73,8 +85,6 @@
       <find>text.fla</find>
       <find>textControl</find>
       <find>redraw</find>
-      <find>transformedPoint</find>
-      <find>lastX</find>
       <find>matrixTransform</find>
       <find>transform</find>
       <find>drawImageRot</find>
@@ -90,6 +100,12 @@
       <find>restore</find>
       <find>drag</find>
       <find>rectangle</find>
+      <find>ImgSave</find>
+      <find>dragged</find>
+      <find>transf</find>
+      <find>transformedPoint</find>
+      <find>lastX</find>
+      <find>trackMouse</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -146,7 +162,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -180,6 +195,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -309,12 +325,18 @@
       <workItem from="1527615484283" duration="9283000" />
       <workItem from="1527699834857" duration="10734000" />
       <workItem from="1527747384237" duration="13464000" />
-      <workItem from="1527777020709" duration="3478000" />
+      <workItem from="1527777020709" duration="7364000" />
+      <workItem from="1527832918833" duration="2037000" />
+      <workItem from="1527851010178" duration="2353000" />
+      <workItem from="1527882011679" duration="1225000" />
+      <workItem from="1527886823622" duration="1503000" />
+      <workItem from="1528049385602" duration="6248000" />
+      <workItem from="1528097248132" duration="11382000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="515078000" />
+    <option name="totallyTimeSpent" value="543712000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -327,7 +349,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49403748" visible="true" weight="0.12486828" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3295583" />
@@ -585,13 +606,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/board.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -613,13 +627,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/chat.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/users.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -627,24 +634,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/w.html">
+    <entry file="file://$PROJECT_DIR$/public/js/realtime.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="213" column="12" selection-start-line="213" selection-start-column="12" selection-end-line="213" selection-end-column="12" />
+        <state relative-caret-position="1139">
+          <caret line="67" column="71" selection-start-line="67" selection-start-column="71" selection-end-line="67" selection-end-column="71" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/realtime.js">
+    <entry file="file://$PROJECT_DIR$/public/js/chat.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1523">
-          <caret line="67" column="71" selection-start-line="67" selection-start-column="71" selection-end-line="67" selection-end-column="71" />
+        <state relative-caret-position="544">
+          <caret line="32" column="29" selection-start-line="32" selection-start-column="2" selection-end-line="32" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/w.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2227">
+          <caret line="131" column="42" selection-start-line="131" selection-start-column="42" selection-end-line="131" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/board.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/whiteboard.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="148" column="39" lean-forward="true" selection-start-line="148" selection-start-column="39" selection-end-line="148" selection-end-column="39" />
+        <state relative-caret-position="-7069">
+          <caret line="42" column="19" lean-forward="true" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
         </state>
       </provider>
     </entry>
