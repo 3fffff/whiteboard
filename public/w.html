@@ -15,23 +15,23 @@
             <div id="main-toolbar" class="toolbar toolbar--vertical">
                 <ul class="tools__menu">
 					<li  class="tools__item  boardBtn">
-                            <div class="tools__item--button dropRight"><img src="assets/pencilup.png" alt="Select"></div>
+                            <div class="tools__item--button dropRight"><img src="assets/pencilup.png"></div>
 							   <div class="toolbox fadeInLeft">
                                 <ul class="tools__menu">
 								    <li id="pencil" class="tools__item  tool">
-                                        <div class="tools__item--button"><img src="assets/pen.png" alt="Pencil"></div>
+                                        <div class="tools__item--button"><img src="assets/pen.png"></div>
                                     </li>
                                     <li id="marker" class="tools__item  tool">
-                                        <div  class="tools__item--button"><img src="assets/marker.png" alt="Marker"></div>
+                                        <div  class="tools__item--button"><img src="assets/marker.png"></div>
                                     </li>
 									<li id="line" class="tools__item  tool">
-                                        <div  class="tools__item--button"><img src="ict-marker.svg" alt="Line"></div>
+                                        <div  class="tools__item--button"><img src="ict-marker.svg"></div>
                                     </li>
                                 </ul>
                             </div>
                     </li>
 					<li class="tools__item  boardBtn">
-                            <div class="tools__item--button dropRight"><img src="assets/color.png" alt="color">
+                            <div class="tools__item--button dropRight"><img src="assets/color.png">
                                 <div style="" class="picked__color"></div>
                             </div>
                             <div class="toolbox fadeInLeft">
@@ -80,58 +80,57 @@
                             </div>
                         </li>
 					<li id="text" class="tools__item tool boardBtn">
-                            <div class="tools__item--button"><img src="assets/alp.png" alt="Text"></div>
+                            <div class="tools__item--button"><img src="assets/alp.png"></div>
                     </li>
 					<li id="eraser" class="tools__item tool boardBtn">
-                            <div class="tools__item--button"><img src="assets/eraser.png" alt="Eraser"></div>
+                            <div class="tools__item--button"><img src="assets/eraser.png"></div>
                     </li>
 					
 					<li  class="tools__item  boardBtn">
-                            <div class="tools__item--button dropRight"><img src="assets/rectangle.png" alt="Select"></div>
+                            <div class="tools__item--button dropRight"><img src="assets/rectangle.png"></div>
 							   <div class="toolbox fadeInLeft">
                                 <ul class="tools__menu">
 								    <li id="rectangle" class="tools__item  tool">
-                                        <div class="tools__item--button"><img src="assets/rect.png" alt="Rectangle"></div>
+                                        <div class="tools__item--button"><img src="assets/rect.png"></div>
                                     </li>
                                     <li id="circle" class="tools__item  tool">
-                                        <div  class="tools__item--button"><img src="assets/el.png" alt="Circle"></div>
+                                        <div  class="tools__item--button"><img src="assets/el.png"></div>
                                     </li>
                                     <li id="ellipse" class="tools__item  tool">
-                                        <div  class="tools__item--button"><img src="el.svg" alt="Ellipse"></div>
+                                        <div  class="tools__item--button"><img src="el.svg"></div>
                                     </li>
 									<li id="arrow" class="tools__item  tool">
-                                        <div  class="tools__item--button"><img src="assets/cist.png" alt="Arrow"></div>
+                                        <div  class="tools__item--button"><img src="assets/cist.png"></div>
                                     </li>
                                 </ul>
                             </div>
                     </li>
                     <li  id="drag" class="tools__item boardBtn">
-                        <div class="tools__item--button"><img src="assets/hand.png" alt="Select"></div>
+                        <div class="tools__item--button"><img src="assets/hand.png"></div>
                     </li>
 
                     <li   class="tools__item boardBtn">
-                        <div class="tools__item--button dropRight"><img src="assets/load.png" alt="Select"></div>
+                        <div class="tools__item--button dropRight"><img src="assets/load.png"></div>
                         <div class="toolbox fadeInLeft">
                             <ul class="tools__menu tools__menu--inline">
                                 <li id="loadImage" class="tools__item  tool">
-                                    <div class="tools__item--button"><img src="assets/upload.png" alt="Circle"><input id="ImageLoad" type="file"/></div>
+                                    <div class="tools__item--button"><img src="assets/upload.png"><input id="ImageLoad" accept=".jpg, .jpeg, .png" type="file"/></div>
                                 </li>
                                 <li id="saveImage" class="tools__item  tool">
-                                    <a  id="ImgSave" class="tools__item--button"><img src="assets/download.png" alt="Circle"></a>
+                                    <a  id="ImgSave" class="tools__item--button" ><img src="assets/download.png"></a>
                                 </li>
                             </ul>
                         </div>
                     </li>
 
-					<br>					
-					<label>Размер:</label>
-					<select id="size" class="boardBtn">
-						<option selected="selected">1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-					</select>
+                    <li   class="tools__item boardBtn">
+                        <div class="tools__item--button dropRight"><img src="assets/load.png" alt="Select"></div>
+                        <div class="toolbox fadeInLeft" style="margin-top: 15px;">
+                            <div class="slidecontainer">
+                                <input type="range" min="1" max="5" value="1" class="slider" id="size">
+                            </div>
+                        </div>
+                    </li>
 				</ul>
 			</div>
         </div>
@@ -153,7 +152,7 @@
                 </div>
 
                 <img id="preloadImg">
-                <div class="drop__buttons"><a href="#" id="CancelCanvas"><img src="ic-close-red.svg"></a><a href="#" id="ImgLoadCanvas">разместить</a></div>
+                <div class="drop__buttons"><a href="#" id="CancelCanvas"><img width=25 height=25 src="assets/x.svg"></a><a href="#" id="ImgLoadCanvas"><img width=25 height=25 src="assets/y.svg"></a></div>
             </div>
         </div>
     </div>
@@ -202,9 +201,9 @@
 	</div>
 	</div>
     <div id="textControl" style="visibility: hidden;">
-        <button class="boardBtn txtFontStyle" data-value="bold" title="Bold">Ж</button>
-        <button class="boardBtn txtFontStyle" data-value="italic" title="Italic">К</button>
-        <input id="txtFontSize" class="boardBtn" value="16" max="72" min="8" type="number">
+        <button class="txtFontStyle" data-value="bold" id="Bold">Ж</button>
+        <button class="txtFontStyle" data-value="italic" id="Italic">К</button>
+        <input id="txtFontSize" class="boardBtn" value="16" max="72" min="16" type="number">
         <button class="boardBtn" id="txtInsert">Вставить</button>
     </div>
     <script src="/socket.io/socket.io.js"></script>
@@ -217,6 +216,5 @@
     rtSocket.broadcastFile()
     document.getElementById("canvas").width=document.body.clientWidth
     document.getElementById("canvas").height=document.body.clientHeight
-        //boardTools.ctx.save()
     </script>
 </body></html>

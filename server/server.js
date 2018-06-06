@@ -53,7 +53,6 @@ io.on('connection', (socket) => {
 		socket.broadcast.to(params.room).emit('newMessage', generateMessage('Сервер', `Присоединился новый пользователь - ${params.name}`));
 		console.log(users.users)
 		var draw = users.getData(params.room)
-		//console.log(draw)
 		//восстановление сохранения пойдет))
 		io.sockets.connected[socket.id].emit('drawingRestore', draw)
 		callback();
@@ -97,8 +96,9 @@ socket.on('recover', function (msg) {
     var user = users.getUser(socket.id)
 	try {
         console.log('восстановление от ' + user.name);
+        console.log(msg)
         socket.username = user.name;
-        users.setData(user.room, msg.boardData)
+        users.setData(user.room, msg)
     }
     catch(e){
 

@@ -25,7 +25,6 @@ class rtSocket  {
                 params["name"] = result
                 sessionStorage.setItem("name",result)
                 rtSocket.join(params)
-
             }
         }
         else {
@@ -41,7 +40,6 @@ class rtSocket  {
 
         }
         tools.socket.on('drawingRestore', this.restoreDraw);
-     //   tools.socket.on('drawing', this.drawFromSocket);
         tools.socket.on('drawing', this.addData);
 
     }
@@ -62,12 +60,12 @@ class rtSocket  {
 
     static restoreDraw(data){
         var image=new Image()
+        console.log(data)
         boardTools.draw.push(data)
-        console.log(boardTools.draw)
         image.onload=function() {
-            board.drawImageRot(boardTools.ctx,image,0,0,data.width,data.height,0)
+            board.drawImageRot(boardTools.ctx,image,0,0,image.width,image.height,0)
         }
-        image.src=data
+        image.src=data.boardData.data.src
     }
     static addData(data){
         boardTools.draw.push(data)
@@ -109,20 +107,25 @@ class rtSocket  {
         if(!dd)
             return
 
-        console.log(dd)
         var initial={}
         initial["lineWidth"] = boardTools.ctx.lineWidth;
         initial["strokeStyle"] = boardTools.ctx.strokeStyle;
         initial["font"] = boardTools.ctx.font;
-
+        console.log(dd.boardData)
         var dataDraw=dd.boardData
-        if(dataDraw!==undefined) {
+        if(dataDraw && dataDraw.data) {
             boardTools.ctx.lineWidth = dataDraw.data.lineWidth;
             boardTools.ctx.strokeStyle = dataDraw.data.strokeStyle;
             boardTools.ctx.fillStyle = dataDraw.data.strokeStyle;
             boardTools.ctx.font = dataDraw.data.font || '';
-
             switch (dataDraw.type) {
+                case "recoverImage":
+                    var image=new Image()
+                    image.onload=function() {
+                        board.drawImageRot(boardTools.ctx,image,0,0,image.width,image.height,0)
+                    }
+                    image.src=dataDraw.data.src
+                    break
                case 'image':
                     var image = new Image()
                     image.onload = function () {
