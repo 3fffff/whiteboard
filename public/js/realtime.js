@@ -20,7 +20,7 @@ class rtSocket  {
                 rtSocket.join(params)
             }
             else {
-                var result = prompt("Введите имя", "anonimous");
+                var result = prompt("Введите имя", "Anonymous");
                 params["room"] = s1[1]
                 params["name"] = result
                 sessionStorage.setItem("name",result)
@@ -60,47 +60,35 @@ class rtSocket  {
 
     static restoreDraw(data){
         var image=new Image()
-        console.log(data)
-        boardTools.draw.push(data)
-        image.onload=function() {
-            board.drawImageRot(boardTools.ctx,image,0,0,image.width,image.height,0)
+        if(data) {
+            boardTools.draw.push(data)
+            image.onload = function () {
+                board.drawImageRot(boardTools.ctx, image, 0, 0, image.width, image.height, 0)
+            }
+            image.src = data.boardData.data.src
         }
-        image.src=data.boardData.data.src
     }
     static addData(data){
         boardTools.draw.push(data)
-        console.log(data)
         board.transform(boardTools.ctx)
     }
     static broadcastFile(){
         tools.socket.on('base64 file', function(message) {
-            console.log("получаем base64")
             console.log(message)
-            var img=0
-            var images=["image/jpeg","image/png","image/gif"]
+            var type=message.type.split("/")
             var messagesContainer = document.getElementsByClassName('messages')[0];
-            for(var i=0;i<images.length;i++) {
-                if(images[i]===message.type) {
-                    img=1
-                    messagesContainer.innerHTML+= '<li class="other">'+'<img class="image_chat" width=150 height=150 src=' + message.file + '>'+'</li>'
-                }
-            }
-            if(img==0)
-            {
-                messagesContainer.innerHTML+= '<li class="other">'+ '<a width=150 height=150 href=' + message.file + '></a>'+ '</li>'
-            }
+            if(type[0]==="image")
+                messagesContainer.innerHTML+= '<li class="other">'+'<img class="image_chat" width=150 height=150 src=' + message.file + '>'+'</li>'
+            else messagesContainer.innerHTML+= '<li class="other">'+ '<a href=' + message.file + '>'+message.fileName+'</a>'+ '</li>'
         });
     }
 
     static broadcastMessage(){
         tools.socket.on('newMessage', function(message) {
-
-            console.log("получено сообщение ")
-            console.log(message)
             var messagesContainer = document.getElementsByClassName('messages')[0];
 
             messagesContainer.innerHTML+= '<li class="other">'+ message.text+'</li>'
-            sessionStorage.setItem("messages",message)
+            sessionStorage.setItem("messages",messagesContainer.innerHTML)
         });
     }
     static drawFromSocket (dd) {
@@ -126,7 +114,7 @@ class rtSocket  {
                     }
                     image.src=dataDraw.data.src
                     break
-               case 'image':
+                case 'image':
                     var image = new Image()
                     image.onload = function () {
                         board.drawImageRot(boardTools.ctx, image, dataDraw.data.points[0].x, dataDraw.data.points[0].y, dataDraw.data.points[0].w, dataDraw.data.points[0].h, dataDraw.data.points[0].deg)
@@ -136,7 +124,6 @@ class rtSocket  {
 
                 case 'line':
                     board.line(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2);
-                    console.log("линия")
                     break;
 
                 case 'rectangle':

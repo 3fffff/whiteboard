@@ -3,27 +3,20 @@ var boardTools= {
         lineWidth: 1
     },
     marker: {
-        defaultSize: 5,
         size: 6,
         opacity: 0.3
     },
     eraser: {
         size: 10,
-        lineWidth: 1,
-        fillStyle: 'white',
-        opacity:0
+        opacity:1
     },
     text: {
-        color: 'black',
-        text: '',
         fontFamily: 'Arial',
         fontSize: 16,
         fontStyle: 'normal'
     },
     shape: {
-        lineWidth: 1,
-        fillStyle: 'black',
-        strokeStyle: 'black'
+        lineWidth: 1
     },
     canvas: document.getElementById("canvas"),
     ctx: document.getElementById("canvas").getContext('2d'),
@@ -144,12 +137,13 @@ class board  {
     }
     static  drawImageRot (context,img,x,y,width,height,deg){
         var rad = deg * Math.PI / 180;
-        context.translate((x + width / 2), (y + height / 2));
+        context.translate(boardTools.scale*(boardTools.offset.x+x + width / 2), boardTools.scale*(boardTools.offset.y+y + height / 2));
         context.rotate(rad);
-        context.drawImage(img, width / 2 * (-1), height / 2 * (-1), width, height);
+        context.drawImage(img, width / 2 * (-1)*boardTools.scale, height / 2 * (-1)*boardTools.scale, width*boardTools.scale, height*boardTools.scale);
         context.rotate(rad * (-1));
-        context.translate((x + width / 2) * (-1), (y + height / 2) * (-1));
+        context.translate((boardTools.offset.x+x + width / 2) * (-1)*boardTools.scale, (boardTools.offset.y+y + height / 2) * (-1)*boardTools.scale);
     }
+
 
     static rect (context, x, y, w, h) {
         context.strokeRect(x, y, w, h);
@@ -206,6 +200,7 @@ class board  {
 
     static changeTool (t) {
         boardTools.dragged=false
+        boardTools.canvas.style.cursor="crosshair"
         removeBlock("txtText")
         document.getElementById("textControl").style.visibility="hidden"
         switch(t) {
@@ -233,6 +228,7 @@ class board  {
 
             case 'text':
                 document.getElementById("textControl").style.visibility="visible";
+
                 break
             default:
                 boardTools.ctx.lineWidth = boardTools.shape.lineWidth;
@@ -247,6 +243,8 @@ class board  {
         boardTools.ctx.fillStyle = color;
         boardTools.shape.fillStyle = color;
         boardTools.shape.strokeStyle = color;
+        if(document.getElementById("txtText")!==null)
+            document.getElementById("txtText").style.color=color
     }
 
     static changeSize (size) {
@@ -292,27 +290,34 @@ function drawStart (e) {
     if(!boardTools.dragged) {
         switch (boardTools.tool) {
             case 'text':
+                if(document.getElementById("txtText")!==null)
+                    textInsert()
                 removeBlock("txtText")
                 var textarea = document.createElement("textarea");
                 textarea.id = "txtText"
                 textarea.placeholder = "введите текст"
+
                 document.body.appendChild(textarea)
+                textarea.autofocus
+                textarea.focus()
                 var txtT=document.getElementById("txtText")
                 var text=document.getElementById("textControl")
-                txtT.style.left = boardTools.mouse.pos.final.x + "px"
-                txtT.style.top = boardTools.mouse.pos.final.y + "px"
-                text.style.marginLeft = boardTools.mouse.pos.final.x + "px"
-                text.style.marginTop = boardTools.mouse.pos.final.y + "px"
+                txtT.style.left = boardTools.mouse.pos.initial.x + "px"
+                txtT.style.top = boardTools.mouse.pos.initial.y + "px"
+                text.style.marginLeft = boardTools.mouse.pos.initial.x + "px"
+                text.style.marginTop = boardTools.mouse.pos.initial.y + "px"
                 txtT.style.fontWeight="normal"
                 txtT.style.fontStyle=boardTools.text.fontStyle
                 txtT.style.fontSize=boardTools.text.fontSize
                 txtT.style.fontFamily=boardTools.text.fontFamily
-                var x = document.body.clientWidth - boardTools.mouse.pos.final.x
-                var y = document.body.clientHeight - boardTools.mouse.pos.final.y
+                txtT.style.color=boardTools.ctx.strokeStyle
+                var x = document.body.clientWidth - boardTools.mouse.pos.initial.x-15
+                var y = document.body.clientHeight - boardTools.mouse.pos.initial.y-15
                 txtT.style.width = x + "px"
                 txtT.style.height = y + "px"
-                boardTools.mouse.text.top = boardTools.mouse.pos.final.y;
-                boardTools.mouse.text.left = boardTools.mouse.pos.final.x;
+                boardTools.mouse.text.top = boardTools.mouse.pos.initial.y;
+                boardTools.mouse.text.left = boardTools.mouse.pos.initial.x;
+                txtT.addEventListener("mouseup",textInsert);
                 break
             case 'pencil':
                 console.log(boardTools.posScaleI.sx+boardTools.offset.x)
@@ -438,9 +443,11 @@ function drawEnd(e) {
                     }
                 }
                 break
+            case 'text':
+                document.getElementById("txtText").focus()
+                break
         }
         console.log("отправка")
-        console.log(boardTools.tool)
         var result={
             boardData: boardTools.last,
             room: tools.roomname,
@@ -611,7 +618,6 @@ for(var i=0;i<document.getElementsByClassName("dropRight").length;i++) {
         if(r!==undefined)
             r.className = "toolbox fadeInLeft"
         this.parentNode.childNodes[3].className="toolbox fadeInLeft visible"
-        removeBlock("txtText")
     });
 }
 for(var i=0;i<document.getElementsByClassName("predefined__color").length;i++) {
@@ -630,33 +636,34 @@ document.getElementById("size").addEventListener("change",function () {
         board.changeSize(this.value);
 });
 
-
-document.getElementById("txtInsert").addEventListener("click",function () {
-    boardTools.text.text = document.getElementById("txtText").value;
-    boardTools.ctx.font = boardTools.text.fontStyle + " " + boardTools.text.fontSize + "px " + boardTools.text.fontFamily;
-    board.text(boardTools.ctx, document.getElementById("txtText").value, boardTools.mouse.text.left, boardTools.mouse.text.top+15);
-    var e={clientX:boardTools.mouse.text.left,clientY:boardTools.mouse.text.top+15}
-    var er=board.MousePosScale(boardTools.canvas,e)
-    console.log(er.sx-(boardTools.offset.x/boardTools.scale))
-    var res= {
-        boardData: {
-            type: 'text',
-            data: {
-                font: boardTools.ctx.font,
-                fillStyle: boardTools.ctx.fillStyle,
-                text: document.getElementById("txtText").value,
-                x: er.sx-(boardTools.offset.x/boardTools.scale),
-                y: er.sy-(boardTools.offset.y/boardTools.scale)
-            }
-        },
-        room: tools.roomname,
-        from: tools.username
+function textInsert() {
+    var txt=document.getElementById("txtText")
+    if(txt.value!=="") {
+        boardTools.text.text = txt.value;
+        boardTools.ctx.font = boardTools.text.fontStyle + " " + boardTools.text.fontSize + "px " + boardTools.text.fontFamily;
+        board.text(boardTools.ctx, txt.value, boardTools.mouse.text.left, boardTools.mouse.text.top + 15);
+        var e = {clientX: boardTools.mouse.text.left, clientY: boardTools.mouse.text.top + 15}
+        var er = board.MousePosScale(boardTools.canvas, e)
+        var res = {
+            boardData: {
+                type: 'text',
+                data: {
+                    font: boardTools.ctx.font,
+                    strokeStyle: boardTools.ctx.fillStyle,
+                    text: txt.value,
+                    x: er.sx - (boardTools.offset.x / boardTools.scale),
+                    y: er.sy - (boardTools.offset.y / boardTools.scale)
+                }
+            },
+            room: tools.roomname,
+            from: tools.username
+        }
+        boardTools.draw.push(res)
+        tools.socket.emit('drawing', res);
     }
-    boardTools.draw.push(res)
-    tools.socket.emit('drawing',res);
-    document.getElementById("txtText").value=""
     removeBlock("txtText")
-});
+}
+
 for(var i=0;i<document.getElementsByClassName("txtFontStyle").length;i++) {
     document.getElementsByClassName("txtFontStyle")[i].addEventListener("click",function () {
         boardTools.text.fontStyle = this.getAttribute("data-value");
@@ -667,7 +674,7 @@ for(var i=0;i<document.getElementsByClassName("txtFontStyle").length;i++) {
 }
 
 document.getElementById("txtFontSize").addEventListener("change",function () {
-    if(this.value>14 && this.value<72)
+    if(this.value>10 && this.value<72)
         boardTools.text.fontSize = this.value;
     document.getElementById("txtText").style.fontSize=this.value
 });
@@ -832,6 +839,8 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
     w=parseInt(w)
     var image=new Image()
     image.onload=function() {
+        var e={clientX:x,clientY:y}
+        var es=board.MousePosScale(boardTools.canvas,e)
         board.drawImageRot(boardTools.ctx,image,x,y,w,h,deg)
         let res={
             boardData: {
@@ -892,9 +901,14 @@ for(var i=0;i<document.getElementsByClassName("ec").length;i++) {
     })
 }
 document.getElementById("drag").addEventListener("click",function(){
-    if(!boardTools.dragged)
-        boardTools.dragged=true
-    else boardTools.dragged=false
+    if(!boardTools.dragged) {
+        boardTools.dragged = true
+        boardTools.canvas.style.cursor="grab"
+    }
+    else {
+        boardTools.dragged=false
+        boardTools.canvas.style.cursor="crosshair"
+    }
 })
 document.getElementById("canvas").addEventListener('DOMMouseScroll',Scroll,false);
 document.getElementById("canvas").addEventListener('mousewheel',Scroll,false);
