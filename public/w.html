@@ -134,11 +134,11 @@
     </div>
 </div>
 
-<div id="LoadedImage" class="no--select">
+<div id="LoadedImage" style="display:none">
     <div  class="drop">
         <div id="rotation" style="transform:rotate(0deg)">
             <div class="drop__elements">
-                <div class="rotator flex--middle"><img id="imgRot" src="img/ic-rotate.svg" alt=""></div>
+                <div class="rotator flex--middle"><img id="imgRot" src="img/ic-rotate.svg" draggable=false /></div>
                 <div class="grip grip--tl"></div>
                 <div class="grip grip--tc"></div>
                 <div class="grip grip--tr"></div>
@@ -150,8 +150,8 @@
 
             </div>
 
-            <img id="preloadImg">
-            <div class="drop__buttons"><a href="#" id="CancelCanvas"><img width=25 height=25 src="assets/x.svg"></a><a href="#" id="ImgLoadCanvas"><img width=25 height=25 src="assets/y.svg"></a></div>
+            <img id="preloadImg" draggable=false />
+            <div class="drop__buttons"><a id="CancelCanvas"><img width=25 height=25 src="assets/x.svg"></a><a href="#" id="ImgLoadCanvas"><img width=25 height=25 src="assets/y.svg"></a></div>
         </div>
     </div>
 </div>

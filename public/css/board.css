@@ -48,6 +48,18 @@ img{
 #main-toolbar{
     background-color:#c3f8eb
 }
+
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+}
+
 #LoadedImage{
     position:absolute;
     display:none;
@@ -253,11 +265,6 @@ img{
 
 ul {
     list-style-type: none
-}
-
-body{
-    width: 95%;
-    height: 95%
 }
 
 .tools__item .visible:after {

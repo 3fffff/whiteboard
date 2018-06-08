@@ -18,8 +18,6 @@ var boardTools= {
     shape: {
         lineWidth: 1
     },
-    canvas: document.getElementById("canvas"),
-    ctx: document.getElementById("canvas").getContext('2d'),
     mouse: {
         mouseDown: false,
         pos: {
@@ -30,6 +28,8 @@ var boardTools= {
         offsetInitial : {x : 0, y : 0},
         text:{top:0,left:0}
     },
+    canvas: document.getElementById("canvas"),
+    ctx: document.getElementById("canvas").getContext('2d'),
     offset:{x:0,y:0},
     tool: 'pencil',
     draw:[],
@@ -200,18 +200,16 @@ class board  {
 
     static changeTool (t) {
         boardTools.dragged=false
-        boardTools.canvas.style.cursor="crosshair"
+       // boardTools.canvas.style.cursor="crosshair"
         removeBlock("txtText")
         document.getElementById("textControl").style.visibility="hidden"
         switch(t) {
-
             case 'pencil':
-
                 boardTools.ctx.lineWidth = boardTools.pencil.lineWidth;
                 document.getElementById("size").value=boardTools.pencil.lineWidth;
                 boardTools.last={
                     type: 'pencil',
-                    data: []
+                    data: {}
                 }
                 break
             case 'marker':
@@ -219,7 +217,7 @@ class board  {
                 document.getElementById("size").value=parseInt(boardTools.marker.size) - parseInt(boardTools.marker.defaultSize);
                 boardTools.last={
                     type: 'marker',
-                    data: []}
+                    data: {}}
                 break
             case'eraser':
                 boardTools.ctx.lineWidth = boardTools.eraser.lineWidth;
@@ -229,10 +227,6 @@ class board  {
             case 'text':
                 document.getElementById("textControl").style.visibility="visible";
 
-                break
-            default:
-                boardTools.ctx.lineWidth = boardTools.shape.lineWidth;
-                document.getElementById("size").value=boardTools.shape.lineWidth;
                 break
         }
         boardTools.tool = t;
@@ -292,14 +286,14 @@ function drawStart (e) {
             case 'text':
                 if(document.getElementById("txtText")!==null)
                     textInsert()
+                boardTools.mouse.mouseDown = false;
                 removeBlock("txtText")
                 var textarea = document.createElement("textarea");
                 textarea.id = "txtText"
                 textarea.placeholder = "введите текст"
-
-                document.body.appendChild(textarea)
+                textarea.wrap="off"
                 textarea.autofocus
-                textarea.focus()
+                document.body.appendChild(textarea)
                 var txtT=document.getElementById("txtText")
                 var text=document.getElementById("textControl")
                 txtT.style.left = boardTools.mouse.pos.initial.x + "px"
@@ -317,7 +311,9 @@ function drawStart (e) {
                 txtT.style.height = y + "px"
                 boardTools.mouse.text.top = boardTools.mouse.pos.initial.y;
                 boardTools.mouse.text.left = boardTools.mouse.pos.initial.x;
-                txtT.addEventListener("mouseup",textInsert);
+                txtT.addEventListener("click",textInsert)
+                txtT.autofocus
+                txtT.focus()
                 break
             case 'pencil':
                 console.log(boardTools.posScaleI.sx+boardTools.offset.x)
@@ -445,6 +441,7 @@ function drawEnd(e) {
                 break
             case 'text':
                 document.getElementById("txtText").focus()
+             //   document.getElementById("txtText")
                 break
         }
         console.log("отправка")
@@ -477,10 +474,8 @@ function drawRealT (e) {
     boardTools.mouse.pos.final.y = e.pageY;
     var posScale=board.MousePosScale(boardTools.canvas,e)
     if (boardTools.mouse.mouseDown) {
-
         if (boardTools.dragged) {
             console.log("dragged")
-
             board.trackMouse(posScale)
             board.transform(boardTools.ctx)
         }
@@ -488,7 +483,6 @@ function drawRealT (e) {
             switch (boardTools.tool) {
                 case 'pencil':
                     board.pencil(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
-                    console.log(posScale.sx-boardTools.offset.x)
                     boardTools.last.data.points.push({
                         x: posScale.sx-(boardTools.offset.x)/boardTools.scale,
                         y: posScale.sy-(boardTools.offset.y)/boardTools.scale
@@ -639,15 +633,18 @@ document.getElementById("size").addEventListener("change",function () {
 function textInsert() {
     var txt=document.getElementById("txtText")
     if(txt.value!=="") {
-        boardTools.text.text = txt.value;
+        var r=txt.value.toString().split("\n")
         boardTools.ctx.font = boardTools.text.fontStyle + " " + boardTools.text.fontSize + "px " + boardTools.text.fontFamily;
-        board.text(boardTools.ctx, txt.value, boardTools.mouse.text.left, boardTools.mouse.text.top + 15);
+        console.log(boardTools.ctx.font)
+        for(let i=0;i<r.length;i++)
+            board.text(boardTools.ctx, r[i], boardTools.mouse.text.left, boardTools.mouse.text.top + 15+i*parseInt(boardTools.text.fontSize));
         var e = {clientX: boardTools.mouse.text.left, clientY: boardTools.mouse.text.top + 15}
         var er = board.MousePosScale(boardTools.canvas, e)
         var res = {
             boardData: {
                 type: 'text',
                 data: {
+                    size:boardTools.text.fontSize,
                     font: boardTools.ctx.font,
                     strokeStyle: boardTools.ctx.fillStyle,
                     text: txt.value,
@@ -686,12 +683,7 @@ document.getElementById("Italic").addEventListener("click",function(){
     else doc.style.fontStyle=this.value
 })
 
-function handleFileSelect(evt) {
-    var files = evt.target.files[0];
-    console.log(files)
-    board.loadImage(files)
-}
-var active=false, center={x:0,y:0}, rotation=0, startAngle=0,moveImg=false,posMove={x:0,y:0},changeS={x:0,y:0},resizeImg=false,angle=0,chanL=0
+var active=false, center={x:0,y:0}, rotation=0, startAngle=0,moveImg=false,posMove={x:0,y:0},changeS={x:0,y:0},resizeImg=false,angle=0,chanL=0,partX,partY
 
 function start(e) {
     var ref = document.getElementsByClassName("drop")[0].getBoundingClientRect()
@@ -740,7 +732,10 @@ document.getElementById("LoadedImage").addEventListener("mouseup",stop,false)
 document.getElementById("LoadedImage").addEventListener("click",stop,false)
 
 function StartSize(){
+    var refDrop = document.getElementsByClassName("drop")[0].getBoundingClientRect()
     var ref = this.getBoundingClientRect()
+    partX=ref.x-refDrop.x
+    partY=ref.y-refDrop.y
     changeS={
         x: ref.x,
         y: ref.y
@@ -759,8 +754,23 @@ function sizeChange(evt){
     prevh=prevh.substr(0,prevh.length-2)
     prevh=parseFloat(prevh)
     var scale=parseFloat(prevh/prevw)
-    prevh+=x1*scale
-    prevw+=x1
+    if(partX<0 && x1>0)
+    {
+        prevh-=3*scale
+        prevw-=3
+    }
+    else if(partX<0 && x1<0){
+        prevh+=3*scale
+        prevw+=3
+    }
+    else if(partX>0 && x1<0){
+        prevh-=3*scale
+        prevw-=3
+    }
+    else if(partX>0 && x1>0){
+        prevh+=3*scale
+        prevw+=3
+    }
     if(resizeImg) {
         active=false
         moveImg=false
@@ -818,7 +828,13 @@ document.getElementById("LoadedImage").addEventListener("mouseup",EndSize,false)
 document.getElementById("LoadedImage").addEventListener("mousemove",sizeChange,false)
 document.getElementsByClassName("drop")[0].addEventListener('mouseup', EndSize, false);
 
-document.getElementById('ImageLoad').addEventListener('change', handleFileSelect, false);
+document.getElementById('ImageLoad').addEventListener('change', function(){
+    var files = evt.target.files[0];
+    board.loadImage(files)
+}, false);
+document.getElementById('ImageLoad').addEventListener('click', function(e){
+    document.getElementById('ImageLoad').value = "";
+}, false);
 
 document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
     var x=document.getElementsByClassName("drop")[0].style.left
@@ -871,15 +887,9 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
 })
 
 document.getElementById("CancelCanvas").addEventListener("click",function(){
-    document.getElementById("LoadedImage").style.display="none"
     document.getElementById("preloadImg").src=""
+    document.getElementById("LoadedImage").style.display="none"
     document.getElementById("rotation").style.transform="rotate("+0+"deg)"
-    document.getElementsByClassName("drop")[0].style.width=0
-    document.getElementsByClassName("drop")[0].style.height=0
-    document.getElementsByClassName("drop")[0].style.left=0
-    document.getElementsByClassName("drop")[0].style.top=0
-    document.getElementById("preloadImg").style.height=0
-    document.getElementById("preloadImg").style.width=0
     angle=0
     boardTools.tool = "pencil";
 })

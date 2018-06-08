@@ -99,7 +99,6 @@ class rtSocket  {
         initial["lineWidth"] = boardTools.ctx.lineWidth;
         initial["strokeStyle"] = boardTools.ctx.strokeStyle;
         initial["font"] = boardTools.ctx.font;
-        console.log(dd.boardData)
         var dataDraw=dd.boardData
         if(dataDraw && dataDraw.data) {
             boardTools.ctx.lineWidth = dataDraw.data.lineWidth;
@@ -143,13 +142,14 @@ class rtSocket  {
                     break;
 
                 case 'text':
-                    board.text(boardTools.ctx, dataDraw.data.text, dataDraw.data.x, dataDraw.data.y);
+                    var res=dataDraw.data.text.toString().split("\n")
+                    for(let i=0;i<res.length;i++)
+                        board.text(boardTools.ctx, res[i], dataDraw.data.x, dataDraw.data.y+i*parseInt(dataDraw.data.size));
                     break;
 
                 case 'pencil':
-                    for (i = dataDraw.data.points.length - 2; i >= 0; i--) {
+                    for (i = dataDraw.data.points.length - 2; i >= 0; i--)
                         board.pencil(boardTools.ctx, dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.points[i + 1].x, dataDraw.data.points[i + 1].y);
-                    }
                     break;
 
                 case 'marker':
@@ -165,8 +165,6 @@ class rtSocket  {
                         boardTools.ctx.arc(dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.size, 0, 2 * Math.PI);
                         boardTools.ctx.fill();
                     }
-                    break;
-                default:
                     break;
             }
         }
