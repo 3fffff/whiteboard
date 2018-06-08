@@ -5,6 +5,12 @@
     cursor: crosshair;
     z-index:2;
 }
+textarea:focus::-webkit-input-placeholder{
+    color: transparent;
+}
+#CancelCanvas{
+    cursor:pointer;
+}
 
 #loadImage{
     display: block;

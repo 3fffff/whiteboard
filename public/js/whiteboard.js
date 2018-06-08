@@ -292,7 +292,6 @@ function drawStart (e) {
                 textarea.id = "txtText"
                 textarea.placeholder = "введите текст"
                 textarea.wrap="off"
-                textarea.autofocus
                 document.body.appendChild(textarea)
                 var txtT=document.getElementById("txtText")
                 var text=document.getElementById("textControl")
@@ -312,8 +311,7 @@ function drawStart (e) {
                 boardTools.mouse.text.top = boardTools.mouse.pos.initial.y;
                 boardTools.mouse.text.left = boardTools.mouse.pos.initial.x;
                 txtT.addEventListener("click",textInsert)
-                txtT.autofocus
-                txtT.focus()
+                setTimeout(function(){txtT.focus()},50)
                 break
             case 'pencil':
                 console.log(boardTools.posScaleI.sx+boardTools.offset.x)
@@ -438,10 +436,6 @@ function drawEnd(e) {
                         y2: posScale.sy-(boardTools.offset.y)/boardTools.scale
                     }
                 }
-                break
-            case 'text':
-                document.getElementById("txtText").focus()
-             //   document.getElementById("txtText")
                 break
         }
         console.log("отправка")
@@ -828,8 +822,8 @@ document.getElementById("LoadedImage").addEventListener("mouseup",EndSize,false)
 document.getElementById("LoadedImage").addEventListener("mousemove",sizeChange,false)
 document.getElementsByClassName("drop")[0].addEventListener('mouseup', EndSize, false);
 
-document.getElementById('ImageLoad').addEventListener('change', function(){
-    var files = evt.target.files[0];
+document.getElementById('ImageLoad').addEventListener('change', function(e){
+    var files = e.target.files[0];
     board.loadImage(files)
 }, false);
 document.getElementById('ImageLoad').addEventListener('click', function(e){
