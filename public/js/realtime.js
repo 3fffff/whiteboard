@@ -74,19 +74,18 @@ class rtSocket  {
     }
     static broadcastFile(){
         tools.socket.on('base64 file', function(message) {
-            console.log(message)
             var type=message.type.split("/")
             var messagesContainer = document.getElementsByClassName('messages')[0];
             if(type[0]==="image")
                 messagesContainer.innerHTML+= '<li class="other">'+'<img class="image_chat" width=150 height=150 src=' + message.file + '>'+'</li>'
-            else messagesContainer.innerHTML+= '<li class="other">'+ '<a href=' + message.file + '>'+message.fileName+'</a>'+ '</li>'
+            else messagesContainer.innerHTML+= '<li class="other">'+ '<a download href=' + message.file + '>'+message.fileName+'</a>'+ '</li>'
+            sessionStorage.setItem("messages",messagesContainer.innerHTML)
         });
     }
 
     static broadcastMessage(){
         tools.socket.on('newMessage', function(message) {
             var messagesContainer = document.getElementsByClassName('messages')[0];
-
             messagesContainer.innerHTML+= '<li class="other">'+ message.text+'</li>'
             sessionStorage.setItem("messages",messagesContainer.innerHTML)
         });
@@ -148,17 +147,16 @@ class rtSocket  {
                     break;
 
                 case 'pencil':
-                    for (i = dataDraw.data.points.length - 2; i >= 0; i--)
+                    for (let i = dataDraw.data.points.length - 2; i >= 0; i--)
                         board.pencil(boardTools.ctx, dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.points[i + 1].x, dataDraw.data.points[i + 1].y);
                     break;
 
                 case 'marker':
-                    for (i = dataDraw.data.points.length - 2; i >= 0; i--) {
+                    for (let i = dataDraw.data.points.length - 2; i >= 0; i--)
                         board.marker(boardTools.ctx, dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.points[i + 1].x, dataDraw.data.points[i + 1].y, dataDraw.data.size, dataDraw.data.strokeStyle);
-                    }
                     break;
                 case 'eraser':
-                    for (i = dataDraw.data.points.length - 1; i >= 0; i--) {
+                    for (let i = dataDraw.data.points.length - 1; i >= 0; i--) {
                         boardTools.ctx.beginPath();
                         boardTools.ctx.fillStyle = "white";
                         boardTools.ctx.opacity=0

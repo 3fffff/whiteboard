@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a7c7a9e-976b-49f8-b5d6-a3c01bdaf8f2" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/board.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/board.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/chat.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/chat.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/realtime.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/realtime.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/whiteboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/whiteboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/w.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/w.html" afterDir="false" />
     </list>
@@ -21,20 +25,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="whiteboard.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="whiteboard.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/whiteboard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="66">
-              <caret line="293" column="35" selection-start-line="293" selection-start-column="35" selection-end-line="293" selection-end-column="35" />
+            <state relative-caret-position="368">
+              <caret line="889" column="23" selection-start-line="889" selection-start-column="23" selection-end-line="889" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="board.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="board.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/css/board.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
+            <state relative-caret-position="-745">
+              <caret line="164" column="1" lean-forward="true" selection-start-line="164" selection-start-column="1" selection-end-line="164" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="chat.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/css/chat.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="109">
+              <caret line="426" column="25" selection-start-line="426" selection-start-column="25" selection-end-line="426" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -42,8 +55,17 @@
       <file leaf-file-name="realtime.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/realtime.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-436">
-              <caret line="100" column="46" selection-start-line="100" selection-start-column="46" selection-end-line="100" selection-end-column="46" />
+            <state relative-caret-position="357">
+              <caret line="81" column="58" selection-start-line="81" selection-start-column="58" selection-end-line="81" selection-end-column="58" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="chat.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/chat.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="449">
+              <caret line="67" column="3" lean-forward="true" selection-start-line="67" selection-start-column="3" selection-end-line="67" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -51,8 +73,8 @@
       <file leaf-file-name="w.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/w.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="217" column="14" lean-forward="true" selection-start-line="217" selection-start-column="14" selection-end-line="217" selection-end-column="14" />
+            <state relative-caret-position="143">
+              <caret line="136" column="43" lean-forward="true" selection-start-line="136" selection-start-column="43" selection-end-line="136" selection-end-column="43" />
               <folding>
                 <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -72,11 +94,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>trackMouse</find>
-      <find>zoomt</find>
-      <find>zoom</find>
-      <find>trackmouse</find>
-      <find>remove</find>
       <find>removeBlock</find>
       <find>txtFontSize</find>
       <find>italic</find>
@@ -100,8 +117,13 @@
       <find>loaded</find>
       <find>changeTool</find>
       <find>handleFileSelect</find>
-      <find>texti</find>
       <find>CancelCanvas</find>
+      <find>texti</find>
+      <find>pencil</find>
+      <find>shape</find>
+      <find>scroll</find>
+      <find>dop</find>
+      <find>gra</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -120,17 +142,17 @@
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/server/users.js" />
-        <option value="$PROJECT_DIR$/public/js/chat.js" />
         <option value="$PROJECT_DIR$/public/assets/x.svg" />
         <option value="$PROJECT_DIR$/public/assets/y.svg" />
         <option value="$PROJECT_DIR$/public/css/styles.css" />
         <option value="$PROJECT_DIR$/server/server.js" />
-        <option value="$PROJECT_DIR$/public/css/chat.css" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/public/css/chat.css" />
         <option value="$PROJECT_DIR$/public/js/realtime.js" />
-        <option value="$PROJECT_DIR$/public/css/board.css" />
-        <option value="$PROJECT_DIR$/public/js/whiteboard.js" />
+        <option value="$PROJECT_DIR$/public/js/chat.js" />
         <option value="$PROJECT_DIR$/public/w.html" />
+        <option value="$PROJECT_DIR$/public/js/whiteboard.js" />
+        <option value="$PROJECT_DIR$/public/css/board.css" />
       </list>
     </option>
   </component>
@@ -148,7 +170,7 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="545" />
     <option name="y" value="85" />
     <option name="width" value="1400" />
@@ -160,6 +182,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -199,7 +222,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -342,12 +364,13 @@
       <workItem from="1528282288564" duration="19577000" />
       <workItem from="1528353810233" duration="18967000" />
       <workItem from="1528385944225" duration="13217000" />
-      <workItem from="1528449953128" duration="14883000" />
+      <workItem from="1528449953128" duration="18583000" />
+      <workItem from="1528478462929" duration="8165000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="646688000" />
+    <option name="totallyTimeSpent" value="658553000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -362,14 +385,14 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49403748" visible="true" weight="0.12486828" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49403748" visible="true" weight="0.12486828" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32900432" />
       <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32900432" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.34848484" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.34848484" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32575756" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32575756" />
       <window_info id="Favorites" order="3" sideWeight="0.50596255" side_tool="true" weight="0.17715494" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.37431395" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -387,19 +410,19 @@
       <window_info id="npm" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49403748" visible="true" weight="0.12486828" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32900432" />
+      <window_info id="Favorites" order="3" sideWeight="0.50596255" side_tool="true" weight="0.17715494" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32900432" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.34848484" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.37431395" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32575756" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32900432" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info id="Favorites" order="3" sideWeight="0.50596255" side_tool="true" weight="0.17715494" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49403748" visible="true" weight="0.12486828" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -555,13 +578,6 @@
     <entry file="file://$PROJECT_DIR$/public/assets/y.svg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/styles.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="57" column="1" selection-start-line="57" selection-start-column="1" selection-end-line="57" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/server.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1700">
@@ -571,20 +587,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/assets/pen2.png">
       <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/chat.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-27">
-          <caret line="432" selection-start-line="432" selection-end-line="432" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/chat.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="51" column="101" selection-start-line="51" selection-start-column="99" selection-end-line="51" selection-end-column="109" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/assets/pen6.png">
       <provider selected="true" editor-type-id="images" />
@@ -629,24 +631,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/realtime.js">
+    <entry file="file://$PROJECT_DIR$/public/js/chat.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-436">
-          <caret line="100" column="46" selection-start-line="100" selection-start-column="46" selection-end-line="100" selection-end-column="46" />
+        <state relative-caret-position="449">
+          <caret line="67" column="3" lean-forward="true" selection-start-line="67" selection-start-column="3" selection-end-line="67" selection-end-column="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/board.css">
+    <entry file="file://$PROJECT_DIR$/public/css/styles.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
+        <state relative-caret-position="540">
+          <caret line="57" column="1" selection-start-line="57" selection-start-column="1" selection-end-line="57" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/realtime.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="81" column="58" selection-start-line="81" selection-start-column="58" selection-end-line="81" selection-end-column="58" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/w.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="217" column="14" lean-forward="true" selection-start-line="217" selection-start-column="14" selection-end-line="217" selection-end-column="14" />
+        <state relative-caret-position="143">
+          <caret line="136" column="43" lean-forward="true" selection-start-line="136" selection-start-column="43" selection-end-line="136" selection-end-column="43" />
           <folding>
             <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -654,10 +663,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/chat.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109">
+          <caret line="426" column="25" selection-start-line="426" selection-start-column="25" selection-end-line="426" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/whiteboard.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="293" column="35" selection-start-line="293" selection-start-column="35" selection-end-line="293" selection-end-column="35" />
+        <state relative-caret-position="368">
+          <caret line="889" column="23" selection-start-line="889" selection-start-column="23" selection-end-line="889" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/board.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-745">
+          <caret line="164" column="1" lean-forward="true" selection-start-line="164" selection-start-column="1" selection-end-line="164" selection-end-column="1" />
         </state>
       </provider>
     </entry>
