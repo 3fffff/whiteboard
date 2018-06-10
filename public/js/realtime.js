@@ -3,6 +3,7 @@ var tools={
     username: null,
     roomname: null,
     visible:true,
+
 }
 
 class rtSocket  {
@@ -68,6 +69,9 @@ class rtSocket  {
             image.src = data.boardData.data.src
         }
     }
+    static redraw(){
+
+    }
     static addData(data){
         boardTools.draw.push(data)
         board.transform(boardTools.ctx)
@@ -108,14 +112,14 @@ class rtSocket  {
                 case "recoverImage":
                     var image=new Image()
                     image.onload=function() {
-                        board.drawImageRot(boardTools.ctx,image,0,0,image.width,image.height,0)
+                        board.drawImageRot(boardTools.ctx,image,0,0,image.width,image.height,0,true)
                     }
                     image.src=dataDraw.data.src
                     break
                 case 'image':
                     var image = new Image()
                     image.onload = function () {
-                        board.drawImageRot(boardTools.ctx, image, dataDraw.data.points[0].x, dataDraw.data.points[0].y, dataDraw.data.points[0].w, dataDraw.data.points[0].h, dataDraw.data.points[0].deg)
+                        board.drawImageRot(boardTools.ctx, image, dataDraw.data.points[0].x, dataDraw.data.points[0].y, dataDraw.data.points[0].w, dataDraw.data.points[0].h, dataDraw.data.points[0].deg,true)
                     }
                     image.src = dataDraw.data.src
                     break;

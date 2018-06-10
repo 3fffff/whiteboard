@@ -82,12 +82,12 @@ class board  {
         ctx.stroke();
     }
     static marker (ctx, x1, y1, x2, y2, size, color) {
-        ctx.globalAlpha = boardTools.marker.opacity;
-        ctx.strokeStyle = color;
+        ctx.globalAlpha = 0.3;
+      //  ctx.strokeStyle = color;
         ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
+        ctx.fillStyle = color;
+        ctx.arc(boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, 10, 0, 2 * Math.PI);
+        ctx.fill();
 
         ctx.globalAlpha = 1;
         ctx.lineWidth = size;
@@ -130,13 +130,17 @@ class board  {
         if(data)
             reader.readAsDataURL(data);
     }
-static  drawImageRot (ctx,img,x,y,width,height,deg){
+static  drawImageRot (ctx,img,x,y,width,height,deg,scale){
+    var resx=(document.body.clientWidth-width)/2
+    var resy=(document.body.clientHeight-height)/2
     var rad = deg * Math.PI / 180;
-    ctx.translate(boardTools.scale*(boardTools.offset.x+x + width / 2), boardTools.scale*(boardTools.offset.y+y + height / 2));
+    ctx.translate(((resx)+boardTools.offset.x + width / 2), ((resy)+boardTools.offset.y + height / 2));
     ctx.rotate(rad);
-    ctx.drawImage(img, width / 2 * (-1)*boardTools.scale, height / 2 * (-1)*boardTools.scale, width*boardTools.scale, height*boardTools.scale);
+    if(scale)
+    ctx.drawImage(img,(((width / 2)+(resx-x)) * (-1))*boardTools.scale, (((height / 2)+(resy-y))  * (-1))*boardTools.scale, (width)*boardTools.scale, (height)*boardTools.scale);
+    else ctx.drawImage(img,(((width / 2)+(resx-x)) * (-1)), (((height / 2)+(resy-y))  * (-1)), (width), (height));
     ctx.rotate(rad * (-1));
-    ctx.translate((boardTools.offset.x+x + width / 2) * (-1)*boardTools.scale, (boardTools.offset.y+y + height / 2) * (-1)*boardTools.scale);
+    ctx.translate(((resx)+boardTools.offset.x + width / 2) * (-1), ((resy)+boardTools.offset.y + height / 2) * (-1));
 }
 
 
@@ -190,7 +194,6 @@ static eraser(ctx){
     ctx.fillStyle = "white";
     ctx.arc(boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.eraser.size, 0, 2 * Math.PI);
     ctx.fill();
-
 }
 
 static changeTool (t) {
@@ -209,7 +212,7 @@ static changeTool (t) {
             break
         case 'marker':
             boardTools.ctx.lineWidth = boardTools.marker.size;
-            document.getElementById("size").value=parseInt(boardTools.marker.size) - parseInt(boardTools.marker.defaultSize);
+            document.getElementById("size").value=parseInt(boardTools.marker.size);
             boardTools.last={
                 type: 'marker',
                 data: {}}
@@ -291,7 +294,6 @@ function drawStart (e) {
                 setTimeout(function(){txtT.focus()},50)
                 break
             case 'pencil':
-                console.log(boardTools.posScaleI.sx+boardTools.offset.x)
                 boardTools.last={
                     type: 'pencil',
                     data: {
@@ -309,8 +311,8 @@ function drawStart (e) {
                     type: 'marker',
                     data: {
                         strokeStyle: boardTools.ctx.strokeStyle,
-                        size: boardTools.marker.size,
-                        lineWidth: boardTools.marker.size,
+                        size: boardTools.ctx.size,
+                        lineWidth: boardTools.ctx.size,
                         points: [{
                             x: boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,
                             y: boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale
@@ -441,13 +443,15 @@ function drawEnd(e) {
     }
 }
 function drawRealT (e) {
-    boardTools.mouse.pos.final.x = e.pageX;
-    boardTools.mouse.pos.final.y = e.pageY;
+    boardTools.mouse.pos.final.x = e.clientX;
+    boardTools.mouse.pos.final.y = e.clientY;
     var posScale=board.MousePosScale(boardTools.canvas,e)
     if (boardTools.mouse.mouseDown) {
         if (boardTools.dragged) {
             console.log("dragged")
-            board.trackMouse(posScale)
+            var er={"clientX":e.clientX/boardTools.scale,"clientY":e.clientY/boardTools.scale}
+            var posScaleDrag=board.MousePosScale(boardTools.canvas,er)
+            board.trackMouse(posScaleDrag)
             board.transform(boardTools.ctx)
         }
         else {
@@ -462,7 +466,7 @@ function drawRealT (e) {
                     boardTools.mouse.pos.initial.y = boardTools.mouse.pos.final.y;
                     break
                 case 'marker':
-                    board.marker(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.marker.size, boardTools.ctx.strokeStyle);
+                    board.marker(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.ctx.size, boardTools.ctx.fillStyle);
                     boardTools.last.data.points.push({
                         x: posScale.sx-(boardTools.mouse.offsetInitial.x)/boardTools.scale,
                         y: posScale.sy-(boardTools.mouse.offsetInitial.y)/boardTools.scale
@@ -806,15 +810,13 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
     w=parseInt(w.substr(0,w.length-2))
     var image=new Image()
     image.onload=function() {
-        var e={clientX:x,clientY:y}
-        var es=board.MousePosScale(boardTools.canvas,e)
-        board.drawImageRot(boardTools.ctx,image,x,y,w,h,deg)
+        board.drawImageRot(boardTools.ctx,image,x,y,w,h,deg,false)
         let res={
             boardData: {
                 type:"image",
                 data: {
                     src: image.src,
-                    points: [{x: x, y: y, w: w, h: h, deg:deg}]
+                    points: [{x: x/boardTools.scale-x, y: y/boardTools.scale-y, w: w/boardTools.scale, h: h/boardTools.scale, deg:deg}]
                 }
             },
             room: tools.roomname,
