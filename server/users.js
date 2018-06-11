@@ -61,6 +61,8 @@ class Users {
         this.rooms = this.rooms.filter((x) => x.room !== room)
         this.rooms.push(dt[0])
     }
+    getRoom(room){
+        return this.rooms.filter((x) => x.room.includes(room) && x.visible!=="false")
+    }
 }
-
 module.exports = Users;

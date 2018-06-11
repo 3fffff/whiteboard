@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 const Users = require('./users');
+const bodyParser = require('body-parser');
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -16,6 +17,7 @@ var io = socketIO(server);
 var users = new Users();
 
 app.use(express.static(publicPath));
+app.use(bodyParser.json());
 
 //проверка строки
 var isRealString = (string) => {
@@ -118,4 +120,9 @@ socket.on('recover', function (msg) {
 
 server.listen(port, () => {
 	console.log(`Сервер работает на порту ${port}`);
+});
+app.post('/', (req, res) => {
+	let rooms=users.getRoom(req.body.name)
+	res.send(rooms)
+	console.log(rooms);
 });

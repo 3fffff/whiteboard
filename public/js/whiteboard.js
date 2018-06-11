@@ -36,14 +36,14 @@ var boardTools= {
 }
 class board  {
     static trackMouse(e) {
-        boardTools.offset.x  = (e.sx-boardTools.posScaleI.sx)/boardTools.scale
-        boardTools.offset.y  = (e.sy-boardTools.posScaleI.sy)/boardTools.scale
-        boardTools.mouse.offsetInitial.x=boardTools.mouse.offsetFinish.x+boardTools.offset.x
-        boardTools.mouse.offsetInitial.y=boardTools.mouse.offsetFinish.y+boardTools.offset.y
+        boardTools.offset.x  = (e.sx-boardTools.posScaleI.sx)*boardTools.scale
+        boardTools.offset.y  = (e.sy-boardTools.posScaleI.sy)*boardTools.scale
+        boardTools.mouse.offsetInitial.x=boardTools.offset.x
+        boardTools.mouse.offsetInitial.y=boardTools.offset.y
     }
 
     static transform(ctx) {
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
+
         ctx.clearRect(0, 0, boardTools.canvas.clientWidth, boardTools.canvas.clientHeight);
 
         ctx.save();
@@ -81,18 +81,17 @@ class board  {
         ctx.lineTo(x2, y2);
         ctx.stroke();
     }
-    static marker (ctx, x1, y1, x2, y2, size, color) {
-        ctx.globalAlpha = 0.3;
-      //  ctx.strokeStyle = color;
-        ctx.beginPath();
-        ctx.fillStyle = color;
-        ctx.arc(boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, 10, 0, 2 * Math.PI);
-        ctx.fill();
+    static marker (context, x1, y1, x2, y2, size, color) {
+        context.globalAlpha = boardTools.marker.opacity;
+        context.strokeStyle = color;
+        context.beginPath();
+        context.moveTo(x1, y1);
+        context.lineTo(x2, y2);
+        context.stroke();
 
-        ctx.globalAlpha = 1;
-        ctx.lineWidth = size;
+        context.globalAlpha = 1;
+        context.lineWidth = size;
     }
-
     static text (context, text, x, y) {
         context.fillText(text, x, y);
     }
@@ -134,13 +133,11 @@ static  drawImageRot (ctx,img,x,y,width,height,deg,scale){
     var resx=(document.body.clientWidth-width)/2
     var resy=(document.body.clientHeight-height)/2
     var rad = deg * Math.PI / 180;
-    ctx.translate(((resx)+boardTools.offset.x + width / 2), ((resy)+boardTools.offset.y + height / 2));
+    ctx.translate(((resx)+ width / 2), ((resy) + height / 2));
     ctx.rotate(rad);
-    if(scale)
     ctx.drawImage(img,(((width / 2)+(resx-x)) * (-1))*boardTools.scale, (((height / 2)+(resy-y))  * (-1))*boardTools.scale, (width)*boardTools.scale, (height)*boardTools.scale);
-    else ctx.drawImage(img,(((width / 2)+(resx-x)) * (-1)), (((height / 2)+(resy-y))  * (-1)), (width), (height));
     ctx.rotate(rad * (-1));
-    ctx.translate(((resx)+boardTools.offset.x + width / 2) * (-1), ((resy)+boardTools.offset.y + height / 2) * (-1));
+    ctx.translate(((resx)+width / 2) * (-1), ((resy)+height / 2) * (-1));
 }
 
 
@@ -257,10 +254,12 @@ static changeSize (size) {
 function drawStart (e) {
     removeBlockClass("fadeInLeft")
     boardTools.mouse.mouseDown = true;
-    boardTools.mouse.pos.initial.x = e.pageX
-    boardTools.mouse.pos.initial.y = e.pageY
+    boardTools.mouse.pos.initial.x = e.clientX
+    boardTools.mouse.pos.initial.y = e.clientY
     document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
     boardTools.posScaleI=board.MousePosScale(boardTools.canvas,e)
+    console.log(boardTools.posScaleI)
+    console.log(boardTools.offset)
     if(!boardTools.dragged) {
         switch (boardTools.tool) {
             case 'text':
@@ -438,8 +437,11 @@ function drawEnd(e) {
         boardTools.draw.push(result)
     }
     else {
+
         boardTools.mouse.offsetFinish.x = boardTools.mouse.offsetInitial.x
         boardTools.mouse.offsetFinish.y = boardTools.mouse.offsetInitial.y
+        console.log(boardTools.posScaleI)
+        console.log(boardTools.offset)
     }
 }
 function drawRealT (e) {
@@ -448,8 +450,7 @@ function drawRealT (e) {
     var posScale=board.MousePosScale(boardTools.canvas,e)
     if (boardTools.mouse.mouseDown) {
         if (boardTools.dragged) {
-            console.log("dragged")
-            var er={"clientX":e.clientX/boardTools.scale,"clientY":e.clientY/boardTools.scale}
+            var er={"clientX":e.clientX+(boardTools.mouse.offsetFinish.x),"clientY":e.clientY+(boardTools.mouse.offsetFinish.y)}
             var posScaleDrag=board.MousePosScale(boardTools.canvas,er)
             board.trackMouse(posScaleDrag)
             board.transform(boardTools.ctx)
@@ -495,51 +496,53 @@ function drawRealT (e) {
                     removeBlock("dop")
                     var w = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x) / 2
                     var h = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y) / 2
-                    var x = boardTools.mouse.pos.initial.x + w
-                    var y = boardTools.mouse.pos.initial.y + h
                     if (w > 0 && h > 0) {
+                        var x = boardTools.mouse.pos.initial.x + w
+                        var y = boardTools.mouse.pos.initial.y + h
                         board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(w) + " ry=" + Math.abs(h))
                     }
                     else if (w < 0 && h < 0) {
-                        x = boardTools.mouse.pos.final.x + Math.abs(w)
-                        y = boardTools.mouse.pos.final.y + Math.abs(h)
+                       var x = boardTools.mouse.pos.final.x + Math.abs(w)
+                      var  y = boardTools.mouse.pos.final.y + Math.abs(h)
                         board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(w) + " ry=" + Math.abs(h))
                     }
                     else if (w > 0 && h < 0) {
-                        x = boardTools.mouse.pos.initial.x + Math.abs(w)
-                        y = boardTools.mouse.pos.final.y + Math.abs(h)
+                      var  x = boardTools.mouse.pos.initial.x + Math.abs(w)
+                      var  y = boardTools.mouse.pos.final.y + Math.abs(h)
                         board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(w) + " ry=" + Math.abs(h))
                     }
                     else if (w < 0 && h > 0) {
-                        x = boardTools.mouse.pos.final.x + Math.abs(w)
-                        y = boardTools.mouse.pos.initial.y + Math.abs(h)
+                      var  x = boardTools.mouse.pos.final.x + Math.abs(w)
+                      var  y = boardTools.mouse.pos.initial.y + Math.abs(h)
                         board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(w) + " ry=" + Math.abs(h))
                     }
                     break
                 case "circle":
                     removeBlock("dop")
-                    var r = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x) / 2
+                    var rx = Math.abs((boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x) / 2)
+                    var ry = Math.abs((boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y) / 2)
+                    var r=Math.max(rx,ry)
                     var xp = boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x
                     var yp = boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y
-                    var x = boardTools.mouse.pos.initial.x + r
-                    var y = boardTools.mouse.pos.initial.y + r
                     if (xp > 0 && yp > 0) {
-                        board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(r) + " ry=" + Math.abs(r))
+                        var x = boardTools.mouse.pos.initial.x + r
+                        var y = boardTools.mouse.pos.initial.y + r
+                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + Math.abs(r))
                     }
                     else if (xp < 0 && yp < 0) {
-                        var x = boardTools.mouse.pos.final.x - r
-                        var y = boardTools.mouse.pos.final.y - r
-                        board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(r) + " ry=" + Math.abs(r))
+                        var x = boardTools.mouse.pos.final.x + r
+                        var y = boardTools.mouse.pos.final.y + r
+                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + Math.abs(r))
                     }
                     else if (xp > 0 && yp < 0) {
                         var x = boardTools.mouse.pos.initial.x + Math.abs(r)
                         var y = boardTools.mouse.pos.final.y + Math.abs(r)
-                        board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(r) + " ry=" + Math.abs(r))
+                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + Math.abs(r))
                     }
                     else if (xp < 0 && yp > 0) {
                         var x = boardTools.mouse.pos.final.x + Math.abs(r)
                         var y = boardTools.mouse.pos.initial.y + Math.abs(r)
-                        board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(r) + " ry=" + Math.abs(r))
+                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + Math.abs(r))
                     }
                     break
                 case 'arrow':
@@ -551,7 +554,6 @@ function drawRealT (e) {
                     board.shapeSVG("line x1=" + boardTools.mouse.pos.initial.x + " y1=" + boardTools.mouse.pos.initial.y + " x2=" + boardTools.mouse.pos.final.x + " y2=" + boardTools.mouse.pos.final.y)
                     break
                 case 'eraser':
-
                     board.eraser(boardTools.ctx, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, 3);
                     boardTools.last.data.points.push({
                         x: posScale.sx-(boardTools.mouse.offsetInitial.x)/boardTools.scale,
@@ -815,8 +817,8 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
             boardData: {
                 type:"image",
                 data: {
-                    src: image.src,
-                    points: [{x: x/boardTools.scale-x, y: y/boardTools.scale-y, w: w/boardTools.scale, h: h/boardTools.scale, deg:deg}]
+                    src: image,
+                    points: [{x: x, y: y, w: w, h: h, deg:deg}]
                 }
             },
             room: tools.roomname,

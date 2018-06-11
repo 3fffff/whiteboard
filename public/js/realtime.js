@@ -69,9 +69,6 @@ class rtSocket  {
             image.src = data.boardData.data.src
         }
     }
-    static redraw(){
-
-    }
     static addData(data){
         boardTools.draw.push(data)
         board.transform(boardTools.ctx)
@@ -117,11 +114,7 @@ class rtSocket  {
                     image.src=dataDraw.data.src
                     break
                 case 'image':
-                    var image = new Image()
-                    image.onload = function () {
-                        board.drawImageRot(boardTools.ctx, image, dataDraw.data.points[0].x, dataDraw.data.points[0].y, dataDraw.data.points[0].w, dataDraw.data.points[0].h, dataDraw.data.points[0].deg,true)
-                    }
-                    image.src = dataDraw.data.src
+                    board.drawImageRot(boardTools.ctx, dataDraw.data.src, dataDraw.data.points[0].x, dataDraw.data.points[0].y, dataDraw.data.points[0].w, dataDraw.data.points[0].h, dataDraw.data.points[0].deg,true)
                     break;
 
                 case 'line':
