@@ -2,14 +2,24 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>Whiteboard</title>
-    <link rel="stylesheet" href="css/fontawesome.css">
     <link rel="stylesheet" href="css/board.css">
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/emoji.min.css" >
-
+<link rel="stylesheet" href="css/modals.css">
 </head>
 
 <body>
+<div class="dm-overlay" id="win1">
+    <div class="dm-table">
+        <div class="dm-cell">
+            <div class="dm-modal">
+                <a href="#close" class="close"></a>
+                <label >Введите имя (не обязательно):</label>
+                <input id="name" />
+            </div>
+        </div>
+    </div>
+</div>
 <canvas id="canvas"></canvas>
 <div class="toolbar__box--middle-left">
     <div id="main-toolbar" class="toolbar toolbar--vertical">
@@ -25,7 +35,7 @@
                             <div  class="tools__item--button"><img src="assets/marker.png"></div>
                         </li>
                         <li id="line" class="tools__item  tool">
-                            <div  class="tools__item--button"><img src="marker.svg"></div>
+                            <div  class="tools__item--button"><img src="assets/line.png"></div>
                         </li>
                     </ul>
                 </div>
@@ -80,7 +90,7 @@
                 </div>
             </li>
             <li   class="tools__item boardBtn">
-                <div class="tools__item--button dropRight"><img src="assets/load.png" alt="Select"></div>
+                <div class="tools__item--button dropRight"><img src="assets/size.jpg" alt="Select"></div>
                 <div class="toolbox fadeInLeft" style="margin-top: 15px;">
                     <div class="slidecontainer">
                         <input type="range" min="1" max="5" value="1" class="slider" id="size">
@@ -102,10 +112,10 @@
                             <div class="tools__item--button"><img src="assets/rect.png"></div>
                         </li>
                         <li id="circle" class="tools__item  tool">
-                            <div  class="tools__item--button"><img src="assets/el.png"></div>
+                            <div  class="tools__item--button"><img src="assets/circle.png"></div>
                         </li>
                         <li id="ellipse" class="tools__item  tool">
-                            <div  class="tools__item--button"><img src="el.svg"></div>
+                            <div  class="tools__item--button"><img src="assets/el.png"></div>
                         </li>
                         <li id="arrow" class="tools__item  tool">
                             <div  class="tools__item--button"><img src="assets/cist.png"></div>
@@ -138,7 +148,7 @@
     <div  class="drop">
         <div id="rotation" style="transform:rotate(0deg)">
             <div class="drop__elements">
-                <div class="rotator"><img id="imgRot" src="assets/ic-rotate.svg" draggable=false /></div>
+                <div class="rotator"><img id="imgRot" src="assets/rotate.svg" draggable=false /></div>
                 <div class="grip grip--tl"></div>
                 <div class="grip grip--tc"></div>
                 <div class="grip grip--tr"></div>
@@ -157,14 +167,14 @@
 </div>
 
 <div class="floating-chat enter">
-    <i class="fa fa-comments" aria-hidden="true" style="display: none;"></i>
+    <img id="chat_img" src="assets/chat.png" height=35 width=35 />
     <div class="chat">
         <div class="header">
             <span class="title">
                 Чат
             </span>
             <button id="closeChat">
-                <i class="fa fa-times" aria-hidden="true"></i>
+                <img src="assets/x.svg" width=10 height=10 />
             </button>
 
         </div>
@@ -200,8 +210,6 @@
     </div>
 </div>
 <div id="textControl" style="visibility: hidden;z-index:999">
-    <button class="txtFontStyle" data-value="bold" id="Bold">Ж</button>
-    <button class="txtFontStyle" data-value="italic" id="Italic">К</button>
     <input id="txtFontSize" class="boardBtn" value="16" max="72" min="10" type="number">
 </div>
 <script src="/socket.io/socket.io.js"></script>

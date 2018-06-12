@@ -10,17 +10,15 @@ class Users {
             name,
             room
         };
-        console.log("видимый")
-        console.log(visible)
-        var verD = this.users.filter(x => x.room == room)
-        if (verD.length == 0) {
-            var d = {
+        var rooms = this.users.filter(x => x.room === room)
+        if (rooms.length === 0) {
+            var createRoom = {
                 id,
                 room,
                 data:null,
                 visible
             }
-            this.rooms.push(d)
+            this.rooms.push(createRoom)
         }
         this.users.push(user);
     }
@@ -37,8 +35,8 @@ class Users {
 
     removeData(room) {
         console.log(room)
-        var res = this.users.filter(x => x.room == room)
-        if (res.length == 0)
+        var res = this.users.filter(x => x.room === room)
+        if (res.length === 0)
             this.rooms = this.rooms.filter(x => x.room !== room)
     }
 
@@ -62,7 +60,7 @@ class Users {
         this.rooms.push(dt[0])
     }
     getRoom(room){
-        return this.rooms.filter((x) => x.room.includes(room) && x.visible!=="false")
+        return this.rooms.filter((x) => x.room.includes(room) && x.visible!=="false" && delete x.data && delete x.id)
     }
 }
 module.exports = Users;

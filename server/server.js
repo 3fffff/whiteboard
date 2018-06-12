@@ -123,6 +123,5 @@ server.listen(port, () => {
 });
 app.post('/', (req, res) => {
 	let rooms=users.getRoom(req.body.name)
-	res.send(rooms)
-	console.log(rooms);
+    res.json(JSON.stringify({rooms}))
 });

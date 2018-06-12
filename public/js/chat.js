@@ -15,6 +15,7 @@ function openElement() {
     if(open===false && exp===false) {
         element.className += ' expand';
         chat.className += " enter"
+        document.getElementById("chat_img").style.display="none"
         open=true
         exp=true
     }
@@ -25,6 +26,7 @@ function closeElement() {
     element.className='floating-chat enter';
     var chat=document.getElementsByClassName("chat")[0]
     chat.className="chat"
+    document.getElementById("chat_img").style.display="block"
     open=false
     exp=true
 }

@@ -21,9 +21,10 @@ class rtSocket  {
                 rtSocket.join(params)
             }
             else {
-                var result = prompt("Введите имя", "Anonymous");
+                var result = "Anonymous"
                 params["room"] = s1[1]
                 params["name"] = result
+                document.getElementsByClassName("dm-overlay")[0].style.display="block"
                 sessionStorage.setItem("name",result)
                 rtSocket.join(params)
             }
@@ -38,11 +39,9 @@ class rtSocket  {
             window.history.pushState(null, null, "w.html?" + params["room"])
             console.log(params)
             rtSocket.join(params)
-
         }
         tools.socket.on('drawingRestore', this.restoreDraw);
         tools.socket.on('drawing', this.addData);
-
     }
 
     static join (params) {
@@ -60,18 +59,21 @@ class rtSocket  {
     }
 
     static restoreDraw(data){
-        var image=new Image()
-        if(data) {
-            boardTools.draw.push(data)
-            image.onload = function () {
-                board.drawImageRot(boardTools.ctx, image, 0, 0, image.width, image.height, 0)
+            var img=new Image()
+            img.onload=function(){
+            console.log("ghbdtn")
+                data.boardData.data.src=img
+                boardTools.draw.push(data)
+                rtSocket.drawFromSocket(data)
             }
-            image.src = data.boardData.data.src
-        }
+            if(data)
+                img.src=data.boardData.data.src
     }
     static addData(data){
-        boardTools.draw.push(data)
-        board.transform(boardTools.ctx)
+        if(data.boardData.type!=="recoverImage") {
+            boardTools.draw.push(data)
+            board.transform(boardTools.ctx)
+        }
     }
     static broadcastFile(){
         tools.socket.on('base64 file', function(message) {
@@ -106,15 +108,11 @@ class rtSocket  {
             boardTools.ctx.fillStyle = dataDraw.data.strokeStyle;
             boardTools.ctx.font = dataDraw.data.font || '';
             switch (dataDraw.type) {
-                case "recoverImage":
-                    var image=new Image()
-                    image.onload=function() {
-                        board.drawImageRot(boardTools.ctx,image,0,0,image.width,image.height,0,true)
-                    }
-                    image.src=dataDraw.data.src
+               case "recoverImage":
+                    board.drawImageRot(boardTools.ctx,dataDraw.data.src,0,0,dataDraw.data.width,dataDraw.data.height,0)
                     break
                 case 'image':
-                    board.drawImageRot(boardTools.ctx, dataDraw.data.src, dataDraw.data.points[0].x, dataDraw.data.points[0].y, dataDraw.data.points[0].w, dataDraw.data.points[0].h, dataDraw.data.points[0].deg,true)
+                    board.drawImageRot(boardTools.ctx, dataDraw.data.src, dataDraw.data.x, dataDraw.data.y, dataDraw.data.w, dataDraw.data.h, dataDraw.data.deg)
                     break;
 
                 case 'line':

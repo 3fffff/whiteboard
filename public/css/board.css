@@ -5,6 +5,16 @@
     cursor: crosshair;
     z-index:2;
 }
+
+.grab{
+    cursor: -webkit-grab !important;
+    cursor: grab !important;
+}
+.grabbing {
+    cursor: grabbing !important;
+    cursor: -webkit-grabbing !important;
+}
+
 textarea:focus::-webkit-input-placeholder{
     color: transparent;
 }
@@ -281,7 +291,7 @@ ul {
     content: '';
     width: 0;
     height: 0;
-    border-top: 15px solid #00b0ff;
+    border-top: 15px solid #9cd9e6;
     border-left: 15px solid transparent;
     left: -15px;
 }

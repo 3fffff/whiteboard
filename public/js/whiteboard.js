@@ -129,19 +129,17 @@ class board  {
         if(data)
             reader.readAsDataURL(data);
     }
-static  drawImageRot (ctx,img,x,y,width,height,deg,scale){
-    var resx=(document.body.clientWidth-width)/2
-    var resy=(document.body.clientHeight-height)/2
-    var rad = deg * Math.PI / 180;
-    ctx.translate(((resx)+ width / 2), ((resy) + height / 2));
-    ctx.rotate(rad);
-    ctx.drawImage(img,(((width / 2)+(resx-x)) * (-1))*boardTools.scale, (((height / 2)+(resy-y))  * (-1))*boardTools.scale, (width)*boardTools.scale, (height)*boardTools.scale);
-    ctx.rotate(rad * (-1));
-    ctx.translate(((resx)+width / 2) * (-1), ((resy)+height / 2) * (-1));
-}
 
+    static  drawImageRot (ctx,img,x,y,width,height,deg){
+        var rad = deg * Math.PI / 180;
+        ctx.translate(((x)+ width / 2), ((y) + height / 2));
+        ctx.rotate(rad);
+        ctx.drawImage(img,(((width / 2)) * (-1)), (((height / 2))  * (-1)), (width), (height));
+        ctx.rotate(rad * (-1));
+        ctx.translate(((x)+width / 2) * (-1), ((y)+height / 2) * (-1));
+    }
 
-static rect (ctx, x, y, w, h) {
+    static rect (ctx, x, y, w, h) {
     ctx.strokeRect(x, y, w, h);
 }
 
@@ -196,6 +194,7 @@ static eraser(ctx){
 static changeTool (t) {
     boardTools.dragged=false
     removeBlock("txtText")
+    boardTools.canvas.classList.remove("grab")
     boardTools.canvas.style.cursor="crosshair"
     document.getElementById("textControl").style.visibility="hidden"
     switch(t) {
@@ -310,7 +309,7 @@ function drawStart (e) {
                     type: 'marker',
                     data: {
                         strokeStyle: boardTools.ctx.strokeStyle,
-                        size: boardTools.ctx.size,
+                        size: boardTools.marker.size,
                         lineWidth: boardTools.ctx.size,
                         points: [{
                             x: boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,
@@ -332,6 +331,10 @@ function drawStart (e) {
                 }
                 break
         }
+    }
+    else{
+        boardTools.canvas.classList.remove("grab")
+        boardTools.canvas.classList.add("grabbing")
     }
 }
 
@@ -423,25 +426,25 @@ function drawEnd(e) {
             from: tools.username,
         }
         tools.socket.emit('drawing', result);
-        var url = boardTools.canvas.toDataURL()
-        tools.socket.emit('recover', {
-            boardData: {
-                type:"recoverImage",
-                data: {
-                    src: url
-                }
-            },
-            room: tools.roomname,
-            from: tools.username
-        });
+            tools.socket.emit('recover', {
+                boardData: {
+                    type: "recoverImage",
+                    data: {
+                        src: boardTools.canvas.toDataURL(),
+                        width:boardTools.canvas.clientWidth,
+                        height:boardTools.canvas.clientHeight
+                    }
+                },
+                room: tools.roomname,
+                from: tools.username
+            });
         boardTools.draw.push(result)
     }
     else {
-
         boardTools.mouse.offsetFinish.x = boardTools.mouse.offsetInitial.x
         boardTools.mouse.offsetFinish.y = boardTools.mouse.offsetInitial.y
-        console.log(boardTools.posScaleI)
-        console.log(boardTools.offset)
+        boardTools.canvas.classList.remove("grabbing")
+        boardTools.canvas.classList.add("grab")
     }
 }
 function drawRealT (e) {
@@ -554,7 +557,7 @@ function drawRealT (e) {
                     board.shapeSVG("line x1=" + boardTools.mouse.pos.initial.x + " y1=" + boardTools.mouse.pos.initial.y + " x2=" + boardTools.mouse.pos.final.x + " y2=" + boardTools.mouse.pos.final.y)
                     break
                 case 'eraser':
-                    board.eraser(boardTools.ctx, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, 3);
+                    board.eraser(boardTools.ctx);
                     boardTools.last.data.points.push({
                         x: posScale.sx-(boardTools.mouse.offsetInitial.x)/boardTools.scale,
                         y: posScale.sy-(boardTools.mouse.offsetInitial.y)/boardTools.scale
@@ -783,13 +786,6 @@ document.getElementById("txtFontSize").addEventListener("change",function () {
     document.getElementById("txtText").style.fontSize=this.value
 });
 
-document.getElementById("Italic").addEventListener("click",function(){
-    var doc=document.getElementById("txtText")
-    if(doc.style.fontStyle==="italic")
-        doc.style.fontStyle="normal"
-    else doc.style.fontStyle=this.value
-})
-
 document.getElementById('ImageLoad').addEventListener('change', function(e){
     var files = e.target.files[0];
     board.loadImage(files)
@@ -812,13 +808,17 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
     w=parseInt(w.substr(0,w.length-2))
     var image=new Image()
     image.onload=function() {
-        board.drawImageRot(boardTools.ctx,image,x,y,w,h,deg,false)
+        var e = {clientX: x, clientY:y}
+        var er = board.MousePosScale(boardTools.canvas, e)
+        board.drawImageRot(boardTools.ctx,image,x,y,w,h,deg)
         let res={
             boardData: {
                 type:"image",
                 data: {
                     src: image,
-                    points: [{x: x, y: y, w: w, h: h, deg:deg}]
+                     x: er.sx - (boardTools.offset.x / boardTools.scale),
+                    y: er.sy - (boardTools.offset.y / boardTools.scale),
+                    w: w/boardTools.scale, h: h/boardTools.scale, deg:deg
                 }
             },
             room: tools.roomname,
@@ -827,6 +827,7 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
         tools.socket.emit('drawing', res);
         boardTools.draw.push(res)
     }
+
     image.src=document.getElementById("preloadImg").src
     document.getElementById("rotation").style.transform="rotate("+0+"deg)"
     angle=0
@@ -862,9 +863,10 @@ for(var i=0;i<document.getElementsByClassName("ec").length;i++) {
 document.getElementById("drag").addEventListener("click",function(){
     if(!boardTools.dragged) {
         boardTools.dragged = true
-        boardTools.canvas.style.cursor="grab"
+        boardTools.canvas.classList.add("grab")
     }
     else {
+        boardTools.canvas.classList.remove("grab")
         boardTools.dragged=false
         boardTools.canvas.style.cursor="crosshair"
     }
