@@ -77,6 +77,7 @@ io.on('connection', (socket) => {
 		//нужна проверка по шаблону
 		var user = users.getUser(socket.id);
 		try {
+            users.setData(user.room, data)
             socket.broadcast.to(user.room).emit('drawing', data)
         }catch(e){
 		}
@@ -94,18 +95,14 @@ io.on('connection', (socket) => {
 			type: msg.type
 		});
 	});
-socket.on('recover', function (msg) {
-    var user = users.getUser(socket.id)
-	try {
-        console.log('восстановление от ' + user.name);
-        console.log(msg)
-        socket.username = user.name;
-        users.setData(user.room, msg)
-    }
-    catch(e){
 
-	}
-});
+    socket.on('updateUser', (name) => {
+        var user = users.getUser(socket.id);
+        users.updateUserName(socket.id,name);
+        /* Отправляем всем в определенной комнате */
+		io.to(user.room).emit('newMessage', generateMessage('Сервер', `Anonymous изменил имя на ${name}`));
+    });
+
 	/* Клиент отключился от сервера */
 	socket.on('disconnect', () => {
 		var user = users.removeUser(socket.id);

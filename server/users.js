@@ -10,15 +10,17 @@ class Users {
             name,
             room
         };
-        var rooms = this.users.filter(x => x.room === room)
-        if (rooms.length === 0) {
-            var createRoom = {
+        console.log("видимый")
+        console.log(visible)
+        var verD = this.users.filter(x => x.room == room)
+        if (verD.length == 0) {
+            var d = {
                 id,
                 room,
-                data:null,
+                data: [],
                 visible
             }
-            this.rooms.push(createRoom)
+            this.rooms.push(d)
         }
         this.users.push(user);
     }
@@ -27,16 +29,16 @@ class Users {
         var user = this.getUser(id);
 
         if (user) {
-            this.users = this.users.filter((user) => user.id !== id);
             this.removeData(user.room)
+            this.users = this.users.filter((user) => user.id !== id);
         }
         return user;
     }
 
     removeData(room) {
         console.log(room)
-        var res = this.users.filter(x => x.room === room)
-        if (res.length === 0)
+        var res = this.users.filter(x => x.room == room)
+        if (res.length == 0)
             this.rooms = this.rooms.filter(x => x.room !== room)
     }
 
@@ -50,17 +52,21 @@ class Users {
     }
     getData(room) {
         var res = this.rooms.filter((x) => x.room === room)
+        //  console.log(this.rooms)
+        console.log(res[0].data[0])
         return res[0].data
     }
 
     setData(room, data) {
         var dt = this.rooms.filter((x) => x.room === room)
-        dt[0].data=data
-        this.rooms = this.rooms.filter((x) => x.room !== room)
-        this.rooms.push(dt[0])
+        dt[0].data.push(data)
     }
     getRoom(room){
         return this.rooms.filter((x) => x.room.includes(room) && x.visible!=="false" && delete x.data && delete x.id)
+    }
+    updateUserName(id,name){
+         var nuser=this.users.filter((user) => user.id === id)[0]
+        nuser.name=name
     }
 }
 module.exports = Users;

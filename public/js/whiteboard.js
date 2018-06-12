@@ -146,15 +146,14 @@ class board  {
 static  circle (ctx, x1, y1, x2, y2) {
     var x = (x2 + x1) / 2;
     var y = (y2 + y1) / 2;
-    var radius = Math.max(
+    var r = Math.max(
         Math.abs(x2 - x1),
         Math.abs(y2 - y1)
     ) / 2;
 
     ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+    ctx.ellipse(x, y, Math.abs(r), Math.abs(r), 0, 0, 2 * Math.PI);
     ctx.stroke();
-    ctx.closePath();
 }
 
 static  ellipse (ctx, x, y, w, h) {
@@ -342,9 +341,9 @@ function drawEnd(e) {
     boardTools.mouse.mouseDown = false;
     var posScale=board.MousePosScale(boardTools.canvas,e)
     if(!boardTools.dragged) {
+        removeBlock("dop")
         switch (boardTools.tool) {
             case 'line':
-                removeBlock("dop")
                 board.line(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
                 boardTools.last = {
                     type: 'line',
@@ -359,7 +358,6 @@ function drawEnd(e) {
                 }
                 break
             case'rectangle':
-                removeBlock("dop")
                 board.rect(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x, boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y);
                 boardTools.last = {
                     type: 'rectangle',
@@ -374,7 +372,6 @@ function drawEnd(e) {
                 }
                 break
             case 'circle':
-                removeBlock("dop")
                 board.circle(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
                 boardTools.last = {
                     type: 'circle',
@@ -389,7 +386,6 @@ function drawEnd(e) {
                 }
                 break
             case 'ellipse':
-                removeBlock("dop")
                 board.ellipse(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x, boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y);
                 boardTools.last = {
                     type: 'ellipse',
@@ -404,7 +400,6 @@ function drawEnd(e) {
                 }
                 break
             case 'arrow':
-                removeBlock("dop")
                 board.arrow(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
                 boardTools.last = {
                     type: 'arrow',
@@ -426,18 +421,6 @@ function drawEnd(e) {
             from: tools.username,
         }
         tools.socket.emit('drawing', result);
-            tools.socket.emit('recover', {
-                boardData: {
-                    type: "recoverImage",
-                    data: {
-                        src: boardTools.canvas.toDataURL(),
-                        width:boardTools.canvas.clientWidth,
-                        height:boardTools.canvas.clientHeight
-                    }
-                },
-                room: tools.roomname,
-                from: tools.username
-            });
         boardTools.draw.push(result)
     }
     else {
@@ -459,6 +442,7 @@ function drawRealT (e) {
             board.transform(boardTools.ctx)
         }
         else {
+            removeBlock("dop")
             switch (boardTools.tool) {
                 case 'pencil':
                     board.pencil(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
@@ -479,7 +463,6 @@ function drawRealT (e) {
                     boardTools.mouse.pos.initial.y = boardTools.mouse.pos.final.y;
                     break
                 case 'rectangle':
-                    removeBlock("dop")
                     var x = boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x
                     var y = boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y
                     if (x > 0 && y > 0) {
@@ -496,7 +479,6 @@ function drawRealT (e) {
                     }
                     break
                 case 'ellipse':
-                    removeBlock("dop")
                     var w = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x) / 2
                     var h = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y) / 2
                     if (w > 0 && h > 0) {
@@ -521,7 +503,6 @@ function drawRealT (e) {
                     }
                     break
                 case "circle":
-                    removeBlock("dop")
                     var rx = Math.abs((boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x) / 2)
                     var ry = Math.abs((boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y) / 2)
                     var r=Math.max(rx,ry)
@@ -549,11 +530,9 @@ function drawRealT (e) {
                     }
                     break
                 case 'arrow':
-                    removeBlock("dop")
                     board.shapeSVG("line x1=" + boardTools.mouse.pos.initial.x + " y1=" + boardTools.mouse.pos.initial.y + " x2=" + boardTools.mouse.pos.final.x + " y2=" + boardTools.mouse.pos.final.y)
                     break
                 case 'line':
-                    removeBlock("dop")
                     board.shapeSVG("line x1=" + boardTools.mouse.pos.initial.x + " y1=" + boardTools.mouse.pos.initial.y + " x2=" + boardTools.mouse.pos.final.x + " y2=" + boardTools.mouse.pos.final.y)
                     break
                 case 'eraser':
@@ -607,8 +586,8 @@ function textInsert() {
             room: tools.roomname,
             from: tools.username
         }
-        boardTools.draw.push(res)
         tools.socket.emit('drawing', res);
+        boardTools.draw.push(res)
     }
     removeBlock("txtText")
 }
@@ -815,7 +794,7 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
             boardData: {
                 type:"image",
                 data: {
-                    src: image,
+                    src: image.src,
                      x: er.sx - (boardTools.offset.x / boardTools.scale),
                     y: er.sy - (boardTools.offset.y / boardTools.scale),
                     w: w/boardTools.scale, h: h/boardTools.scale, deg:deg
@@ -825,6 +804,7 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
             from: tools.username
         }
         tools.socket.emit('drawing', res);
+        res.boardData.data.src=image
         boardTools.draw.push(res)
     }
 
