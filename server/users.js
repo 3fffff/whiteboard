@@ -12,8 +12,8 @@ class Users {
         };
         console.log("видимый")
         console.log(visible)
-        var verD = this.users.filter(x => x.room == room)
-        if (verD.length == 0) {
+        var verD = this.users.filter(x => x.room === room)
+        if (verD.length === 0) {
             var d = {
                 id,
                 room,
@@ -37,8 +37,8 @@ class Users {
 
     removeData(room) {
         console.log(room)
-        var res = this.users.filter(x => x.room == room)
-        if (res.length == 0)
+        var res = this.users.filter(x => x.room === room)
+        if (res.length === 0)
             this.rooms = this.rooms.filter(x => x.room !== room)
     }
 
@@ -52,8 +52,9 @@ class Users {
     }
     getData(room) {
         var res = this.rooms.filter((x) => x.room === room)
-        //  console.log(this.rooms)
-        console.log(res[0].data[0])
+        console.log("получение данных")
+        console.log(this.rooms)
+        console.log(res[0].data)
         return res[0].data
     }
 
