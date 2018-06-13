@@ -79,7 +79,7 @@ class rtSocket  {
     }
 
     static restoreDraw(data){
-        if(data.length===0)
+        if(data && data.length===0)
         {
             board.transform(boardTools.ctx)
             return
