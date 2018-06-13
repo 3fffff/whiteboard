@@ -10,8 +10,6 @@ class Users {
             name,
             room
         };
-        console.log("видимый")
-        console.log(visible)
         var verD = this.users.filter(x => x.room === room)
         if (verD.length === 0) {
             var d = {
@@ -22,6 +20,8 @@ class Users {
             }
             this.rooms.push(d)
         }
+        console.log("пользователь")
+        console.log(user)
         this.users.push(user);
     }
 
@@ -38,8 +38,10 @@ class Users {
     removeData(room) {
         console.log(room)
         var res = this.users.filter(x => x.room === room)
-        if (res.length === 0)
+        if (res.length === 0) {
             this.rooms = this.rooms.filter(x => x.room !== room)
+            console.log("удаляем данные")
+        }
     }
 
     getUser(id) {
@@ -51,19 +53,23 @@ class Users {
         return users.map((user) => user.name)
     }
     getData(room) {
-        var res = this.rooms.filter((x) => x.room === room)
-        console.log("получение данных")
-        console.log(this.rooms)
-        console.log(res[0].data)
-        return res[0].data
+        console.log("получаем данные от комнаты")
+        console.log(room)
+        return this.rooms.filter((x) => x.room === room)[0].data
     }
 
     setData(room, data) {
-        var dt = this.rooms.filter((x) => x.room === room)
-        dt[0].data.push(data)
+        if(room && data) {
+            var dt = this.rooms.filter((x) => x.room === room)
+            dt[0].data.push(data)
+        }
+            console.log("вставляем данные")
+            console.log(room)
+            console.log(data)
     }
     getRoom(room){
-        return this.rooms.filter((x) => x.room.includes(room) && x.visible!=="false" && delete x.data && delete x.id)
+        let res=this.rooms.filter((x) => x.room.includes(room) && x.visible!=="false")
+        return res.map((r)=>r.room)
     }
     updateUserName(id,name){
          var nuser=this.users.filter((user) => user.id === id)[0]

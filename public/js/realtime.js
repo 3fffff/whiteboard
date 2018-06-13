@@ -50,6 +50,7 @@ class rtSocket  {
             }
             else {
                 console.log('ok');
+                console.log(params)
                 tools.username = params["room"];
                 tools.roomname = params["name"]
                 tools.visible = params["name"]
@@ -58,7 +59,7 @@ class rtSocket  {
     }
 
     static restoreCall(data){
-        if(data.length!==0) {
+        if(data && data.length!==0) {
             if (data[0].boardData.type !== "image") {
                 boardTools.draw.push(data[0])
                 data.shift()
