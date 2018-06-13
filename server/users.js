@@ -29,8 +29,8 @@ class Users {
         var user = this.getUser(id);
 
         if (user) {
-            this.removeData(user.room)
             this.users = this.users.filter((user) => user.id !== id);
+            this.removeData(user.room)
         }
         return user;
     }
