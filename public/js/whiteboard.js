@@ -255,15 +255,13 @@ static changeColor (color) {
 static changeSize (size) {
     switch(boardTools.tool) {
         case'marker':
-            boardTools.marker.size = size * 5;
-            boardTools.lineWidth = boardTools.marker.size;
+            boardTools.ctx.lineWidth =size*5;
             break
         case'eraser':
-            boardTools.eraser.size = size * 10;
+            boardTools.ctx.lineWidth = size*10;
             break
         default:
             boardTools.ctx.lineWidth = size;
-            boardTools.lineWidth = size;
             break
     }
 }
@@ -494,6 +492,51 @@ function textInsert() {
     }
     removeBlock("txtText")
 }
+
+document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
+    var x=document.getElementsByClassName("drop")[0].style.left
+    x=parseInt(x.substr(0,x.length-2))
+    var y=document.getElementsByClassName("drop")[0].style.top
+    var d=document.getElementById("rotation").style.transform
+    y=parseInt(y.substr(0,y.length-2))
+    var de=d.split("(")
+    var deg=parseFloat(de[1].substr(0,de[1].length-4))
+    var h=document.getElementById("preloadImg").style.height
+    h=parseInt(h.substr(0,h.length-2))
+    var w=document.getElementById("preloadImg").style.width
+    w=parseInt(w.substr(0,w.length-2))
+    var image=new Image()
+    image.onload=function() {
+        var e = {clientX: x, clientY:y}
+        var er = board.MousePosScale(boardTools.canvas, e)
+        board.drawImageRot(boardTools.ctx,image,x,y,w,h,deg)
+        let res={
+            boardData: {
+                type:"image",
+                data: {
+                    src: image.src,
+                    x: er.sx - (boardTools.offset.x / boardTools.scale),
+                    y: er.sy - (boardTools.offset.y / boardTools.scale),
+                    w: w/boardTools.scale, h: h/boardTools.scale, deg:deg
+                }
+            },
+            room: tools.roomname,
+            from: tools.username
+        }
+        tools.socket.emit('drawing', res);
+        res.boardData.data.src=image
+        boardTools.draw.push(res)
+    }
+
+    image.src=document.getElementById("preloadImg").src
+    document.getElementById("rotation").style.transform="rotate("+0+"deg)"
+    angle=0
+    document.getElementById("LoadedImage").style.display="none"
+    document.getElementById("preloadImg").src=""
+    boardTools.tool = "pencil";
+})
+
+
 var active=false, center={x:0,y:0}, rotation=0, startAngle=0,moveImg=false,posMove={x:0,y:0},changeS={x:0,y:0},resizeImg=false,angle=0,chanL=0,partX,partY
 
 function start(e) {
@@ -668,48 +711,6 @@ document.getElementById('ImageLoad').addEventListener('click', function(e){
     document.getElementById('ImageLoad').value = "";
 }, false);
 
-document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
-    var x=document.getElementsByClassName("drop")[0].style.left
-    x=parseInt(x.substr(0,x.length-2))
-    var y=document.getElementsByClassName("drop")[0].style.top
-    var d=document.getElementById("rotation").style.transform
-    y=parseInt(y.substr(0,y.length-2))
-    var de=d.split("(")
-    var deg=parseFloat(de[1].substr(0,de[1].length-4))
-    var h=document.getElementById("preloadImg").style.height
-    h=parseInt(h.substr(0,h.length-2))
-    var w=document.getElementById("preloadImg").style.width
-    w=parseInt(w.substr(0,w.length-2))
-    var image=new Image()
-    image.onload=function() {
-        var e = {clientX: x, clientY:y}
-        var er = board.MousePosScale(boardTools.canvas, e)
-        board.drawImageRot(boardTools.ctx,image,x,y,w,h,deg)
-        let res={
-            boardData: {
-                type:"image",
-                data: {
-                    src: image.src,
-                     x: er.sx - (boardTools.offset.x / boardTools.scale),
-                    y: er.sy - (boardTools.offset.y / boardTools.scale),
-                    w: w/boardTools.scale, h: h/boardTools.scale, deg:deg
-                }
-            },
-            room: tools.roomname,
-            from: tools.username
-        }
-        tools.socket.emit('drawing', res);
-        res.boardData.data.src=image
-        boardTools.draw.push(res)
-    }
-
-    image.src=document.getElementById("preloadImg").src
-    document.getElementById("rotation").style.transform="rotate("+0+"deg)"
-    angle=0
-    document.getElementById("LoadedImage").style.display="none"
-    document.getElementById("preloadImg").src=""
-    boardTools.tool = "pencil";
-})
 
 document.getElementById("CancelCanvas").addEventListener("click",function(){
     document.getElementById("preloadImg").src=""
