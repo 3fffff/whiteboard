@@ -10,6 +10,7 @@ var boardTools= {
         offsetInitial : {x : 0, y : 0},
         text:{top:0,left:0}
     },
+    touchDown:false,
     canvas: document.getElementById("canvas"),
     ctx: document.getElementById("canvas").getContext('2d'),
     offset:{x:0,y:0},
@@ -239,9 +240,16 @@ class board  {
 
 function drawStart (e) {
     removeBlockClass("fadeInLeft")
-    boardTools.mouse.mouseDown = true;
-    boardTools.mouse.pos.initial.x = e.clientX
-    boardTools.mouse.pos.initial.y = e.clientY
+    if (e.type === 'mousedown') boardTools.mouseDown = true;
+    if (e.type === 'touchstart') boardTools.touchDown = true;
+    if(boardTools.mouseDown) {
+        boardTools.mouse.pos.initial.x = e.clientX
+        boardTools.mouse.pos.initial.y = e.clientY
+    }
+    else{
+        boardTools.mouse.pos.initial.x = e.touches[0].clientX
+        boardTools.mouse.pos.initial.y = e.touches[0].clientY
+    }
     document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
     boardTools.posScaleI=board.MousePosScale(boardTools.canvas,e)
     console.log(boardTools.posScaleI)
@@ -249,9 +257,7 @@ function drawStart (e) {
     if(!boardTools.dragged) {
         switch (boardTools.tool) {
             case 'text':
-                if(document.getElementById("txtText")!==null)
-                    textInsert()
-                boardTools.mouse.mouseDown = false;
+                if(document.getElementById("txtText")!==null) textInsert()
                 removeBlock("txtText")
                 var textarea = document.createElement("textarea");
                 textarea.id = "txtText"
@@ -294,6 +300,7 @@ function drawStart (e) {
 
 function drawEnd(e) {
     boardTools.mouse.mouseDown = false;
+    boardTools.touchDown=false;
     var posScale=board.MousePosScale(boardTools.canvas,e)
     if(!boardTools.dragged) {
         removeBlock("dop")
@@ -339,10 +346,16 @@ function drawEnd(e) {
     }
 }
 function drawRealT (e) {
-    boardTools.mouse.pos.final.x = e.clientX;
-    boardTools.mouse.pos.final.y = e.clientY;
+    if(boardTools.mouseDown) {
+        boardTools.mouse.pos.final.x = e.clientX
+        boardTools.mouse.pos.final.y = e.clientY
+    }
+    else{
+        boardTools.mouse.pos.final.x = e.touches[0].clientX
+        boardTools.mouse.pos.final.y = e.touches[0].clientY
+    }
     var posScale=board.MousePosScale(boardTools.canvas,e)
-    if (boardTools.mouse.mouseDown) {
+    if (boardTools.mouse.mouseDown || boardTools.touchDown) {
         if (boardTools.dragged) {
             var er={"clientX":e.clientX+(boardTools.mouse.offsetFinish.x),"clientY":e.clientY+(boardTools.mouse.offsetFinish.y)}
             var posScaleDrag=board.MousePosScale(boardTools.canvas,er)
