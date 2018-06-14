@@ -459,42 +459,21 @@ function drawRealT (e) {
                 case 'rectangle':
                     var x = boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x
                     var y = boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y
-                    if (x > 0 && y > 0) {
+                    if (x > 0 && y > 0)
                         board.shapeSVG("rect x=" + boardTools.mouse.pos.initial.x + " y=" + boardTools.mouse.pos.initial.y + " width=" + Math.abs(x) + " height=" + Math.abs(y))
-                    }
-                    else if (x < 0 && y < 0) {
+                    else if (x < 0 && y < 0)
                         board.shapeSVG("rect x=" + boardTools.mouse.pos.final.x + " y=" + boardTools.mouse.pos.final.y + " width=" + Math.abs(x) + " height=" + Math.abs(y))
-                    }
-                    else if (x > 0 && y < 0) {
+                    else if (x > 0 && y < 0)
                         board.shapeSVG("rect x=" + boardTools.mouse.pos.initial.x + " y=" + boardTools.mouse.pos.final.y + " width=" + Math.abs(x) + " height=" + Math.abs(y))
-                    }
-                    else if (x < 0 && y > 0) {
+                    else if (x < 0 && y > 0)
                         board.shapeSVG("rect x=" + boardTools.mouse.pos.final.x + " y=" + boardTools.mouse.pos.initial.y + " width=" + Math.abs(x) + " height=" + Math.abs(y))
-                    }
                     break
                 case 'ellipse':
                     var w = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x) / 2
                     var h = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y) / 2
-                    if (w > 0 && h > 0) {
-                        var x = boardTools.mouse.pos.initial.x + w
-                        var y = boardTools.mouse.pos.initial.y + h
+                    var x = boardTools.mouse.pos.initial.x + w
+                    var y = boardTools.mouse.pos.initial.y + h
                         board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(w) + " ry=" + Math.abs(h))
-                    }
-                    else if (w < 0 && h < 0) {
-                       var x = boardTools.mouse.pos.final.x + Math.abs(w)
-                      var  y = boardTools.mouse.pos.final.y + Math.abs(h)
-                        board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(w) + " ry=" + Math.abs(h))
-                    }
-                    else if (w > 0 && h < 0) {
-                      var  x = boardTools.mouse.pos.initial.x + Math.abs(w)
-                      var  y = boardTools.mouse.pos.final.y + Math.abs(h)
-                        board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(w) + " ry=" + Math.abs(h))
-                    }
-                    else if (w < 0 && h > 0) {
-                      var  x = boardTools.mouse.pos.final.x + Math.abs(w)
-                      var  y = boardTools.mouse.pos.initial.y + Math.abs(h)
-                        board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(w) + " ry=" + Math.abs(h))
-                    }
                     break
                 case "circle":
                     var rx = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x)/2
