@@ -1,13 +1,5 @@
 var boardTools= {
     lineWidth: 1,
-    marker: {
-        size: 6,
-        opacity: 0.3
-    },
-    eraser: {
-        size: 10,
-        opacity:1
-    },
     text: {
         fontFamily: 'Arial',
         fontSize: 16,
@@ -82,7 +74,7 @@ class board  {
         ctx.stroke();
     }
     static marker (context, x1, y1, x2, y2, size, color) {
-        context.globalAlpha = boardTools.marker.opacity;
+        context.globalAlpha = 0.3;
         context.strokeStyle = color;
         context.beginPath();
         context.moveTo(x1, y1);
@@ -140,61 +132,61 @@ class board  {
     }
 
     static rect (ctx, x, y, w, h) {
-    ctx.strokeRect(x, y, w, h);
-}
+        ctx.strokeRect(x, y, w, h);
+    }
 
-static  circle (ctx, x, y, r) {
-    ctx.beginPath();
-    ctx.ellipse(x, y, r, r, 0, 0, 2 * Math.PI);
-    ctx.stroke();
-}
+    static  circle (ctx, x, y, r) {
+        ctx.beginPath();
+        ctx.ellipse(x, y, r, r, 0, 0, 2 * Math.PI);
+        ctx.stroke();
+    }
 
-static  ellipse (ctx, x, y, w, h) {
-    ctx.beginPath();
-    ctx.ellipse(x+w/2, y+h/2, Math.abs(w/2), Math.abs(h/2), 0, 0, 2 * Math.PI);
-    ctx.stroke();
-}
+    static  ellipse (ctx, x, y, w, h) {
+        ctx.beginPath();
+        ctx.ellipse(x+w/2, y+h/2, Math.abs(w/2), Math.abs(h/2), 0, 0, 2 * Math.PI);
+        ctx.stroke();
+    }
 
-static  line (ctx, x1, y1, x2, y2) {
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-}
-static arrow (ctx, x1, y1, x2, y2) {
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
+    static  line (ctx, x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+    static arrow (ctx, x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
 
-    var dx = x2 - x1;
-    var dy = y2 - y1;
-    var angle = Math.atan2(dy, dx);
-    var headlen = 10;
-    ctx.lineTo(x2 - headlen * Math.cos(angle - Math.PI / 6), y2 - headlen * Math.sin(angle - Math.PI / 6));
-    ctx.moveTo(x2, y2);
-    ctx.lineTo(x2 - headlen * Math.cos(angle + Math.PI / 6), y2 - headlen * Math.sin(angle + Math.PI / 6));
+        var dx = x2 - x1;
+        var dy = y2 - y1;
+        var angle = Math.atan2(dy, dx);
+        var headlen = 10;
+        ctx.lineTo(x2 - headlen * Math.cos(angle - Math.PI / 6), y2 - headlen * Math.sin(angle - Math.PI / 6));
+        ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - headlen * Math.cos(angle + Math.PI / 6), y2 - headlen * Math.sin(angle + Math.PI / 6));
 
-    ctx.stroke();
-}
-static eraser(ctx){
-    ctx.beginPath();
-    ctx.fillStyle = "white";
-    ctx.arc(boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.eraser.size, 0, 2 * Math.PI);
-    ctx.fill();
-}
-static sendToSocketShape(type,p1,p2,p3,p4) {
-    boardTools.last = {
-        type: type,
-        data: {
-            lineWidth: boardTools.lineWidth,
-            strokeStyle: boardTools.ctx.strokeStyle,
-            p1: p1,
-            p2: p2,
-            p3: p3,
-            p4: p4
+        ctx.stroke();
+    }
+    static eraser(ctx){
+        ctx.beginPath();
+        ctx.fillStyle = "white";
+        ctx.arc(boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.lineWidth*10, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+    static sendToSocketShape(type,p1,p2,p3,p4) {
+        boardTools.last = {
+            type: type,
+            data: {
+                lineWidth: boardTools.lineWidth,
+                strokeStyle: boardTools.ctx.strokeStyle,
+                p1: p1,
+                p2: p2,
+                p3: p3,
+                p4: p4
+            }
         }
     }
-}
 
     static sendToSocketPoints(type,x,y) {
         boardTools.last={
@@ -210,61 +202,52 @@ static sendToSocketShape(type,p1,p2,p3,p4) {
         }
     }
 
-static changeTool (t) {
-    boardTools.dragged=false
-    removeBlock("txtText")
-    boardTools.canvas.classList.remove("grab")
-    boardTools.canvas.style.cursor="crosshair"
-    document.getElementById("textControl").style.visibility="hidden"
-    switch(t) {
-        case 'pencil':
-            boardTools.ctx.lineWidth = boardTools.lineWidth;
-            document.getElementById("size").value=boardTools.lineWidth;
-            boardTools.last={
-                type: 'pencil',
-                data: {}
-            }
-            break
-        case 'marker':
-            boardTools.ctx.lineWidth = boardTools.marker.size;
-            document.getElementById("size").value=parseInt(boardTools.marker.size);
-            boardTools.last={
-                type: 'marker',
-                data: {}}
-            break
-        case'eraser':
-            boardTools.ctx.lineWidth = boardTools.eraser.lineWidth;
-            document.getElementById("size").value=parseInt(boardTools.eraser.size) / 10;
-            break
-
-        case 'text':
-            document.getElementById("textControl").style.visibility="visible";
-
-            break
+    static changeTool (t) {
+        boardTools.dragged=false
+        removeBlock("txtText")
+        boardTools.canvas.classList.remove("grab")
+        boardTools.canvas.style.cursor="crosshair"
+        document.getElementById("textControl").style.visibility="hidden"
+        switch(t) {
+            case 'pencil':
+                boardTools.ctx.lineWidth = boardTools.lineWidth;
+                document.getElementById("size").value=boardTools.lineWidth;
+                break
+            case 'marker':
+                boardTools.ctx.lineWidth = boardTools.lineWidth*5;
+                document.getElementById("size").value=boardTools.lineWidth;
+                break
+            case'eraser':
+                boardTools.ctx.lineWidth = boardTools.lineWidth;
+                document.getElementById("size").value=boardTools.lineWidth;
+                break
+            case 'text':
+                document.getElementById("textControl").style.visibility="visible";
+                break
+        }
+        boardTools.tool = t;
     }
-    boardTools.tool = t;
-}
 
-static changeColor (color) {
-    boardTools.ctx.strokeStyle = color;
-    boardTools.ctx.fillStyle = color;
-    if(document.getElementById("txtText")!==null)
-        document.getElementById("txtText").style.color=color
-}
-
-static changeSize (size) {
-    switch(boardTools.tool) {
-        case'marker':
-            boardTools.ctx.lineWidth =size*5;
-            break
-        case'eraser':
-            boardTools.ctx.lineWidth = size*10;
-            break
-        default:
-            boardTools.ctx.lineWidth = size;
-            break
+    static changeColor (color) {
+        boardTools.ctx.strokeStyle = color;
+        boardTools.ctx.fillStyle = color;
+        if(document.getElementById("txtText")!==null)
+            document.getElementById("txtText").style.color=color
     }
-}
+
+    static changeSize (size) {
+        switch(boardTools.tool) {
+            case'marker':
+                boardTools.ctx.lineWidth =size*5;
+                break
+            case'eraser':
+                boardTools.ctx.lineWidth = size*10;
+                break
+            default:
+                boardTools.ctx.lineWidth = size;
+                break
+        }
+    }
 }
 
 function drawStart (e) {
@@ -420,7 +403,7 @@ function drawRealT (e) {
                     var h = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y) / 2
                     var x = boardTools.mouse.pos.initial.x + w
                     var y = boardTools.mouse.pos.initial.y + h
-                        board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(w) + " ry=" + Math.abs(h))
+                    board.shapeSVG("ellipse cx=" + x + " cy=" + y + " rx=" + Math.abs(w) + " ry=" + Math.abs(h))
                     break
                 case "circle":
                     var rx = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x)/2
