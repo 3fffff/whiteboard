@@ -45,8 +45,15 @@ class board  {
 
     static MousePosScale(canvas, e) {
         var rect = canvas.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
+        var x=0,y=0
+        if (e.type === 'mousedown') {
+             x = e.clientX - rect.left;
+             y = e.clientY - rect.top;
+        }
+        else {
+            x = e.touches[0].clientX - rect.left;
+            y = e.touches[0].clientY - rect.top;
+        }
         var sx = (x-boardTools.canvas.clientWidth/2)/boardTools.scale;
         var sy = (y-boardTools.canvas.clientHeight/2)/boardTools.scale;
         return {
@@ -357,7 +364,9 @@ function drawRealT (e) {
     var posScale=board.MousePosScale(boardTools.canvas,e)
     if (boardTools.mouse.mouseDown || boardTools.touchDown) {
         if (boardTools.dragged) {
-            var er={"clientX":e.clientX+(boardTools.mouse.offsetFinish.x),"clientY":e.clientY+(boardTools.mouse.offsetFinish.y)}
+            if(boardTools.mouseDown)
+                var er={"clientX":e.clientX+(boardTools.mouse.offsetFinish.x),"clientY":e.clientY+(boardTools.mouse.offsetFinish.y)}
+            else  var er={"clientX":e.touches[0].clientX+(boardTools.mouse.offsetFinish.x),"clientY":e.touches[0].clientY+(boardTools.mouse.offsetFinish.y)}
             var posScaleDrag=board.MousePosScale(boardTools.canvas,er)
             board.trackMouse(posScaleDrag)
             board.transform(boardTools.ctx)
