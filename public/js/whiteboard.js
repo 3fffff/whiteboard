@@ -623,19 +623,11 @@ function sizeChange(evt){
     var prevh=preload.style.height
     prevh=parseFloat(prevh.substr(0,prevh.length-2))
     var scale=parseFloat(prevh/prevw)
-    if(partX<0 && x1>0) {
+    if((partX<0 && x1>0) ||(partX>0 && x1<0)) {
         prevh-=k*scale
         prevw-=k
     }
-    else if(partX<0 && x1<0){
-        prevh+=k*scale
-        prevw+=k
-    }
-    else if(partX>0 && x1<0){
-        prevh-=k*scale
-        prevw-=k
-    }
-    else if(partX>0 && x1>0){
+    else if((partX<0 && x1<0) || (partX>0 && x1>0)){
         prevh+=k*scale
         prevw+=k
     }
