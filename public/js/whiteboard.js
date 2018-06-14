@@ -1,10 +1,5 @@
 var boardTools= {
     lineWidth: 1,
-    text: {
-        fontFamily: 'Arial',
-        fontSize: 16,
-        fontStyle: 'normal'
-    },
     mouse: {
         mouseDown: false,
         pos: {
@@ -180,10 +175,7 @@ class board  {
             data: {
                 lineWidth: boardTools.lineWidth,
                 strokeStyle: boardTools.ctx.strokeStyle,
-                p1: p1,
-                p2: p2,
-                p3: p3,
-                p4: p4
+                p1: p1, p2: p2, p3: p3, p4: p4
             }
         }
     }
@@ -194,10 +186,7 @@ class board  {
             data: {
                 strokeStyle: boardTools.ctx.strokeStyle,
                 lineWidth: boardTools.lineWidth,
-                points: [{
-                    x: x,
-                    y: y
-                }]
+                points: [{x: x, y: y}]
             }
         }
     }
@@ -211,20 +200,18 @@ class board  {
         switch(t) {
             case 'pencil':
                 boardTools.ctx.lineWidth = boardTools.lineWidth;
-                document.getElementById("size").value=boardTools.lineWidth;
                 break
             case 'marker':
                 boardTools.ctx.lineWidth = boardTools.lineWidth*5;
-                document.getElementById("size").value=boardTools.lineWidth;
                 break
             case'eraser':
-                boardTools.ctx.lineWidth = boardTools.lineWidth;
-                document.getElementById("size").value=boardTools.lineWidth;
+                boardTools.ctx.lineWidth = boardTools.lineWidth*10;
                 break
             case 'text':
                 document.getElementById("textControl").style.visibility="visible";
                 break
         }
+        document.getElementById("size").value=boardTools.lineWidth;
         boardTools.tool = t;
     }
 
@@ -269,7 +256,6 @@ function drawStart (e) {
                 var textarea = document.createElement("textarea");
                 textarea.id = "txtText"
                 textarea.placeholder = "введите текст"
-                textarea.wrap="off"
                 document.body.appendChild(textarea)
                 var txtT=document.getElementById("txtText")
                 var text=document.getElementById("textControl")
@@ -277,10 +263,8 @@ function drawStart (e) {
                 txtT.style.top = boardTools.mouse.pos.initial.y + "px"
                 text.style.marginLeft = boardTools.mouse.pos.initial.x + "px"
                 text.style.marginTop = boardTools.mouse.pos.initial.y + "px"
-                txtT.style.fontWeight="normal"
-                txtT.style.fontStyle=boardTools.text.fontStyle
-                txtT.style.fontSize=boardTools.text.fontSize
-                txtT.style.fontFamily=boardTools.text.fontFamily
+                txtT.style.fontSize=16
+                txtT.style.fontFamily="Arial"
                 txtT.style.color=boardTools.ctx.strokeStyle
                 var x = boardTools.canvas.clientWidth - boardTools.mouse.pos.initial.x-15
                 var y = boardTools.canvas.clientHeight - boardTools.mouse.pos.initial.y-15
@@ -448,18 +432,18 @@ function textInsert() {
     boardTools.ctx.fillStyle=document.getElementsByClassName("picked__color")[0].style.backgroundColor
     var txt=document.getElementById("txtText")
     if(txt.value!=="") {
+        var size=parseInt(document.getElementById("txtText").style.fontSize)
         var r=txt.value.toString().split("\n")
-        boardTools.ctx.font = boardTools.text.fontStyle + " " + boardTools.text.fontSize + "px " + boardTools.text.fontFamily;
-        console.log(boardTools.ctx.font)
+        boardTools.ctx.font = "normal " + size + "px Arial";
         for(let i=0;i<r.length;i++)
-            board.text(boardTools.ctx, r[i], boardTools.mouse.text.left, boardTools.mouse.text.top + parseInt(boardTools.text.fontSize)+i*parseInt(boardTools.text.fontSize));
-        var e = {clientX: boardTools.mouse.text.left, clientY: boardTools.mouse.text.top + parseInt(boardTools.text.fontSize)}
+            board.text(boardTools.ctx, r[i], boardTools.mouse.text.left, boardTools.mouse.text.top + size+i*size);
+        var e = {clientX: boardTools.mouse.text.left, clientY: boardTools.mouse.text.top + size}
         var er = board.MousePosScale(boardTools.canvas, e)
         var res = {
             boardData: {
                 type: 'text',
                 data: {
-                    size:boardTools.text.fontSize,
+                    size:size,
                     font: boardTools.ctx.font,
                     strokeStyle: boardTools.ctx.fillStyle,
                     text: txt.value,
@@ -518,7 +502,6 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
     document.getElementById("preloadImg").src=""
     boardTools.tool = "pencil";
 })
-
 
 var active=false, center={x:0,y:0}, rotation=0, startAngle=0,moveImg=false,posMove={x:0,y:0},changeS={x:0,y:0},resizeImg=false,angle=0,chanL=0,partX,partY
 
@@ -682,8 +665,7 @@ for(var i=0;i<document.getElementsByClassName("txtFontStyle").length;i++) {
 
 document.getElementById("txtFontSize").addEventListener("change",function () {
     if(this.value>9 && this.value<73)
-        boardTools.text.fontSize = this.value;
-    document.getElementById("txtText").style.fontSize=this.value
+        document.getElementById("txtText").style.fontSize = this.value
 });
 
 document.getElementById('ImageLoad').addEventListener('change', function(e){
