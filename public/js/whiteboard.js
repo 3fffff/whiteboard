@@ -367,41 +367,15 @@ function drawEnd(e) {
             case 'circle':
                 var rx = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x)/2
                 var ry = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y)/2
-                var r=Math.max(Math.abs(rx),Math.abs(ry))
-                var x,y,xr,yr
-                if((rx>0 && ry>0)) {
-                     x = boardTools.posScaleI.sx + r
-                     y = boardTools.posScaleI.sy + r
-                    xr = boardTools.mouse.pos.initial.x + r
-                    yr= boardTools.mouse.pos.initial.y + r
-                }
-                else if((rx<0 && ry<0)){
-                     x = boardTools.posScaleI.sx- r
-                     y = boardTools.posScaleI.sy - r
-                     xr = boardTools.mouse.pos.initial.x - r
-                     yr = boardTools.mouse.pos.initial.y - r
-                }
-                else if((rx>0 && ry<0)){
-                     x = boardTools.posScaleI.sx+ r
-                     y = boardTools.posScaleI.sy - r
-                    xr= boardTools.mouse.pos.initial.x + r
-                    yr = boardTools.mouse.pos.initial.y - r
-                }
-                else if((rx<0 && ry>0)){
-                     x = boardTools.posScaleI.sx- r
-                     y = boardTools.posScaleI.sy + r
-                     xr = boardTools.mouse.pos.initial.x - r
-                     yr = boardTools.mouse.pos.initial.y + r
-                }
-                board.circle(boardTools.ctx, xr, yr,r);
+                board.circle(boardTools.ctx, boardTools.mouse.pos.initial.x + rx, boardTools.mouse.pos.initial.y + ry,Math.abs(rx));
                 boardTools.last = {
                     type: 'circle',
                     data: {
                         strokeStyle: boardTools.ctx.strokeStyle,
                         lineWidth: boardTools.lineWidth,
-                        x: x-(boardTools.offset.x)/boardTools.scale,
-                        y: y-(boardTools.offset.y)/boardTools.scale,
-                        r:r
+                        x: boardTools.posScaleI.sx+rx-(boardTools.offset.x)/boardTools.scale,
+                        y: boardTools.posScaleI.sy+ry-(boardTools.offset.y)/boardTools.scale,
+                        r:Math.abs(rx)
                     }
                 }
                 break
@@ -525,27 +499,9 @@ function drawRealT (e) {
                 case "circle":
                     var rx = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x)/2
                     var ry = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y)/2
-                    var r=Math.max(Math.abs(rx),Math.abs(ry))
-                    if((rx>0 && ry>0)) {
-                        var x = boardTools.mouse.pos.initial.x + r
-                        var y = boardTools.mouse.pos.initial.y + r
-                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" +r)
-                    }
-                    else if((rx<0 && ry<0)){
-                        var x = boardTools.mouse.pos.initial.x - r
-                        var y = boardTools.mouse.pos.initial.y - r
-                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + r)
-                    }
-                    else if((rx>0 && ry<0)){
-                        var x = boardTools.mouse.pos.initial.x + r
-                        var y = boardTools.mouse.pos.initial.y - r
-                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" +r)
-                    }
-                    else if((rx<0 && ry>0)){
-                        var x = boardTools.mouse.pos.initial.x - r
-                        var y = boardTools.mouse.pos.initial.y + r
-                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + r)
-                    }
+                    var x = boardTools.mouse.pos.initial.x + rx
+                    var y = boardTools.mouse.pos.initial.y + ry
+                    board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" +Math.abs(rx))
                     break
                 case 'arrow':
                     board.shapeSVG("line x1=" + boardTools.mouse.pos.initial.x + " y1=" + boardTools.mouse.pos.initial.y + " x2=" + boardTools.mouse.pos.final.x + " y2=" + boardTools.mouse.pos.final.y)
