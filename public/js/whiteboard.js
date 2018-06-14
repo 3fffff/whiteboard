@@ -368,24 +368,32 @@ function drawEnd(e) {
                 var rx = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x)/2
                 var ry = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y)/2
                 var r=Math.max(Math.abs(rx),Math.abs(ry))
-                var x,y
+                var x,y,xr,yr
                 if((rx>0 && ry>0)) {
                      x = boardTools.posScaleI.sx + r
                      y = boardTools.posScaleI.sy + r
+                    xr = boardTools.mouse.pos.initial.x + r
+                    yr= boardTools.mouse.pos.initial.y + r
                 }
                 else if((rx<0 && ry<0)){
                      x = boardTools.posScaleI.sx- r
                      y = boardTools.posScaleI.sy - r
+                     xr = boardTools.mouse.pos.initial.x - r
+                     yr = boardTools.mouse.pos.initial.y - r
                 }
                 else if((rx>0 && ry<0)){
                      x = boardTools.posScaleI.sx+ r
                      y = boardTools.posScaleI.sy - r
+                    xr= boardTools.mouse.pos.initial.x + r
+                    yr = boardTools.mouse.pos.initial.y - r
                 }
                 else if((rx<0 && ry>0)){
                      x = boardTools.posScaleI.sx- r
                      y = boardTools.posScaleI.sy + r
+                     xr = boardTools.mouse.pos.initial.x - r
+                     yr = boardTools.mouse.pos.initial.y + r
                 }
-                board.circle(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y,r);
+                board.circle(boardTools.ctx, xr, yr,r);
                 boardTools.last = {
                     type: 'circle',
                     data: {
