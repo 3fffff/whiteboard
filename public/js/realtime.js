@@ -11,17 +11,21 @@ class rtSocket  {
         var s1 = s.split("?")
         var spl = s1[1].split("&")
         var params = {}
-        if(spl.length===1) {
+        console.log(s1)
+        var room=decodeURI(s1[1]).replace(/[^A-Za-zА-Яа-яЁё0-9_]/g, "")
+        if(spl.length===1 ) {
             console.log("s")
             if(sessionStorage.getItem("name")!==null) {
-                params["room"] = s1[1]
+                params["room"] = room
                 params["name"] = sessionStorage.getItem("name")
                 console.log(params)
+                if(sessionStorage.getItem("messages"))
+                    document.getElementsByClassName('messages')[0].innerHTML= sessionStorage.getItem("messages")
                 rtSocket.join(params)
             }
             else {
                 var result = "Anonymous"
-                params["room"] = s1[1]
+                params["room"] = room
                 params["name"] = result
                 document.getElementsByClassName("dm-overlay")[0].style.display="block"
                 sessionStorage.setItem("name",result)
@@ -31,7 +35,8 @@ class rtSocket  {
         else {
             for (var i = 0; i < spl.length; i++) {
                 var pr = spl[i].split("=")
-                params[pr[0]] = pr[1]
+                var prr=decodeURI(pr[1]).split("%")
+                params[pr[0]] = prr[0].replace(/[^A-Za-zА-Яа-яЁё0-9]/g, "")
             }
             if (params["name"] !== undefined)
                 sessionStorage.setItem("name", params["name"])
@@ -47,6 +52,7 @@ class rtSocket  {
         tools.socket.emit('join', params, function(err) {
             if (err) {
                 alert(err);
+                window.location.href="/"
             }
             else {
                 console.log('ok');
@@ -113,6 +119,8 @@ class rtSocket  {
                 messagesContainer.innerHTML+= '<li class="other">'+'<img class="image_chat" width=150 height=150 src=' + message.file + '>'+'</li>'
             else messagesContainer.innerHTML+= '<li class="other">'+ '<a download href=' + message.file + '>'+message.fileName+'</a>'+ '</li>'
             sessionStorage.setItem("messages",messagesContainer.innerHTML)
+            var other=document.getElementsByClassName('other')
+            other[other.length-1].scrollIntoView();
         });
     }
 
@@ -121,16 +129,13 @@ class rtSocket  {
             var messagesContainer = document.getElementsByClassName('messages')[0];
             messagesContainer.innerHTML+= '<li class="other">'+ message.text+'</li>'
             sessionStorage.setItem("messages",messagesContainer.innerHTML)
+            var other=document.getElementsByClassName('other')
+            other[other.length-1].scrollIntoView();
         });
     }
     static drawFromSocket (dd) {
         if(!dd)
             return
-
-        var initial={}
-        initial["lineWidth"] = boardTools.ctx.lineWidth;
-        initial["strokeStyle"] = boardTools.ctx.strokeStyle;
-        initial["font"] = boardTools.ctx.font;
         var dataDraw=dd.boardData
         if(dataDraw && dataDraw.data) {
             boardTools.ctx.lineWidth = dataDraw.data.lineWidth;
@@ -152,7 +157,7 @@ class rtSocket  {
                     board.ellipse(boardTools.ctx, dataDraw.data.x, dataDraw.data.y, dataDraw.data.w, dataDraw.data.h);
                     break;
                 case 'circle':
-                    board.circle(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2);
+                    board.circle(boardTools.ctx, dataDraw.data.x, dataDraw.data.y, dataDraw.data.r);
                     break;
                 case 'arrow':
                     board.arrow(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2);
@@ -188,6 +193,8 @@ document.getElementsByClassName("close")[0].addEventListener("click",function(){
 })
 document.getElementById("ready").addEventListener("click",function(){
     document.getElementsByClassName("dm-overlay")[0].style.display="none"
-    sessionStorage.setItem("name",document.getElementById("name").value)
-    tools.socket.emit('updateUser', document.getElementById("name").value);
+    if(document.getElementById("name").value!=="") {
+        sessionStorage.setItem("name", document.getElementById("name").value)
+        tools.socket.emit('updateUser', document.getElementById("name").value);
+    }
 })

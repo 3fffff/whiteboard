@@ -62,6 +62,8 @@ function sendNewMessage() {
     });
     messagesContainer.innerHTML+='<li class="self">'+newMessage+ '</li>'
     userInput.innerHTML='';
+    var self= document.getElementsByClassName('self')
+   self[self.length-1].scrollIntoView();
 }
 
 document.getElementsByClassName("text-box")[0].addEventListener("keyup",(e) => {

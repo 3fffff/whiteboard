@@ -68,7 +68,7 @@ class Users {
             console.log(data)
     }
     getRoom(room){
-        let res=this.rooms.filter((x) => x.room.includes(room) && x.visible!=="false")
+        let res=this.rooms.filter((x) => x.room.toLocaleLowerCase().includes(room) && x.visible!=="false")
         return res.map((r)=>r.room)
     }
     updateUserName(id,name){

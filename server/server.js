@@ -15,6 +15,7 @@ var server = http.createServer(app);
 var io = socketIO(server);
 
 var users = new Users();
+var disUser=false
 
 app.use(express.static(publicPath));
 app.use(bodyParser.json());
@@ -39,25 +40,29 @@ io.on('connection', (socket) => {
 		if (!isRealString(params.name) || !isRealString(params.room)) {
 			return callback('Имя и название комнаты обязательны к заполнению');
 		}
+		if(!users.getUser(socket.id)) {
+            /* Присоединяемся к определенной комнате */
+            socket.join(params.room);
 
-		/* Присоединяемся к определенной комнате */
-		socket.join(params.room);
+            users.removeUser(socket.id); // Удаляем юзера из других комнат
 
-		users.removeUser(socket.id); // Удаляем юзера из других комнат
+            /* Добавляем нового юзера */
+            users.addUser(socket.id, params.name, params.room, params.visible);
 
-		/* Добавляем нового юзера */
-		users.addUser(socket.id, params.name, params.room, params.visible);
+            /* Отправляем всем в определенной комнате */
+            io.to(params.room).emit('updateUserList', users.getUserList(params.room));
 
-		/* Отправляем всем в определенной комнате */
-		io.to(params.room).emit('updateUserList', users.getUserList(params.room));
-
-		/* ШВ сообщения всем в определенной комнате, кроме этого сокета */
-		socket.broadcast.to(params.room).emit('newMessage', generateMessage('Сервер', `Присоединился новый пользователь - ${params.name}`));
-	//	console.log(users.users)
-		var draw = users.getData(params.room)
-		//восстановление сохранения пойдет))
-		io.sockets.connected[socket.id].emit('drawingRestore', draw)
-		callback();
+            /* ШВ сообщения всем в определенной комнате, кроме этого сокета */
+            socket.broadcast.to(params.room).emit('newMessage', generateMessage('Сервер', `Присоединился новый пользователь - ${params.name}`));
+            //	console.log(users.users)
+            var draw = users.getData(params.room)
+            //восстановление сохранения пойдет))
+            io.sockets.connected[socket.id].emit('drawingRestore', draw)
+            callback();
+        }
+        else{
+			disUser=false
+		}
 	});
 
 	/* Новое сообщение */
@@ -104,15 +109,20 @@ io.on('connection', (socket) => {
     });
 
 	/* Клиент отключился от сервера */
-	socket.on('disconnect', () => {
-		var user = users.removeUser(socket.id);
-
-		if (user) {
-			/* Отправляем всем в определенной комнате */
-			io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-			io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
-		}
-	});
+	socket.on('disconnect', (reason) => {
+		console.log(reason)
+        disUser=true
+        setTimeout(function () {
+        	if(disUser) {
+                var user = users.removeUser(socket.id);
+                if (user) {
+                    /* Отправляем всем в определенной комнате */
+                    io.to(user.room).emit('updateUserList', users.getUserList(user.room));
+                    io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
+                }
+            }
+        },7000);
+    })
 });
 
 server.listen(port, () => {

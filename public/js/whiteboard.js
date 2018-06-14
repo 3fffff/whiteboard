@@ -143,16 +143,9 @@ class board  {
     ctx.strokeRect(x, y, w, h);
 }
 
-static  circle (ctx, x1, y1, x2, y2) {
-    var x = (x2 + x1) / 2;
-    var y = (y2 + y1) / 2;
-    var r = Math.max(
-        Math.abs(x2 - x1),
-        Math.abs(y2 - y1)
-    ) / 2;
-
+static  circle (ctx, x, y, r) {
     ctx.beginPath();
-    ctx.ellipse(x, y, Math.abs(r), Math.abs(r), 0, 0, 2 * Math.PI);
+    ctx.ellipse(x, y, r, r, 0, 0, 2 * Math.PI);
     ctx.stroke();
 }
 
@@ -372,16 +365,35 @@ function drawEnd(e) {
                 }
                 break
             case 'circle':
-                board.circle(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
+                var rx = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x)/2
+                var ry = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y)/2
+                var r=Math.max(Math.abs(rx),Math.abs(ry))
+                var x,y
+                if((rx>0 && ry>0)) {
+                     x = boardTools.posScaleI.sx + r
+                     y = boardTools.posScaleI.sy + r
+                }
+                else if((rx<0 && ry<0)){
+                     x = boardTools.posScaleI.sx- r
+                     y = boardTools.posScaleI.sy - r
+                }
+                else if((rx>0 && ry<0)){
+                     x = boardTools.posScaleI.sx+ r
+                     y = boardTools.posScaleI.sy - r
+                }
+                else if((rx<0 && ry>0)){
+                     x = boardTools.posScaleI.sx- r
+                     y = boardTools.posScaleI.sy + r
+                }
+                board.circle(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y,r);
                 boardTools.last = {
                     type: 'circle',
                     data: {
                         strokeStyle: boardTools.ctx.strokeStyle,
                         lineWidth: boardTools.lineWidth,
-                        x1: boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,
-                        y1: boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale,
-                        x2: posScale.sx-(boardTools.offset.x)/boardTools.scale,
-                        y2: posScale.sy-(boardTools.offset.y)/boardTools.scale
+                        x: x-(boardTools.offset.x)/boardTools.scale,
+                        y: y-(boardTools.offset.y)/boardTools.scale,
+                        r:r
                     }
                 }
                 break
@@ -503,30 +515,28 @@ function drawRealT (e) {
                     }
                     break
                 case "circle":
-                    var rx = Math.abs((boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x) / 2)
-                    var ry = Math.abs((boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y) / 2)
-                    var r=Math.max(rx,ry)
-                    var xp = boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x
-                    var yp = boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y
-                    if (xp > 0 && yp > 0) {
+                    var rx = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x)/2
+                    var ry = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y)/2
+                    var r=Math.max(Math.abs(rx),Math.abs(ry))
+                    if((rx>0 && ry>0)) {
                         var x = boardTools.mouse.pos.initial.x + r
                         var y = boardTools.mouse.pos.initial.y + r
-                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + Math.abs(r))
+                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" +r)
                     }
-                    else if (xp < 0 && yp < 0) {
-                        var x = boardTools.mouse.pos.final.x + r
-                        var y = boardTools.mouse.pos.final.y + r
-                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + Math.abs(r))
+                    else if((rx<0 && ry<0)){
+                        var x = boardTools.mouse.pos.initial.x - r
+                        var y = boardTools.mouse.pos.initial.y - r
+                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + r)
                     }
-                    else if (xp > 0 && yp < 0) {
-                        var x = boardTools.mouse.pos.initial.x + Math.abs(r)
-                        var y = boardTools.mouse.pos.final.y + Math.abs(r)
-                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + Math.abs(r))
+                    else if((rx>0 && ry<0)){
+                        var x = boardTools.mouse.pos.initial.x + r
+                        var y = boardTools.mouse.pos.initial.y - r
+                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" +r)
                     }
-                    else if (xp < 0 && yp > 0) {
-                        var x = boardTools.mouse.pos.final.x + Math.abs(r)
-                        var y = boardTools.mouse.pos.initial.y + Math.abs(r)
-                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + Math.abs(r))
+                    else if((rx<0 && ry>0)){
+                        var x = boardTools.mouse.pos.initial.x - r
+                        var y = boardTools.mouse.pos.initial.y + r
+                        board.shapeSVG("circle cx=" + x + " cy=" + y + " r=" + r)
                     }
                     break
                 case 'arrow':
@@ -562,6 +572,7 @@ function removeBlockClass(del)
 }
 
 function textInsert() {
+    boardTools.ctx.fillStyle=document.getElementsByClassName("picked__color")[0].style.backgroundColor
     var txt=document.getElementById("txtText")
     if(txt.value!=="") {
         var r=txt.value.toString().split("\n")
