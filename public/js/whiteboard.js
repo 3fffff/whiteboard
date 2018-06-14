@@ -247,9 +247,9 @@ class board  {
 
 function drawStart (e) {
     removeBlockClass("fadeInLeft")
-    if (e.type === 'mousedown') boardTools.mouseDown = true;
+    if (e.type === 'mousedown') boardTools.mouse.mouseDown = true;
     if (e.type === 'touchstart') boardTools.touchDown = true;
-    if(boardTools.mouseDown) {
+    if(boardTools.mouse.mouseDown) {
         boardTools.mouse.pos.initial.x = e.clientX
         boardTools.mouse.pos.initial.y = e.clientY
     }
@@ -259,8 +259,6 @@ function drawStart (e) {
     }
     document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
     boardTools.posScaleI=board.MousePosScale(boardTools.canvas,e)
-    console.log(boardTools.posScaleI)
-    console.log(boardTools.offset)
     if(!boardTools.dragged) {
         switch (boardTools.tool) {
             case 'text':
@@ -353,11 +351,11 @@ function drawEnd(e) {
     }
 }
 function drawRealT (e) {
-    if(boardTools.mouseDown) {
+    if(boardTools.mouse.mouseDown) {
         boardTools.mouse.pos.final.x = e.clientX
         boardTools.mouse.pos.final.y = e.clientY
     }
-    else{
+    else if(boardTools.touchDown){
         boardTools.mouse.pos.final.x = e.touches[0].clientX
         boardTools.mouse.pos.final.y = e.touches[0].clientY
     }
@@ -365,9 +363,9 @@ function drawRealT (e) {
     if (boardTools.mouse.mouseDown || boardTools.touchDown) {
         if (boardTools.dragged) {
             var er
-            if(boardTools.mouseDown)
+            if(boardTools.mouse.mouseDown)
                 er={"clientX":e.clientX+(boardTools.mouse.offsetFinish.x),"clientY":e.clientY+(boardTools.mouse.offsetFinish.y)}
-            else er={"clientX":e.touches[0].clientX+(boardTools.mouse.offsetFinish.x),"clientY":e.touches[0].clientY+(boardTools.mouse.offsetFinish.y)}
+            else if(boardTools.touchDown) er={"clientX":e.touches[0].clientX+(boardTools.mouse.offsetFinish.x),"clientY":e.touches[0].clientY+(boardTools.mouse.offsetFinish.y)}
             var posScaleDrag=board.MousePosScale(boardTools.canvas,er)
             board.trackMouse(posScaleDrag)
             board.transform(boardTools.ctx)
