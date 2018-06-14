@@ -399,7 +399,7 @@ function drawEnd(e) {
                     type: 'arrow',
                     data: {
                         lineWidth: boardTools.lineWidth,
-                        strokeStyle: boardTools.strokeStyle,
+                        strokeStyle: boardTools.ctx.strokeStyle,
                         x1: boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,
                         y1: boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale,
                         x2: posScale.sx-(boardTools.offset.x)/boardTools.scale,
