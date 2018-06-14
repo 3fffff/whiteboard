@@ -147,20 +147,20 @@ class rtSocket  {
                     board.drawImageRot(boardTools.ctx, dataDraw.data.src, dataDraw.data.x, dataDraw.data.y, dataDraw.data.w, dataDraw.data.h, dataDraw.data.deg)
                     break;
                 case 'line':
-                    board.line(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2);
+                    board.line(boardTools.ctx, dataDraw.data.p1, dataDraw.data.p2, dataDraw.data.p3, dataDraw.data.p4)
                     break;
 
                 case 'rectangle':
-                    board.rect(boardTools.ctx, dataDraw.data.x, dataDraw.data.y, dataDraw.data.w, dataDraw.data.h);
+                    board.rect(boardTools.ctx, dataDraw.data.p1, dataDraw.data.p2, dataDraw.data.p3, dataDraw.data.p4);
                     break;
                 case 'ellipse':
-                    board.ellipse(boardTools.ctx, dataDraw.data.x, dataDraw.data.y, dataDraw.data.w, dataDraw.data.h);
+                    board.ellipse(boardTools.ctx, dataDraw.data.p1, dataDraw.data.p2, dataDraw.data.p3, dataDraw.data.p4);
                     break;
                 case 'circle':
-                    board.circle(boardTools.ctx, dataDraw.data.x, dataDraw.data.y, dataDraw.data.r);
+                    board.circle(boardTools.ctx, dataDraw.data.p1, dataDraw.data.p2, dataDraw.data.p3);
                     break;
                 case 'arrow':
-                    board.arrow(boardTools.ctx, dataDraw.data.x1, dataDraw.data.y1, dataDraw.data.x2, dataDraw.data.y2);
+                    board.arrow(boardTools.ctx, dataDraw.data.p1, dataDraw.data.p2, dataDraw.data.p3, dataDraw.data.p4);
                     break;
                 case 'text':
                     var res=dataDraw.data.text.toString().split("\n")

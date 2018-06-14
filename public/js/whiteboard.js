@@ -182,6 +182,33 @@ static eraser(ctx){
     ctx.arc(boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.eraser.size, 0, 2 * Math.PI);
     ctx.fill();
 }
+static sendToSocketShape(type,p1,p2,p3,p4) {
+    boardTools.last = {
+        type: type,
+        data: {
+            lineWidth: boardTools.lineWidth,
+            strokeStyle: boardTools.ctx.strokeStyle,
+            p1: p1,
+            p2: p2,
+            p3: p3,
+            p4: p4
+        }
+    }
+}
+
+    static sendToSocketPoints(type,x,y) {
+        boardTools.last={
+            type: type,
+            data: {
+                strokeStyle: boardTools.ctx.strokeStyle,
+                lineWidth: boardTools.lineWidth,
+                points: [{
+                    x: x,
+                    y: y
+                }]
+            }
+        }
+    }
 
 static changeTool (t) {
     boardTools.dragged=false
@@ -284,43 +311,13 @@ function drawStart (e) {
                 setTimeout(function(){txtT.focus()},50)
                 break
             case 'pencil':
-                boardTools.last={
-                    type: 'pencil',
-                    data: {
-                        strokeStyle: boardTools.ctx.strokeStyle,
-                        lineWidth: boardTools.lineWidth,
-                        points: [{
-                            x: boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,
-                            y: boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale
-                        }]
-                    }
-                }
+                board.sendToSocketPoints("pencil",boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale, boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale)
                 break
             case 'marker':
-                boardTools.last = {
-                    type: 'marker',
-                    data: {
-                        strokeStyle: boardTools.ctx.strokeStyle,
-                        size: boardTools.marker.size,
-                        lineWidth: boardTools.ctx.size,
-                        points: [{
-                            x: boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,
-                            y: boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale
-                        }]
-                    }
-                }
+                board.sendToSocketPoints("marker",boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale, boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale)
                 break
             case 'eraser':
-                boardTools.last = {
-                    type: 'eraser',
-                    data: {
-                        size: boardTools.eraser.size,
-                        points: [{
-                            x: boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,
-                            y: boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale
-                        }]
-                    }
-                }
+                board.sendToSocketPoints("eraser",boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale, boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale)
                 break
         }
     }
@@ -338,74 +335,25 @@ function drawEnd(e) {
         switch (boardTools.tool) {
             case 'line':
                 board.line(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
-                boardTools.last = {
-                    type: 'line',
-                    data: {
-                        lineWidth: boardTools.lineWidth,
-                        strokeStyle: boardTools.ctx.strokeStyle,
-                        x1: boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,
-                        y1: boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale,
-                        x2: posScale.sx-(boardTools.offset.x)/boardTools.scale,
-                        y2: posScale.sy-(boardTools.offset.y)/boardTools.scale
-                    }
-                }
+                board.sendToSocketShape("line",boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale, boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale, posScale.sx-(boardTools.offset.x)/boardTools.scale, posScale.sy-(boardTools.offset.y)/boardTools.scale)
                 break
             case'rectangle':
                 board.rect(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x, boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y);
-                boardTools.last = {
-                    type: 'rectangle',
-                    data: {
-                        lineWidth: boardTools.lineWidth,
-                        strokeStyle: boardTools.ctx.strokeStyle,
-                        x: boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,
-                        y: boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale,
-                        w: posScale.sx - boardTools.posScaleI.sx,
-                        h: posScale.sy - boardTools.posScaleI.sy
-                    }
-                }
+                board.sendToSocketShape("rectangle",boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale,posScale.sx - boardTools.posScaleI.sx,posScale.sy - boardTools.posScaleI.sy)
                 break
             case 'circle':
                 var rx = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x)/2
                 var ry = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y)/2
                 board.circle(boardTools.ctx, boardTools.mouse.pos.initial.x + rx, boardTools.mouse.pos.initial.y + ry,Math.abs(rx));
-                boardTools.last = {
-                    type: 'circle',
-                    data: {
-                        strokeStyle: boardTools.ctx.strokeStyle,
-                        lineWidth: boardTools.lineWidth,
-                        x: boardTools.posScaleI.sx+rx-(boardTools.offset.x)/boardTools.scale,
-                        y: boardTools.posScaleI.sy+ry-(boardTools.offset.y)/boardTools.scale,
-                        r:Math.abs(rx)
-                    }
-                }
+                board.sendToSocketShape("circle",boardTools.posScaleI.sx+rx-(boardTools.offset.x)/boardTools.scale, boardTools.posScaleI.sy+ry-(boardTools.offset.y)/boardTools.scale, Math.abs(rx),null)
                 break
             case 'ellipse':
                 board.ellipse(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x, boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y);
-                boardTools.last = {
-                    type: 'ellipse',
-                    data: {
-                        strokeStyle: boardTools.ctx.strokeStyle,
-                        lineWidth: boardTools.lineWidth,
-                        x: boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,
-                        y: boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale,
-                        w: posScale.sx - boardTools.posScaleI.sx,
-                        h: posScale.sy - boardTools.posScaleI.sy
-                    }
-                }
+                board.sendToSocketShape("ellipse",boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale, boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale, posScale.sx - boardTools.posScaleI.sx, posScale.sy - boardTools.posScaleI.sy)
                 break
             case 'arrow':
                 board.arrow(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
-                boardTools.last = {
-                    type: 'arrow',
-                    data: {
-                        lineWidth: boardTools.lineWidth,
-                        strokeStyle: boardTools.ctx.strokeStyle,
-                        x1: boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale,
-                        y1: boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale,
-                        x2: posScale.sx-(boardTools.offset.x)/boardTools.scale,
-                        y2: posScale.sy-(boardTools.offset.y)/boardTools.scale
-                    }
-                }
+                board.sendToSocketShape("arrow",boardTools.posScaleI.sx-(boardTools.offset.x)/boardTools.scale, boardTools.posScaleI.sy-(boardTools.offset.y)/boardTools.scale, posScale.sx-(boardTools.offset.x)/boardTools.scale, posScale.sy-(boardTools.offset.y)/boardTools.scale)
                 break
         }
         console.log("отправка")
@@ -414,6 +362,7 @@ function drawEnd(e) {
             room: tools.roomname,
             from: tools.username,
         }
+        console.log(boardTools.last)
         tools.socket.emit('drawing', result);
         boardTools.draw.push(result)
     }
