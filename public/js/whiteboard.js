@@ -181,7 +181,7 @@ class board  {
         boardTools.last = {
             type: type,
             data: {
-                lineWidth: boardTools.lineWidth,
+                lineWidth: boardTools.ctx.lineWidth,
                 strokeStyle: boardTools.ctx.strokeStyle,
                 p1: p1, p2: p2, p3: p3, p4: p4
             }
@@ -193,7 +193,7 @@ class board  {
             type: type,
             data: {
                 strokeStyle: boardTools.ctx.strokeStyle,
-                lineWidth: boardTools.lineWidth,
+                lineWidth: boardTools.ctx.lineWidth,
                 points: [{x: x, y: y}]
             }
         }
