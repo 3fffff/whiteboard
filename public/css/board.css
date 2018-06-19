@@ -306,7 +306,7 @@ ul {
     left: 12px;
     top: 76px
 }
-@media (min-width: 800px) {
+@media (min-width: 300px) and (max-width: 800px) {
     .toolbar--vertical {
         width: 120px;
         height: auto
