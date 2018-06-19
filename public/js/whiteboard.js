@@ -48,6 +48,7 @@ class board  {
         if (e.type === 'touchstart' || e.type === 'touchmove' ||e.type==='touchend') {
             x = e.touches[0].clientX - rect.left;
             y = e.touches[0].clientY - rect.top;
+            console.log("end")
         }
         else {
             x = e.clientX - rect.left;
