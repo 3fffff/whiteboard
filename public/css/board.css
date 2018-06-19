@@ -306,12 +306,6 @@ ul {
     left: 12px;
     top: 76px
 }
-@media (min-width: 300px) and (max-width: 800px) {
-    .toolbar--vertical {
-        transform: scale(1.5,1.5)
-    }
-
-}
 
 
 .toolbar--colored {
@@ -322,11 +316,6 @@ ul {
 .toolbar--vertical {
     width: 70px;
     height: auto
-}
-
-.toolbar--mini {
-    border: none;
-    width: 48px !important
 }
 
 .tools__menu {
@@ -476,4 +465,16 @@ ul {
 }
 .visible {
     display: block
+}
+@media (max-width: 767px) {
+    body{color:green}
+    .toolbar--vertical {
+        transform: scale(2.5,2.5);
+    }
+    .toolbar__box--middle-left {
+        position: absolute;
+        z-index: 10;
+        left: 75px;
+        top: 470px;
+    }
 }
