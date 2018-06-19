@@ -307,6 +307,7 @@ function drawEnd(e) {
     boardTools.mouse.mouseDown = false;
     boardTools.touchDown=false;
     e.preventDefault()
+    console.log(e)
     var posScale=board.MousePosScale(boardTools.canvas,e)
     if(!boardTools.dragged) {
         removeBlock("dop")
