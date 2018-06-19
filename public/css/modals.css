@@ -167,3 +167,24 @@
     padding       : 7px 20px;
     margin        : 20px;
 }
+
+.tooltiptext {
+    visibility: hidden;
+    width: 65px;
+    background-color: #6f07d6;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1000;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -30px;
+}
+
+.tip:hover .tooltiptext {
+    visibility: visible;
+}

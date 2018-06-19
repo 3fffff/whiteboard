@@ -25,7 +25,6 @@ textarea:focus::-webkit-input-placeholder{
 #loadImage{
     display: block;
     position:relative;
-    overflow:hidden;
     top: 0;
     left: 0;
     cursor: pointer;
@@ -33,10 +32,10 @@ textarea:focus::-webkit-input-placeholder{
 
 #loadImage input[type=file]{
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    left: 15px;
+    top: 15px;
+    width: 5%;
+    height: 5%;
     transform: scale(20);
     letter-spacing: 10em;     /* IE 9 fix */
     -ms-transform: scale(20); /* IE 9 fix */

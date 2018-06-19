@@ -1,5 +1,4 @@
 var boardTools= {
-    lineWidth: 1,
     mouse: {
         mouseDown: false,
         pos: {
@@ -46,7 +45,7 @@ class board  {
     static MousePosScale(canvas, e) {
         var rect = canvas.getBoundingClientRect();
         var x=0,y=0
-        if (e.type === 'touchstart' || e.type === 'touchmove') {
+        if (e.type === 'touchstart' || e.type === 'touchmove' ||e.type==='touchend') {
             x = e.touches[0].clientX - rect.left;
             y = e.touches[0].clientY - rect.top;
         }
