@@ -466,15 +466,3 @@ ul {
 .visible {
     display: block
 }
-@media (max-width: 767px) {
-    body{color:green}
-    .toolbar--vertical {
-        transform: scale(2.5,2.5);
-    }
-    .toolbar__box--middle-left {
-        position: absolute;
-        z-index: 10;
-        left: 75px;
-        top: 470px;
-    }
-}
