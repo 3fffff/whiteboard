@@ -54,7 +54,6 @@ class board  {
             x = e.clientX - rect.left;
             y = e.clientY - rect.top;
         }
-        console.log(x)
         var sx = (x-boardTools.canvas.clientWidth/2)/boardTools.scale;
         var sy = (y-boardTools.canvas.clientHeight/2)/boardTools.scale;
         return {
@@ -175,7 +174,8 @@ class board  {
     static eraser(ctx){
         ctx.beginPath();
         ctx.fillStyle = "white";
-        ctx.arc(boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.lineWidth*10, 0, 2 * Math.PI);
+        ctx.strokeStyle="white"
+        ctx.arc(boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.ctx.lineWidth*10, 0, 2 * Math.PI);
         ctx.fill();
     }
     static sendToSocketShape(type,p1,p2,p3,p4) {
