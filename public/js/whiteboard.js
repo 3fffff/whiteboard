@@ -46,9 +46,9 @@ class board  {
         var rect = canvas.getBoundingClientRect();
         var x=0,y=0
         console.log(e.type)
-        if ((e.type === 'touchstart' || e.type === 'touchmove' || e.type==='touchend')&& e.touches.length!==0) {
-            x = e.touches[0].clientX - rect.left;
-            y = e.touches[0].clientY - rect.top;
+        if ((e.type === 'touchstart' || e.type === 'touchmove' || e.type==='touchend')&& e.changedTouches.length!==0) {
+            x = e.changedTouches[0].clientX - rect.left;
+            y = e.changedTouches[0].clientY - rect.top;
         }
         else {
             x = e.clientX - rect.left;
@@ -747,7 +747,7 @@ for(var i=0;i<document.getElementsByClassName("grip").length;i++) {
 }
 document.getElementById("canvas").addEventListener('mousedown',drawStart)
 document.getElementById("canvas").addEventListener('touchstart',drawStart,false)
-document.getElementById("canvas").addEventListener('mouseup', drawEnd);
+document.getElementById("canvas").addEventListener('mouseup', drawEnd,false);
 document.getElementById("canvas").addEventListener('touchend', drawEnd,false);
 document.getElementById("canvas").addEventListener('mousemove',drawRealT,false);
 document.getElementById("canvas").addEventListener('touchmove',drawRealT,false);
