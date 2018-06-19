@@ -253,6 +253,7 @@ function drawStart (e) {
         boardTools.mouse.pos.initial.y = e.clientY
     }
     else{
+        e.preventDefault()
         boardTools.mouse.pos.initial.x = e.touches[0].clientX
         boardTools.mouse.pos.initial.y = e.touches[0].clientY
     }
@@ -305,6 +306,7 @@ function drawStart (e) {
 function drawEnd(e) {
     boardTools.mouse.mouseDown = false;
     boardTools.touchDown=false;
+    e.preventDefault()
     var posScale=board.MousePosScale(boardTools.canvas,e)
     if(!boardTools.dragged) {
         removeBlock("dop")
@@ -355,6 +357,7 @@ function drawRealT (e) {
         boardTools.mouse.pos.final.y = e.clientY
     }
     else if(boardTools.touchDown){
+        e.preventDefault()
         boardTools.mouse.pos.final.x = e.touches[0].clientX
         boardTools.mouse.pos.final.y = e.touches[0].clientY
     }
@@ -739,9 +742,9 @@ for(var i=0;i<document.getElementsByClassName("grip").length;i++) {
     document.getElementsByClassName("grip")[i].addEventListener('mouseup', EndSize, false);
 }
 document.getElementById("canvas").addEventListener('mousedown',drawStart)
-document.getElementById("canvas").addEventListener('touchstart',drawStart)
+document.getElementById("canvas").addEventListener('touchstart',drawStart,false)
 document.getElementById("canvas").addEventListener('mouseup', drawEnd);
-document.getElementById("canvas").addEventListener('touchend', drawEnd);
+document.getElementById("canvas").addEventListener('touchend', drawEnd,false);
 document.getElementById("canvas").addEventListener('mousemove',drawRealT,false);
 document.getElementById("canvas").addEventListener('touchmove',drawRealT,false);
 document.getElementById("canvas").addEventListener('DOMMouseScroll',Scroll,false);
