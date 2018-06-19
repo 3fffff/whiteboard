@@ -54,6 +54,7 @@ class board  {
             x = e.clientX - rect.left;
             y = e.clientY - rect.top;
         }
+        console.log(x)
         var sx = (x-boardTools.canvas.clientWidth/2)/boardTools.scale;
         var sy = (y-boardTools.canvas.clientHeight/2)/boardTools.scale;
         return {
