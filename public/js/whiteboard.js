@@ -30,7 +30,6 @@ class board  {
     }
 
     static transform(ctx) {
-
         ctx.clearRect(0, 0, boardTools.canvas.clientWidth, boardTools.canvas.clientHeight);
 
         ctx.save();
@@ -45,7 +44,6 @@ class board  {
     static MousePosScale(canvas, e) {
         var rect = canvas.getBoundingClientRect();
         var x=0,y=0
-        console.log(e.type)
         if ((e.type === 'touchstart' || e.type === 'touchmove' || e.type==='touchend')&& e.changedTouches.length!==0) {
             x = e.changedTouches[0].clientX - rect.left;
             y = e.changedTouches[0].clientY - rect.top;
@@ -100,9 +98,9 @@ class board  {
             var pic = new Image();
             pic.src    = evt.target.result;
             pic.onload = function() {
-                if(this.width>document.body.clientWidth/2 || this.height>document.body.clientHeight/2) {
-                    var resx=50*this.width/document.body.clientWidth
-                    var resy=50*this.height/document.body.clientWidth
+                if(this.width>document.body.clientWidth*0.8 || this.height>document.body.clientHeight*0.8) {
+                    var resx=20*this.width/document.body.clientWidth
+                    var resy=20*this.height/document.body.clientWidth
                     var x=(document.body.clientWidth-resx)/2
                     var y=(document.body.clientHeight-resy)/2
                     preload.style.height=resy+"px"

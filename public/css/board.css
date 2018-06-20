@@ -466,7 +466,14 @@ ul {
 .visible {
     display: block
 }
-
+#no{
+    width:25px;
+    height:25px;
+}
+.yesno{
+    width:25px;
+    height:25px;
+}
 @media (max-width: 767px) {
     .toolbar__box--middle-left {
         position: absolute;
@@ -491,5 +498,9 @@ ul {
     #imgRot{
         width: 35px;
         height: 35px;
+    }
+    .yesno{
+        width:40px;
+        height:40px;
     }
 }
