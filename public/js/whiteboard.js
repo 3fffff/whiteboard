@@ -102,7 +102,7 @@ class board  {
             pic.onload = function() {
                 if(this.width>document.body.clientWidth/2 || this.height>document.body.clientHeight/2) {
                     var resx=100*this.width/document.body.clientWidth
-                    var resy=100*this.height/document.body.clientHeight
+                    var resy=100*this.height/document.body.clientWidth
                     var x=(document.body.clientWidth-resx)/2
                     var y=(document.body.clientHeight-resy)/2
                     preload.style.height=resy+"px"
