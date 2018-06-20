@@ -466,3 +466,15 @@ ul {
 .visible {
     display: block
 }
+
+@media (max-width: 767px) {
+    .toolbar__box--middle-left {
+        position: absolute;
+        z-index: 10;
+        left: 10px;
+        top: 5px;
+    }
+    .toolbar{
+        border:none;
+    }
+}

@@ -459,3 +459,8 @@ input[type="range"] {
     background: #4CAF50;
     cursor: pointer;
 }
+@media (max-width: 350px) {
+    .floating-chat.expand{
+        width:285px;
+    }
+}
