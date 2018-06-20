@@ -461,11 +461,6 @@ input[type="range"] {
 }
 @media (max-width: 350px) {
     .floating-chat.expand{
-        width:285px;
-    }
-}
-@media (max-width: 320px) {
-    .floating-chat.expand{
         width:250px;
     }
 }
