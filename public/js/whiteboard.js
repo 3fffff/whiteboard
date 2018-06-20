@@ -101,8 +101,8 @@ class board  {
             pic.src    = evt.target.result;
             pic.onload = function() {
                 if(this.width>document.body.clientWidth/2 || this.height>document.body.clientHeight/2) {
-                    var resx=this.width*0.3
-                    var resy=this.height*0.3
+                    var resx=100*this.width/document.body.clientWidth
+                    var resy=100*this.height/document.body.clientHeight
                     var x=(document.body.clientWidth-resx)/2
                     var y=(document.body.clientHeight-resy)/2
                     preload.style.height=resy+"px"
@@ -536,8 +536,14 @@ function start(e) {
         x: ref.left + (ref.width / 2),
         y: ref.top + (ref.height / 2)
     };
-    var x = e.clientX - center.x;
-    var y = e.clientY - center.y;
+    if(e.type==="touchmove" || e.type==="touchstart" || e.type==="touchend") {
+        x = e.touches[0].clientX - center.x;
+        y = e.touches[0].clientY - center.y;
+    }
+    else{
+        x = e.clientX - center.x;
+        y = e.clientY - center.y;
+    }
     startAngle = (180 / Math.PI) * Math.atan2(y, x);
     active = true;
 }
@@ -545,6 +551,14 @@ function start(e) {
 function rotate(e) {
     var x = e.clientX - center.x;
     var y = e.clientY - center.y;
+    if(e.type==="touchmove" || e.type==="touchstart" || e.type==="touchend") {
+        x = e.touches[0].clientX - center.x;
+        y = e.touches[0].clientY - center.y;
+    }
+    else{
+        x = e.clientX - center.x;
+        y = e.clientY - center.y;
+    }
     if (active) {
         var d = (180 / Math.PI) * Math.atan2(y, x);
         rotation = d - startAngle;
@@ -575,9 +589,12 @@ function StartSize(){
     resizeImg=true
 }
 
-function sizeChange(evt){
+function sizeChange(e){
     var k=10
-    var x=evt.clientX-changeS.x
+    var x=0
+    if(e.type==="touchmove" || e.type==="touchstart" || e.type==="touchend")
+       x= e.touches[0].clientX-changeS.x
+    else x=e.clientX-changeS.x
     var x1=x-chanL
     var preload=document.getElementById("preloadImg")
     var prevw=preload.style.width
@@ -609,18 +626,31 @@ function EndSize(){
 }
 function moveImgStart(e){
     var ref = document.getElementsByClassName("drop")[0].getBoundingClientRect()
-    posMove = {
-        x: e.clientX-ref.left,
-        y: e.clientY-ref.top
-    };
-    console.log("начало")
-    console.log(center)
+    if(e.type==="touchstart") {
+        posMove = {
+            x: e.touches[0].clientX-ref.left,
+            y: e.touches[0].clientY-ref.top
+        };
+    }
+    else{
+        posMove = {
+            x: e.clientX-ref.left,
+            y: e.clientY-ref.top
+        };
+    }
     moveImg=true
 }
 function moveImgF(event){
-    var x = event.clientX - posMove.x;
-    var y = event.clientY - posMove.y;
-
+    var x =0
+    var y =0
+    if(event.type==="touchmove") {
+        x = event.touches[0].clientX - posMove.x;
+        y = event.touches[0].clientY - posMove.y;
+    }
+    else{
+        x = event.clientX - posMove.x;
+        y = event.clientY - posMove.y;
+    }
     if(moveImg) {
         active=false
         resizeImg=false
@@ -742,6 +772,9 @@ for(var i=0;i<document.getElementsByClassName("grip").length;i++) {
     document.getElementsByClassName("grip")[i].addEventListener('mousedown', StartSize, false);
     document.getElementsByClassName("grip")[i].addEventListener('mousemove', sizeChange, false);
     document.getElementsByClassName("grip")[i].addEventListener('mouseup', EndSize, false);
+    document.getElementsByClassName("grip")[i].addEventListener('touchstart', StartSize, false);
+    document.getElementsByClassName("grip")[i].addEventListener('touchmove', sizeChange, false);
+    document.getElementsByClassName("grip")[i].addEventListener('touchend', EndSize, false);
 }
 document.getElementById("canvas").addEventListener('mousedown',drawStart)
 document.getElementById("canvas").addEventListener('touchstart',drawStart,false)
@@ -754,12 +787,18 @@ document.getElementById("canvas").addEventListener('mousewheel',Scroll,false);
 document.getElementsByClassName("drop")[0].addEventListener("mousedown",moveImgStart,false)
 document.getElementsByClassName("drop")[0].addEventListener("mousemove",moveImgF,false)
 document.getElementsByClassName("drop")[0].addEventListener("mouseup",moveImgStop,false)
+document.getElementsByClassName("drop")[0].addEventListener("touchstart",moveImgStart,false)
+document.getElementsByClassName("drop")[0].addEventListener("touchmove",moveImgF,false)
+document.getElementsByClassName("drop")[0].addEventListener("touchend",moveImgStop,false)
 document.getElementById("LoadedImage").addEventListener("mouseup",EndSize,false)
 document.getElementById("LoadedImage").addEventListener("mousemove",sizeChange,false)
 document.getElementsByClassName("drop")[0].addEventListener('mouseup', EndSize, false);
 document.getElementsByClassName("rotator")[0].addEventListener("mousedown",start,false)
 document.getElementsByClassName("rotator")[0].addEventListener("mouseup",stop,false)
 document.getElementsByClassName("rotator")[0].addEventListener("mousemove",rotate,false)
+document.getElementsByClassName("rotator")[0].addEventListener("touchstart",start,false)
+document.getElementsByClassName("rotator")[0].addEventListener("touchend",stop,false)
+document.getElementsByClassName("rotator")[0].addEventListener("touchmove",rotate,false)
 document.getElementById("LoadedImage").addEventListener("mousemove",rotate,false)
 document.getElementById("LoadedImage").addEventListener("mouseup",stop,false)
 document.getElementById("LoadedImage").addEventListener("click",stop,false)
