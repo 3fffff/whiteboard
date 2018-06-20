@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
             socket.broadcast.to(params.room).emit('newMessage', generateMessage('Сервер', `Присоединился новый пользователь - ${params.name}`));
 
             //восстановление сохранения пойдет))
-            io.sockets.connected[socket.id].emit('drawingRestore', users.getData(params.room))
+            io.to(socket.id).emit('drawingRestore', users.getData(params.room))
             callback();
         }
         else{
