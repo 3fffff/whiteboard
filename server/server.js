@@ -40,7 +40,6 @@ io.on('connection', (socket) => {
 		if (!isRealString(params.name) || !isRealString(params.room)) {
 			return callback('Имя и название комнаты обязательны к заполнению');
 		}
-		if(!users.getUser(socket.id)) {
             /* Присоединяемся к определенной комнате */
             socket.join(params.room);
 
@@ -56,12 +55,9 @@ io.on('connection', (socket) => {
             socket.broadcast.to(params.room).emit('newMessage', generateMessage('Сервер', `Присоединился новый пользователь - ${params.name}`));
 
             //восстановление сохранения пойдет))
-            io.to(socket.id).emit('drawingRestore', users.getData(params.room))
+            io.to(socket.id).emit('drawingRestore', users.rooms.filter((x) => x.room === params.room)[0].data)
             callback();
-        }
-        else{
 			disUser=false
-		}
 	});
 
 	/* Новое сообщение */
@@ -110,17 +106,13 @@ io.on('connection', (socket) => {
 	/* Клиент отключился от сервера */
 	socket.on('disconnect', (reason) => {
 		console.log(reason)
-        disUser=true
-        setTimeout(function () {
-        	if(disUser) {
                 var user = users.removeUser(socket.id);
                 if (user) {
                     /* Отправляем всем в определенной комнате */
                     io.to(user.room).emit('updateUserList', users.getUserList(user.room));
                     io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
                 }
-            }
-        },7000);
+
     })
 });
 

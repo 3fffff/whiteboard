@@ -111,8 +111,8 @@ class board  {
                 else {
                     var x=(document.body.clientWidth-this.width/2)/2
                     var y=(document.body.clientHeight-this.height/2)/2
-                    preload.style.height = this.height/2 + "px"
-                    preload.style.width = this.width/2 + "px"
+                    preload.style.height = this.height*0.4 + "px"
+                    preload.style.width = this.width*0.4 + "px"
                     drop.style.left = x + "px"
                     drop.style.top = y + "px"
                 }
@@ -232,13 +232,13 @@ class board  {
     static changeSize (size) {
         switch(boardTools.tool) {
             case'marker':
-                boardTools.ctx.lineWidth =size*5;
+                boardTools.ctx.lineWidth =size*parseInt(boardTools.scale)*5;
                 break
             case'eraser':
-                boardTools.ctx.lineWidth = size*10;
+                boardTools.ctx.lineWidth = size*parseInt(boardTools.scale)*10;
                 break
             default:
-                boardTools.ctx.lineWidth = size;
+                boardTools.ctx.lineWidth = size*parseInt(boardTools.scale);
                 break
         }
     }
