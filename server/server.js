@@ -54,10 +54,9 @@ io.on('connection', (socket) => {
 
             /* ШВ сообщения всем в определенной комнате, кроме этого сокета */
             socket.broadcast.to(params.room).emit('newMessage', generateMessage('Сервер', `Присоединился новый пользователь - ${params.name}`));
-            //	console.log(users.users)
-            var draw = users.getData(params.room)
+
             //восстановление сохранения пойдет))
-            io.sockets.connected[socket.id].emit('drawingRestore', draw)
+            io.sockets.connected[socket.id].emit('drawingRestore', users.getData(params.room))
             callback();
         }
         else{
