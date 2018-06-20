@@ -65,7 +65,6 @@ class Users {
         }
             console.log("вставляем данные")
             console.log(room)
-            console.log(data)
     }
     getRoom(room){
         let res=this.rooms.filter((x) => x.room.toLocaleLowerCase().includes(room) && x.visible!=="false")

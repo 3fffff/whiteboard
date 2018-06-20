@@ -98,7 +98,7 @@ class board  {
             var pic = new Image();
             pic.src    = evt.target.result;
             pic.onload = function() {
-                if(this.width>document.body.clientWidth*0.8 || this.height>document.body.clientHeight*0.8) {
+                if(document.body.clientWidth<768 || document.body.clientWidth<768) {
                     var resx=20*this.width/document.body.clientWidth
                     var resy=20*this.height/document.body.clientWidth
                     var x=(document.body.clientWidth-resx)/2
@@ -109,10 +109,10 @@ class board  {
                     drop.style.top=y+"px"
                 }
                 else {
-                    var x=(document.body.clientWidth-this.width)/2
-                    var y=(document.body.clientHeight-this.height)/2
-                    preload.style.height = this.height + "px"
-                    preload.style.width = this.width + "px"
+                    var x=(document.body.clientWidth-this.width/2)/2
+                    var y=(document.body.clientHeight-this.height/2)/2
+                    preload.style.height = this.height/2 + "px"
+                    preload.style.width = this.width/2 + "px"
                     drop.style.left = x + "px"
                     drop.style.top = y + "px"
                 }
