@@ -175,6 +175,8 @@ class board  {
         ctx.strokeStyle="white"
         ctx.arc(boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.ctx.lineWidth*10, 0, 2 * Math.PI);
         ctx.fill();
+        ctx.fillStyle = document.getElementById("pickColor").style.backgroundColor
+        ctx.strokeStyle=document.getElementById("pickColor").style.backgroundColor
     }
     static sendToSocketShape(type,p1,p2,p3,p4) {
         boardTools.last = {
@@ -232,13 +234,13 @@ class board  {
     static changeSize (size) {
         switch(boardTools.tool) {
             case'marker':
-                boardTools.ctx.lineWidth =size*parseInt(boardTools.scale)*5;
+                boardTools.ctx.lineWidth =size*5;
                 break
             case'eraser':
-                boardTools.ctx.lineWidth = size*parseInt(boardTools.scale)*10;
+                boardTools.ctx.lineWidth = size*10;
                 break
             default:
-                boardTools.ctx.lineWidth = size*parseInt(boardTools.scale);
+                boardTools.ctx.lineWidth = size;
                 break
         }
     }
