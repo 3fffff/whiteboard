@@ -663,9 +663,16 @@ function moveImgStop(){
     active=false
     resizeImg=false
 }
+var delta=0,old=0
 function Scroll(evt){
-    var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
 
+    if(evt.type==="touchmove")
+    {
+        delta=evt.touches[1].clientY*evt.touches[1].clientX-evt.evt.touches[0].clientY*evt.touches[0].clientX-old
+       old= evt.touches[1].clientY*evt.touches[1].clientX-evt.evt.touches[0].clientY*evt.touches[0].clientX
+    }
+    else delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
+    console.log(delta)
     if (boardTools.scale<10.1 &&delta>0)
         boardTools.scale+=0.1
     else if(boardTools.scale>0.2 &&delta<0)
@@ -784,14 +791,13 @@ document.getElementById("canvas").addEventListener('mousemove',drawRealT,false);
 document.getElementById("canvas").addEventListener('touchmove',drawRealT,false);
 document.getElementById("canvas").addEventListener('DOMMouseScroll',Scroll,false);
 document.getElementById("canvas").addEventListener('mousewheel',Scroll,false);
+document.getElementById("canvas").addEventListener('touchmove',Scroll,false);
 document.getElementsByClassName("drop")[0].addEventListener("mousedown",moveImgStart,false)
 document.getElementsByClassName("drop")[0].addEventListener("mousemove",moveImgF,false)
 document.getElementsByClassName("drop")[0].addEventListener("mouseup",moveImgStop,false)
 document.getElementsByClassName("drop")[0].addEventListener("touchstart",moveImgStart,false)
 document.getElementsByClassName("drop")[0].addEventListener("touchmove",moveImgF,false)
 document.getElementsByClassName("drop")[0].addEventListener("touchend",moveImgStop,false)
-document.getElementById("LoadedImage").addEventListener("mouseup",EndSize,false)
-document.getElementById("LoadedImage").addEventListener("mousemove",sizeChange,false)
 document.getElementsByClassName("drop")[0].addEventListener('mouseup', EndSize, false);
 document.getElementsByClassName("rotator")[0].addEventListener("mousedown",start,false)
 document.getElementsByClassName("rotator")[0].addEventListener("mouseup",stop,false)
@@ -802,3 +808,5 @@ document.getElementsByClassName("rotator")[0].addEventListener("touchmove",rotat
 document.getElementById("LoadedImage").addEventListener("mousemove",rotate,false)
 document.getElementById("LoadedImage").addEventListener("mouseup",stop,false)
 document.getElementById("LoadedImage").addEventListener("click",stop,false)
+document.getElementById("LoadedImage").addEventListener("mouseup",EndSize,false)
+document.getElementById("LoadedImage").addEventListener("mousemove",sizeChange,false)
