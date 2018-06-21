@@ -668,7 +668,8 @@ function Scroll(evt){
 
     if(evt.type==="touchmove" && evt.touches.length===2)
     {
-        delta=evt.touches[1].clientY*evt.touches[1].clientX-evt.touches[0].clientY*evt.touches[0].clientX-old
+        if(old!==0)
+            delta=evt.touches[1].clientY*evt.touches[1].clientX-evt.touches[0].clientY*evt.touches[0].clientX-old
        old= evt.touches[1].clientY*evt.touches[1].clientX-evt.touches[0].clientY*evt.touches[0].clientX
     }
     else delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
@@ -679,6 +680,7 @@ function Scroll(evt){
     else if(boardTools.scale>0.2 &&delta<0)
         boardTools.scale-=0.1
     delta=0
+    old=0
     board.transform(boardTools.ctx);
     return evt.preventDefault() && false;
 };
