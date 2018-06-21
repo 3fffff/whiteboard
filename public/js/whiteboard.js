@@ -668,6 +668,7 @@ function Scroll(evt){
 
     if(evt.type==="touchmove" && evt.touches.length===2)
     {
+        boardTools.touchDown=false
         if(old!==0)
             delta=evt.touches[1].clientY*evt.touches[1].clientX-evt.touches[0].clientY*evt.touches[0].clientX-old
        old= evt.touches[1].clientY*evt.touches[1].clientX-evt.touches[0].clientY*evt.touches[0].clientX
