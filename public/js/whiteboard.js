@@ -358,13 +358,13 @@ function drawRealT (e) {
         boardTools.mouse.pos.final.x = e.clientX
         boardTools.mouse.pos.final.y = e.clientY
     }
-    else if(boardTools.touchDown){
+    else if(boardTools.touchDown ){
         e.preventDefault()
         boardTools.mouse.pos.final.x = e.touches[0].clientX
         boardTools.mouse.pos.final.y = e.touches[0].clientY
     }
     var posScale=board.MousePosScale(boardTools.canvas,e)
-    if (boardTools.mouse.mouseDown || boardTools.touchDown) {
+    if (boardTools.mouse.mouseDown || (boardTools.touchDown && e.touches.length===1)) {
         if (boardTools.dragged) {
             var er
             if(boardTools.mouse.mouseDown)
