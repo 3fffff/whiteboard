@@ -5,6 +5,11 @@
     cursor: crosshair;
     z-index:2;
 }
+#txtFontSize{
+	display:none;
+	position:absolute;
+	z-index:5;
+}
 
 .grab{
     cursor: -webkit-grab !important;

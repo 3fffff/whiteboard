@@ -283,7 +283,6 @@ function drawStart(e) {
 		switch (boardTools.tool) {
 			case 'text':
 				if (document.getElementById("txtText") !== null) textInsert()
-				removeBlock("txtText")
 				var textarea = document.createElement("textarea");
 				textarea.id = "txtText"
 				textarea.placeholder = "введите текст"
@@ -355,14 +354,16 @@ function drawEnd(e) {
 				break
 		}
 		console.log("отправка")
-		var result = {
-			boardData: boardTools.last,
-			room: tools.roomname,
-			from: tools.username,
+		if (Object.keys(boardTools.last).length !== 0) {
+			var result = {
+				boardData: boardTools.last,
+				room: tools.roomname,
+				from: tools.username,
+			}
+			console.log(boardTools.last)
+			tools.socket.emit('drawing', result);
+			boardTools.draw.push(result)
 		}
-		console.log(boardTools.last)
-		tools.socket.emit('drawing', result);
-		boardTools.draw.push(result)
 	} else {
 		boardTools.mouse.offsetFinish.x = boardTools.mouse.offsetInitial.x
 		boardTools.mouse.offsetFinish.y = boardTools.mouse.offsetInitial.y
@@ -478,7 +479,9 @@ function removeBlockClass(del) {
 function textInsert() {
 	boardTools.ctx.fillStyle = document.getElementsByClassName("picked__color")[0].style.backgroundColor
 	var txt = document.getElementById("txtText")
+	console.log(txt.value)
 	if (txt.value !== "") {
+
 		var size = parseInt(document.getElementById("txtText").style.fontSize)
 		var r = txt.value.toString().split("\n")
 		boardTools.ctx.font = "normal " + size + "px Arial";
@@ -508,6 +511,7 @@ function textInsert() {
 		boardTools.draw.push(res)
 	}
 	removeBlock("txtText")
+	document.getElementById("txtFontSize").style.display = "none"
 }
 
 document.getElementById("ImgLoadCanvas").addEventListener("click", function () {
@@ -713,7 +717,6 @@ var delta = 0,
 	old = 0
 
 function Scroll(evt) {
-
 	if (evt.type === "touchmove" && evt.touches.length === 2) {
 		boardTools.touchDown = false
 		if (old !== 0)
