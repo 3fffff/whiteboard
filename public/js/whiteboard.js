@@ -6,8 +6,7 @@ var boardTools= {
             final: {x: 0, y: 0}
         },
         offsetFinish : {x : 0, y : 0},
-        offsetInitial : {x : 0, y : 0},
-        text:{top:0,left:0}
+        offsetInitial : {x : 0, y : 0}
     },
     touchDown:false,
     canvas: document.getElementById("canvas"),
@@ -205,7 +204,7 @@ class board  {
         removeBlock("txtText")
         boardTools.canvas.classList.remove("grab")
         boardTools.canvas.style.cursor="crosshair"
-        document.getElementById("textControl").style.visibility="hidden"
+        document.getElementById("txtFontSize").style.visibility="hidden"
         switch(t) {
             case 'pencil':
                 boardTools.ctx.lineWidth = boardTools.lineWidth;
@@ -217,7 +216,7 @@ class board  {
                 boardTools.ctx.lineWidth = boardTools.lineWidth*10;
                 break
             case 'text':
-                document.getElementById("textControl").style.visibility="visible";
+                document.getElementById("txtFontSize").style.visibility="visible";
                 break
         }
         document.getElementById("size").value=boardTools.lineWidth;
@@ -271,11 +270,8 @@ function drawStart (e) {
                 textarea.placeholder = "введите текст"
                 document.body.appendChild(textarea)
                 var txtT=document.getElementById("txtText")
-                var text=document.getElementById("textControl")
                 txtT.style.left = boardTools.mouse.pos.initial.x + "px"
                 txtT.style.top = boardTools.mouse.pos.initial.y + "px"
-                text.style.marginLeft = boardTools.mouse.pos.initial.x + "px"
-                text.style.marginTop = boardTools.mouse.pos.initial.y + "px"
                 txtT.style.fontSize=16
                 txtT.style.fontFamily="Arial"
                 txtT.style.color=boardTools.ctx.strokeStyle
@@ -283,9 +279,10 @@ function drawStart (e) {
                 var y = boardTools.canvas.clientHeight - boardTools.mouse.pos.initial.y-15
                 txtT.style.width = x + "px"
                 txtT.style.height = y + "px"
-                boardTools.mouse.text.top = boardTools.mouse.pos.initial.y;
-                boardTools.mouse.text.left = boardTools.mouse.pos.initial.x;
                 txtT.addEventListener("click",textInsert)
+                var text=document.getElementById("txtFontSize")
+                text.style.marginLeft=(boardTools.mouse.pos.initial.x-15) + "px"
+                text.style.marginTop=(boardTools.mouse.pos.initial.y-40) + "px"
                 setTimeout(function(){txtT.focus()},50)
                 break
             case 'pencil':
@@ -440,13 +437,11 @@ function drawRealT (e) {
         }
     }
 }
-function removeBlock(del)
-{
+function removeBlock(del){
     if(document.getElementById(del)!==null)
         document.getElementById(del).parentNode.removeChild(document.getElementById(del))
 }
-function removeBlockClass(del)
-{
+function removeBlockClass(del){
     for(var i=0;i<document.getElementsByClassName(del).length;i++) {
         if (document.getElementsByClassName(del)[i] !== null)
             document.getElementsByClassName(del)[i].className="toolbox fadeInLeft"
@@ -461,8 +456,8 @@ function textInsert() {
         var r=txt.value.toString().split("\n")
         boardTools.ctx.font = "normal " + size + "px Arial";
         for(let i=0;i<r.length;i++)
-            board.text(boardTools.ctx, r[i], boardTools.mouse.text.left, boardTools.mouse.text.top + size+i*size);
-        var e = {clientX: boardTools.mouse.text.left, clientY: boardTools.mouse.text.top + size}
+            board.text(boardTools.ctx, r[i], boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y + size+i*size);
+        var e = {clientX: boardTools.mouse.pos.initial.x, clientY: boardTools.mouse.pos.initial.y + size}
         var er = board.MousePosScale(boardTools.canvas, e)
         var res = {
             boardData: {
@@ -519,7 +514,6 @@ document.getElementById("ImgLoadCanvas").addEventListener("click",function() {
         res.boardData.data.src=image
         boardTools.draw.push(res)
     }
-
     image.src=document.getElementById("preloadImg").src
     document.getElementById("rotation").style.transform="rotate("+0+"deg)"
     angle=0
@@ -674,7 +668,6 @@ function Scroll(evt){
        old= evt.touches[1].clientY*evt.touches[1].clientX-evt.touches[0].clientY*evt.touches[0].clientX
     }
     else delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
-    console.log(delta)
     if(delta===0)return
     if (boardTools.scale<10.1 &&delta>0)
         boardTools.scale+=0.1
