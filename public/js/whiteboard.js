@@ -100,7 +100,7 @@ class board {
 		context.stroke();
 
 		context.globalAlpha = 1;
-		context.lineWidth = size;
+		context.lineWidth = size * 5;
 	}
 	static text(context, text, x, y) {
 		context.fillText(text, x, y);
@@ -228,18 +228,6 @@ class board {
 		boardTools.canvas.classList.remove("grab")
 		boardTools.canvas.style.cursor = "crosshair"
 		document.getElementById("txtFontSize").style.display = "none"
-		switch (t) {
-			case 'pencil':
-				boardTools.ctx.lineWidth = boardTools.lineWidth;
-				break
-			case 'marker':
-				boardTools.ctx.lineWidth = boardTools.lineWidth * 5;
-				break
-			case 'eraser':
-				boardTools.ctx.lineWidth = boardTools.lineWidth * 10;
-				break
-		}
-		document.getElementById("size").value = boardTools.lineWidth;
 		boardTools.tool = t;
 	}
 
@@ -251,17 +239,7 @@ class board {
 	}
 
 	static changeSize(size) {
-		switch (boardTools.tool) {
-			case 'marker':
-				boardTools.ctx.lineWidth = size * 5;
-				break
-			case 'eraser':
-				boardTools.ctx.lineWidth = size * 10;
-				break
-			default:
-				boardTools.ctx.lineWidth = size;
-				break
-		}
+		boardTools.ctx.lineWidth = size;
 	}
 }
 
@@ -287,10 +265,11 @@ function drawStart(e) {
 				textarea.id = "txtText"
 				textarea.placeholder = "введите текст"
 				document.body.appendChild(textarea)
+				var text = document.getElementById("txtFontSize")
 				var txtT = document.getElementById("txtText")
 				txtT.style.left = boardTools.mouse.pos.initial.x + "px"
 				txtT.style.top = boardTools.mouse.pos.initial.y + "px"
-				txtT.style.fontSize = 16
+				txtT.style.fontSize = text.value
 				txtT.style.fontFamily = "Arial"
 				txtT.style.color = boardTools.ctx.strokeStyle
 				var x = boardTools.canvas.clientWidth - boardTools.mouse.pos.initial.x - 15
@@ -298,7 +277,6 @@ function drawStart(e) {
 				txtT.style.width = x + "px"
 				txtT.style.height = y + "px"
 				txtT.addEventListener("click", textInsert)
-				var text = document.getElementById("txtFontSize")
 				text.style.display = "block"
 				text.style.marginLeft = (boardTools.mouse.pos.initial.x - 15) + "px"
 				text.style.marginTop = (boardTools.mouse.pos.initial.y - 40) + "px"
@@ -329,40 +307,44 @@ function drawEnd(e) {
 	var posScale = board.MousePosScale(boardTools.canvas, e)
 	if (!boardTools.dragged) {
 		removeBlock("dop")
-		switch (boardTools.tool) {
-			case 'line':
-				board.line(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
-				board.sendToSocketShape("line", boardTools.posScaleI.sx - (boardTools.offset.x) / boardTools.scale, boardTools.posScaleI.sy - (boardTools.offset.y) / boardTools.scale, posScale.sx - (boardTools.offset.x) / boardTools.scale, posScale.sy - (boardTools.offset.y) / boardTools.scale)
-				break
-			case 'rectangle':
-				board.rect(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x, boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y);
-				board.sendToSocketShape("rectangle", boardTools.posScaleI.sx - (boardTools.offset.x) / boardTools.scale, boardTools.posScaleI.sy - (boardTools.offset.y) / boardTools.scale, posScale.sx - boardTools.posScaleI.sx, posScale.sy - boardTools.posScaleI.sy)
-				break
-			case 'circle':
-				var rx = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x) / 2
-				var ry = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y) / 2
-				board.circle(boardTools.ctx, boardTools.mouse.pos.initial.x + rx, boardTools.mouse.pos.initial.y + ry, Math.abs(rx));
-				board.sendToSocketShape("circle", boardTools.posScaleI.sx + rx - (boardTools.offset.x) / boardTools.scale, boardTools.posScaleI.sy + ry - (boardTools.offset.y) / boardTools.scale, Math.abs(rx), null)
-				break
-			case 'ellipse':
-				board.ellipse(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x, boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y);
-				board.sendToSocketShape("ellipse", boardTools.posScaleI.sx - (boardTools.offset.x) / boardTools.scale, boardTools.posScaleI.sy - (boardTools.offset.y) / boardTools.scale, posScale.sx - boardTools.posScaleI.sx, posScale.sy - boardTools.posScaleI.sy)
-				break
-			case 'arrow':
-				board.arrow(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
-				board.sendToSocketShape("arrow", boardTools.posScaleI.sx - (boardTools.offset.x) / boardTools.scale, boardTools.posScaleI.sy - (boardTools.offset.y) / boardTools.scale, posScale.sx - (boardTools.offset.x) / boardTools.scale, posScale.sy - (boardTools.offset.y) / boardTools.scale)
-				break
-		}
-		console.log("отправка")
-		if (Object.keys(boardTools.last).length !== 0) {
-			var result = {
-				boardData: boardTools.last,
-				room: tools.roomname,
-				from: tools.username,
+		if (boardTools.mouse.pos.final.x !== null && boardTools.mouse.pos.final.y !== null) {
+			switch (boardTools.tool) {
+				case 'line':
+					board.line(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
+					board.sendToSocketShape("line", boardTools.posScaleI.sx - (boardTools.offset.x) / boardTools.scale, boardTools.posScaleI.sy - (boardTools.offset.y) / boardTools.scale, posScale.sx - (boardTools.offset.x) / boardTools.scale, posScale.sy - (boardTools.offset.y) / boardTools.scale)
+					break
+				case 'rectangle':
+					board.rect(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x, boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y);
+					board.sendToSocketShape("rectangle", boardTools.posScaleI.sx - (boardTools.offset.x) / boardTools.scale, boardTools.posScaleI.sy - (boardTools.offset.y) / boardTools.scale, posScale.sx - boardTools.posScaleI.sx, posScale.sy - boardTools.posScaleI.sy)
+					break
+				case 'circle':
+					var rx = (boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x) / 2
+					var ry = (boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y) / 2
+					board.circle(boardTools.ctx, boardTools.mouse.pos.initial.x + rx, boardTools.mouse.pos.initial.y + ry, Math.abs(rx));
+					board.sendToSocketShape("circle", boardTools.posScaleI.sx + rx - (boardTools.offset.x) / boardTools.scale, boardTools.posScaleI.sy + ry - (boardTools.offset.y) / boardTools.scale, Math.abs(rx), null)
+					break
+				case 'ellipse':
+					board.ellipse(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x - boardTools.mouse.pos.initial.x, boardTools.mouse.pos.final.y - boardTools.mouse.pos.initial.y);
+					board.sendToSocketShape("ellipse", boardTools.posScaleI.sx - (boardTools.offset.x) / boardTools.scale, boardTools.posScaleI.sy - (boardTools.offset.y) / boardTools.scale, posScale.sx - boardTools.posScaleI.sx, posScale.sy - boardTools.posScaleI.sy)
+					break
+				case 'arrow':
+					board.arrow(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
+					board.sendToSocketShape("arrow", boardTools.posScaleI.sx - (boardTools.offset.x) / boardTools.scale, boardTools.posScaleI.sy - (boardTools.offset.y) / boardTools.scale, posScale.sx - (boardTools.offset.x) / boardTools.scale, posScale.sy - (boardTools.offset.y) / boardTools.scale)
+					break
 			}
-			console.log(boardTools.last)
-			tools.socket.emit('drawing', result);
-			boardTools.draw.push(result)
+			console.log("отправка")
+			if (Object.keys(boardTools.last).length !== 0) {
+				var result = {
+					boardData: boardTools.last,
+					room: tools.roomname,
+					from: tools.username,
+				}
+				console.log(boardTools.last)
+				tools.socket.emit('drawing', result);
+				boardTools.draw.push(result)
+				boardTools.mouse.pos.final.x = null
+				boardTools.mouse.pos.final.y = null
+			}
 		}
 	} else {
 		boardTools.mouse.offsetFinish.x = boardTools.mouse.offsetInitial.x
@@ -732,6 +714,10 @@ function Scroll(evt) {
 	old = 0
 	board.transform(boardTools.ctx);
 	return evt.preventDefault() && false;
+};
+
+screen.orientation.onchange = function () {
+	console.log(screen.orientation.type.match(/\w+/)[0]);
 };
 
 for (var i = 0; i < document.getElementsByClassName("tool").length; i++) {
