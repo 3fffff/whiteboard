@@ -50,6 +50,7 @@ textarea:focus::-webkit-input-placeholder {
 	-ms-transform: scale(20);
 	/* IE 9 fix */
 	opacity: 0;
+	overflow: hidden;
 	cursor: pointer
 }
 
