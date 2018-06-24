@@ -719,17 +719,13 @@ function Scroll(evt) {
 };
 
 screen.orientation.onchange = function () {
-	if (screen.orientation.type.match(/\w+/)[0] === "landscale") {
-		boardTools.canvas.width = document.body.clientHeight
-		boardTools.canvas.height = document.body.clientHeight
-		console.log("land")
-		console.log(document.body.clientHeight)
+	if (screen.orientation.type.match(/\w+/)[0] === "landscape") {
+		boardTools.canvas.width = screen.width
+		boardTools.canvas.height = screen.width
 	} else {
 		boardTools.canvas.width = screen.width
 		boardTools.canvas.height = screen.height
-		console.log("other")
 	}
-	console.log(screen.width)
 	board.transform(boardTools.ctx)
 };
 
