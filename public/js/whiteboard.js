@@ -719,7 +719,7 @@ function Scroll(evt) {
 };
 
 screen.orientation.onchange = function () {
-	if (screen.orientation.type.match(/\w+/)[0] === "landscale" && screen.width < 400) {
+	if (screen.orientation.type.match(/\w+/)[0] === "landscale") {
 		boardTools.canvas.width = document.body.clientHeight
 		boardTools.canvas.height = document.body.clientHeight
 		console.log("land")
@@ -729,6 +729,7 @@ screen.orientation.onchange = function () {
 		boardTools.canvas.height = document.body.clientHeight
 		console.log("other")
 	}
+	console.log(screen.width)
 	board.transform(boardTools.ctx)
 };
 
