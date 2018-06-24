@@ -11,8 +11,7 @@
 	right: 0;
 	bottom: 0;
 	z-index: 1000;
-	opacity: 0;
-	pointer-events: none;
+	opacity: 1;
 }
 
 /* активируем модальное окно */
@@ -22,7 +21,6 @@
 	-webkit-animation: fade .6s;
 	-moz-animation: fade .6s;
 	animation: fade .6s;
-	pointer-events: auto;
 }
 
 /* блочная таблица */
