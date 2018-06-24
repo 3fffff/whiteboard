@@ -13,7 +13,7 @@
 <div class="dm-overlay">
     <div class="dm-table">
         <div class="dm-cell">
-            <div class="dm-modal">
+            <div class="dm-modal" style="z-index:2000;position:fixed">
                 <a class="close"></a>
                 <div>
                     <label >Введите имя (не обязательно):</label>
@@ -220,11 +220,4 @@
 <script type="text/javascript" src="js/whiteboard.js"></script>
 <script type="text/javascript" src="js/realtime.js"></script>
 <script type="text/javascript" src="js/chat.js"></script>
-<script>
-    rtSocket.createSocket()
-    rtSocket.broadcastMessage()
-    rtSocket.broadcastFile()
-    document.getElementById("canvas").width=document.body.clientWidth
-    document.getElementById("canvas").height=document.body.clientHeight
-</script>
 </body></html>

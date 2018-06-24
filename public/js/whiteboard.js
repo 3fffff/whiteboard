@@ -36,6 +36,10 @@ var boardTools = {
 	posScaleI: {
 		sx: 0,
 		sy: 0
+	},
+	text: {
+		top: 0,
+		left: 0
 	}
 }
 class board {
@@ -234,8 +238,6 @@ class board {
 	static changeColor(color) {
 		boardTools.ctx.strokeStyle = color;
 		boardTools.ctx.fillStyle = color;
-		if (document.getElementById("txtText") !== null)
-			document.getElementById("txtText").style.color = color
 	}
 
 	static changeSize(size) {
@@ -276,6 +278,8 @@ function drawStart(e) {
 				var y = boardTools.canvas.clientHeight - boardTools.mouse.pos.initial.y - 15
 				txtT.style.width = x + "px"
 				txtT.style.height = y + "px"
+				boardTools.text.top = boardTools.mouse.pos.initial.y;
+				boardTools.text.left = boardTools.mouse.pos.initial.x;
 				txtT.addEventListener("click", textInsert)
 				text.style.display = "block"
 				text.style.marginLeft = (boardTools.mouse.pos.initial.x - 15) + "px"
@@ -461,17 +465,15 @@ function removeBlockClass(del) {
 function textInsert() {
 	boardTools.ctx.fillStyle = document.getElementsByClassName("picked__color")[0].style.backgroundColor
 	var txt = document.getElementById("txtText")
-	console.log(txt.value)
 	if (txt.value !== "") {
-
 		var size = parseInt(document.getElementById("txtText").style.fontSize)
 		var r = txt.value.toString().split("\n")
 		boardTools.ctx.font = "normal " + size + "px Arial";
 		for (let i = 0; i < r.length; i++)
-			board.text(boardTools.ctx, r[i], boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y + size + i * size);
+			board.text(boardTools.ctx, r[i], boardTools.text.left, boardTools.text.top + size + i * size);
 		var e = {
-			clientX: boardTools.mouse.pos.initial.x,
-			clientY: boardTools.mouse.pos.initial.y + size
+			clientX: boardTools.text.left,
+			clientY: boardTools.text.top + size
 		}
 		var er = board.MousePosScale(boardTools.canvas, e)
 		var res = {
@@ -717,7 +719,14 @@ function Scroll(evt) {
 };
 
 screen.orientation.onchange = function () {
-	console.log(screen.orientation.type.match(/\w+/)[0]);
+	if (screen.orientation.type.match(/\w+/)[0] === "landscale" && screen.width < 400) {
+		boardTools.canvas.width = document.body.clientWidth
+		boardTools.canvas.height = document.body.clientWidth
+	} else {
+		boardTools.canvas.width = document.body.clientWidth
+		boardTools.canvas.height = document.body.clientHeight
+	}
+	board.transform(boardTools.ctx)
 };
 
 for (var i = 0; i < document.getElementsByClassName("tool").length; i++) {
