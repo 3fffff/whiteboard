@@ -719,8 +719,8 @@ function Scroll(evt) {
 };
 
 screen.orientation.onchange = function () {
-	boardTools.canvas.width = document.body.clientHeight
-	boardTools.canvas.height = document.body.clientWidth
+	boardTools.canvas.width = screen.height
+	boardTools.canvas.height = screen.width
 	board.transform(boardTools.ctx)
 };
 
