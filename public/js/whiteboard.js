@@ -719,13 +719,8 @@ function Scroll(evt) {
 };
 
 screen.orientation.onchange = function () {
-	if (screen.orientation.type.match(/\w+/)[0] === "landscape") {
-		boardTools.canvas.width = screen.width
-		boardTools.canvas.height = screen.width
-	} else {
-		boardTools.canvas.width = document.body.clientHeight
-		boardTools.canvas.height = document.body.clientWidth
-	}
+	boardTools.canvas.width = screen.width
+	boardTools.canvas.height = screen.height
 	board.transform(boardTools.ctx)
 };
 
