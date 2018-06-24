@@ -725,8 +725,8 @@ screen.orientation.onchange = function () {
 		console.log("land")
 		console.log(document.body.clientHeight)
 	} else {
-		boardTools.canvas.width = document.body.clientWidth
-		boardTools.canvas.height = document.body.clientHeight
+		boardTools.canvas.width = document.body.clientHeight
+		boardTools.canvas.height = document.body.clientWidth
 		console.log("other")
 	}
 	console.log(screen.width)
