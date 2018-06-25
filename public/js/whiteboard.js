@@ -258,7 +258,6 @@ function drawStart(e) {
 		boardTools.mouse.pos.initial.x = e.touches[0].clientX
 		boardTools.mouse.pos.initial.y = e.touches[0].clientY
 	}
-	document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
 	boardTools.posScaleI = board.MousePosScale(boardTools.canvas, e)
 	if (!boardTools.dragged) {
 		switch (boardTools.tool) {
@@ -313,7 +312,7 @@ function drawEnd(e) {
 	var posScale = board.MousePosScale(boardTools.canvas, e)
 	if (!boardTools.dragged) {
 		removeBlock("dop")
-		if (boardTools.mouse.pos.final.x !== null && boardTools.mouse.pos.final.y !== null) {
+		if (boardTools.mouse.pos.final.x !== null && boardTools.mouse.pos.final.y !== null || e.touches.length === 1) {
 			switch (boardTools.tool) {
 				case 'line':
 					board.line(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
@@ -703,8 +702,6 @@ var delta = 0,
 	old = 0
 
 function Scroll(evt) {
-	boardTools.mouse.pos.initial.x = null
-	boardTools.mouse.pos.initial.y = null
 	if (evt.type === "touchmove" && evt.touches.length === 2) {
 		boardTools.touchDown = false
 		if (old !== 0)
