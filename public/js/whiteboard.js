@@ -262,6 +262,7 @@ function drawStart(e) {
 	if (!boardTools.dragged) {
 		switch (boardTools.tool) {
 			case 'text':
+				boardTools.mouse.mouseDown = false
 				if (document.getElementById("txtText") !== null) textInsert()
 				var textarea = document.createElement("textarea");
 				textarea.id = "txtText"
@@ -701,6 +702,8 @@ var delta = 0,
 	old = 0
 
 function Scroll(evt) {
+	boardTools.mouse.pos.initial.x = null
+	boardTools.mouse.pos.initial.y = null
 	if (evt.type === "touchmove" && evt.touches.length === 2) {
 		boardTools.touchDown = false
 		if (old !== 0)
@@ -771,6 +774,9 @@ for (var i = 0; i < document.getElementsByClassName("txtFontStyle").length; i++)
 document.getElementById("txtFontSize").addEventListener("change", function () {
 	if (this.value > 9 && this.value < 73)
 		document.getElementById("txtText").style.fontSize = this.value
+	setTimeout(function () {
+		document.getElementById("txtText").focus()
+	}, 50)
 });
 
 document.getElementById('ImageLoad').addEventListener('change', function (e) {
@@ -807,6 +813,8 @@ for (var i = 0; i < document.getElementsByClassName("ec").length; i++) {
 	})
 }
 document.getElementById("drag").addEventListener("click", function () {
+	removeBlock("txtText")
+	document.getElementById("txtFontSize").style.display = "none"
 	if (!boardTools.dragged) {
 		boardTools.dragged = true
 		boardTools.canvas.classList.add("grab")

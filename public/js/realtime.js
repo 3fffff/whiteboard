@@ -171,7 +171,7 @@ class rtSocket {
 					for (let i = dataDraw.data.points.length - 1; i >= 0; i--) {
 						boardTools.ctx.beginPath();
 						boardTools.ctx.fillStyle = "white";
-						boardTools.ctx.arc(dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.lineWidth * 10 / boardTools.scale, 0, 2 * Math.PI);
+						boardTools.ctx.arc(dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.lineWidth * 10, 0, 2 * Math.PI);
 						boardTools.ctx.fill();
 					}
 					break;

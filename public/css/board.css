@@ -9,6 +9,8 @@
 #txtFontSize {
 	display: none;
 	position: absolute;
+	border: 3px solid #17b8db;
+	width: 120px;
 	z-index: 5;
 }
 
