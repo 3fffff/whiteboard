@@ -40,7 +40,8 @@ var boardTools = {
 	text: {
 		top: 0,
 		left: 0
-	}
+	},
+	scroll: false
 }
 class board {
 	static trackMouse(e) {
@@ -312,7 +313,7 @@ function drawEnd(e) {
 	var posScale = board.MousePosScale(boardTools.canvas, e)
 	if (!boardTools.dragged) {
 		removeBlock("dop")
-		if ((e.type === "mouseup") || (boardTools.mouse.pos.final.x !== null && boardTools.mouse.pos.final.y !== null && e.changedTouches.length === 1)) {
+		if ((e.type === "mouseup") || (boardTools.mouse.pos.final.x !== null && boardTools.mouse.pos.final.y !== null && !boardTools.scroll)) {
 			switch (boardTools.tool) {
 				case 'line':
 					board.line(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
@@ -384,6 +385,7 @@ function drawRealT(e) {
 			board.transform(boardTools.ctx)
 		} else {
 			removeBlock("dop")
+			boardTools.scroll = false
 			switch (boardTools.tool) {
 				case 'pencil':
 					board.pencil(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
@@ -700,7 +702,9 @@ var delta = 0,
 	old = 0
 
 function Scroll(evt) {
+
 	if (evt.type === "touchmove" && evt.touches.length === 2) {
+		boardTools.scroll = true
 		boardTools.touchDown = false
 		if (old !== 0)
 			delta = evt.touches[1].clientY * evt.touches[1].clientX - evt.touches[0].clientY * evt.touches[0].clientX - old
