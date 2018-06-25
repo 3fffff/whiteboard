@@ -66,7 +66,7 @@ class board {
 		var rect = canvas.getBoundingClientRect();
 		var x = 0,
 			y = 0
-		if ((e.type === 'touchstart' || e.type === 'touchmove' || e.type === 'touchend') && e.changedTouches.length !== 0) {
+		if ((e.type === 'touchstart' || e.type === 'touchmove' || e.type === 'touchend') && e.changedTouches.length === 1) {
 			x = e.changedTouches[0].clientX - rect.left;
 			y = e.changedTouches[0].clientY - rect.top;
 		} else {
@@ -702,8 +702,6 @@ var delta = 0,
 	old = 0
 
 function Scroll(evt) {
-	boardTools.mouse.pos.initial.x = null
-	boardTools.mouse.pos.initial.y = null
 	if (evt.type === "touchmove" && evt.touches.length === 2) {
 		boardTools.touchDown = false
 		if (old !== 0)
