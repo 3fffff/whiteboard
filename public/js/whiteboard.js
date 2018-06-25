@@ -97,6 +97,7 @@ class board {
 	}
 	static marker(context, x1, y1, x2, y2, size, color) {
 		context.globalAlpha = 0.3;
+		context.lineWidth = size * 3;
 		context.strokeStyle = color;
 		context.beginPath();
 		context.moveTo(x1, y1);
@@ -104,7 +105,7 @@ class board {
 		context.stroke();
 
 		context.globalAlpha = 1;
-		context.lineWidth = size * 5;
+		context.lineWidth = size;
 	}
 	static text(context, text, x, y) {
 		context.fillText(text, x, y);
@@ -397,7 +398,7 @@ function drawRealT(e) {
 					boardTools.mouse.pos.initial.y = boardTools.mouse.pos.final.y;
 					break
 				case 'marker':
-					board.marker(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.ctx.size, boardTools.ctx.fillStyle);
+					board.marker(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y, boardTools.ctx.lineWidth, boardTools.ctx.fillStyle);
 					boardTools.last.data.points.push({
 						x: posScale.sx - (boardTools.mouse.offsetInitial.x) / boardTools.scale,
 						y: posScale.sy - (boardTools.mouse.offsetInitial.y) / boardTools.scale
@@ -702,6 +703,8 @@ var delta = 0,
 	old = 0
 
 function Scroll(evt) {
+	boardTools.mouse.pos.initial.x = null
+	boardTools.mouse.pos.initial.y = null
 	if (evt.type === "touchmove" && evt.touches.length === 2) {
 		boardTools.touchDown = false
 		if (old !== 0)

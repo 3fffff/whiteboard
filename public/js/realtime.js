@@ -165,7 +165,7 @@ class rtSocket {
 					break;
 				case 'marker':
 					for (let i = dataDraw.data.points.length - 2; i >= 0; i--)
-						board.marker(boardTools.ctx, dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.points[i + 1].x, dataDraw.data.points[i + 1].y, dataDraw.data.lineWidth * 5, dataDraw.data.strokeStyle);
+						board.marker(boardTools.ctx, dataDraw.data.points[i].x, dataDraw.data.points[i].y, dataDraw.data.points[i + 1].x, dataDraw.data.points[i + 1].y, dataDraw.data.lineWidth, dataDraw.data.strokeStyle);
 					break;
 				case 'eraser':
 					for (let i = dataDraw.data.points.length - 1; i >= 0; i--) {
