@@ -312,7 +312,7 @@ function drawEnd(e) {
 	var posScale = board.MousePosScale(boardTools.canvas, e)
 	if (!boardTools.dragged) {
 		removeBlock("dop")
-		if (boardTools.mouse.pos.final.x !== null && boardTools.mouse.pos.final.y !== null || e.touches.length === 1) {
+		if ((e.type === "mouseup") || (boardTools.mouse.pos.final.x !== null && boardTools.mouse.pos.final.y !== null && e.changedTouches.length === 1)) {
 			switch (boardTools.tool) {
 				case 'line':
 					board.line(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
@@ -337,14 +337,12 @@ function drawEnd(e) {
 					board.sendToSocketShape("arrow", boardTools.posScaleI.sx - (boardTools.offset.x) / boardTools.scale, boardTools.posScaleI.sy - (boardTools.offset.y) / boardTools.scale, posScale.sx - (boardTools.offset.x) / boardTools.scale, posScale.sy - (boardTools.offset.y) / boardTools.scale)
 					break
 			}
-			console.log("отправка")
 			if (Object.keys(boardTools.last).length !== 0) {
 				var result = {
 					boardData: boardTools.last,
 					room: tools.roomname,
 					from: tools.username,
 				}
-				console.log(boardTools.last)
 				tools.socket.emit('drawing', result);
 				boardTools.draw.push(result)
 				boardTools.mouse.pos.final.x = null
@@ -723,6 +721,8 @@ screen.orientation.onchange = function () {
 	boardTools.canvas.width = screen.width
 	boardTools.canvas.height = screen.height
 	board.transform(boardTools.ctx)
+	boardTools.ctx.strokeStyle = document.getElementById("pickColor").style.backgroundColor
+	boardTools.ctx.fillStyle = document.getElementById("pickColor").style.backgroundColor
 };
 
 for (var i = 0; i < document.getElementsByClassName("tool").length; i++) {
