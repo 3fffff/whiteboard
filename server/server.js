@@ -106,7 +106,7 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', (reason) => {
 		console.log(reason)
 		setTimeout(function () {
-			if (reason === "transport closed") {
+			if (reason === "transport close") {
 				var user = users.removeUser(socket.id);
 				if (user) {
 					/* Отправляем всем в определенной комнате */
