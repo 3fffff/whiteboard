@@ -122,6 +122,7 @@ io.on('connection', (socket) => {
 		io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} переподключился`));
 	});
 	socket.on('reconnect_error', (error) => {
+		console.log("ошибка переподключения")
 		console.log(error)
 	});
 	socket.on('reconnecting', (attemptNumber) => {
