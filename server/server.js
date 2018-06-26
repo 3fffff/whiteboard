@@ -14,8 +14,8 @@ var app = express();
 var server = http.createServer(app);
 var io = socketIO(server, {
 	'reconnection': true,
-	'reconnectionDelay': 500,
-	'reconnectionAttempts': 10
+	'reconnectionDelay': 50000,
+	'reconnectionAttempts': 300
 });
 
 var users = new Users();
