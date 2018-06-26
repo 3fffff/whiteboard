@@ -12,7 +12,11 @@ var app = express();
 
 /* Создаем http-сервер для использования его вместе с socket.io */
 var server = http.createServer(app);
-var io = socketIO(server);
+var io = socketIO(server, {
+	'reconnection': true,
+	'reconnectionDelay': 500,
+	'reconnectionAttempts': 10
+});
 
 var users = new Users();
 
@@ -111,7 +115,7 @@ io.on('connection', (socket) => {
 				io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
 			}
 		} else {
-			socket.reconnect();
+			socket.connect()
 		}
 	})
 	socket.on('reconnect', (attemptNumber) => {
