@@ -1,7 +1,7 @@
 var tools = {
 	socket: io({
 		'reconnection': true,
-		'reconnectionDelay': 50000,
+		'reconnectionDelay': 5000,
 		'reconnectionAttempts': 'Infinity'
 	}),
 	username: null,

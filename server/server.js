@@ -116,7 +116,7 @@ io.on('connection', (socket) => {
 			} else {
 				disconnectUser = users.getUser(socket.id);
 				socket.join(disconnectUser.room);
-				io.to(disconnectUser.room).emit('newMessage', generateMessage('Сервер', `${user.name} timeout`));
+				io.to(disconnectUser.room).emit('newMessage', generateMessage('Сервер', `${disconnectUser.name} timeout`));
 			}
 		}, 3000)
 	})
