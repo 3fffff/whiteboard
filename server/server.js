@@ -106,7 +106,7 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', (reason) => {
 		console.log(reason)
 		setTimeout(function () {
-			if (disconnectUser) {
+			if (reason === "transport closed") {
 				var user = users.removeUser(socket.id);
 				if (user) {
 					/* Отправляем всем в определенной комнате */
@@ -114,8 +114,9 @@ io.on('connection', (socket) => {
 					io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
 				}
 			} else {
-				var user = users.getUser(socket.id);
-				io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} timeout`));
+				disconnectUser = users.getUser(socket.id);
+				socket.join(disconnectUser.room);
+				io.to(disconnectUser.room).emit('newMessage', generateMessage('Сервер', `${user.name} timeout`));
 			}
 		}, 3000)
 	})
