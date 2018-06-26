@@ -103,16 +103,19 @@ io.on('connection', (socket) => {
 	/* Клиент отключился от сервера */
 	socket.on('disconnect', (reason) => {
 		console.log(reason)
-		if (reason !== "ping timeout") {
+		if (reason === "transport close") {
 			var user = users.removeUser(socket.id);
 			if (user) {
 				/* Отправляем всем в определенной комнате */
 				io.to(user.room).emit('updateUserList', users.getUserList(user.room));
 				io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
 			}
+		} else {
+			socket.reconnect();
 		}
 	})
 	socket.on('reconnect', (attemptNumber) => {
+		console.log("переподключение")
 		io.to(user.room).emit('updateUserList', users.getUserList(user.room));
 		io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} переподключился`));
 	});
