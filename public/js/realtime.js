@@ -2,7 +2,7 @@ var tools = {
 	socket: io({
 		'reconnection': true,
 		'reconnectionDelay': 50000,
-		'reconnectionAttempts': 300
+		'reconnectionAttempts': 'Infinity'
 	}),
 	username: null,
 	roomname: null,
