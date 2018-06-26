@@ -200,6 +200,9 @@ tools.socket.on('disconnect', (reason) => {
 	console.log(reason)
 	tools.socket.connect();
 });
+tools.socket.on('reconnect', (attemptNumber) => {
+	tools.socket.connect();
+});
 tools.socket.on('reconnect_failed', () => {
 	console.log("reconnect_failed")
 
