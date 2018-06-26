@@ -15,6 +15,7 @@ var server = http.createServer(app);
 var io = socketIO(server);
 
 var users = new Users();
+var disconnectUser = false;
 
 app.use(express.static(publicPath));
 app.use(bodyParser.json());
@@ -56,6 +57,7 @@ io.on('connection', (socket) => {
 		//восстановление сохранения пойдет))
 		io.to(socket.id).emit('drawingRestore', users.getData(params.room))
 		callback();
+		disconnectUser = false
 	});
 
 	/* Новое сообщение */
@@ -103,12 +105,16 @@ io.on('connection', (socket) => {
 	/* Клиент отключился от сервера */
 	socket.on('disconnect', (reason) => {
 		console.log(reason)
-		var user = users.removeUser(socket.id);
-		if (user) {
-			/* Отправляем всем в определенной комнате */
-			io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-			io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
-		}
+		setTimeout(function () {
+			if (disconnectUser) {
+				var user = users.removeUser(socket.id);
+				if (user) {
+					/* Отправляем всем в определенной комнате */
+					io.to(user.room).emit('updateUserList', users.getUserList(user.room));
+					io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
+				}
+			}
+		}, 5000)
 	})
 });
 
