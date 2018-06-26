@@ -114,8 +114,6 @@ io.on('connection', (socket) => {
 				io.to(user.room).emit('updateUserList', users.getUserList(user.room));
 				io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
 			}
-		} else {
-			io.open();
 		}
 	})
 	socket.on('reconnect', (attemptNumber) => {
@@ -128,7 +126,6 @@ io.on('connection', (socket) => {
 	});
 	socket.on('reconnecting', (attemptNumber) => {
 		console.log("переподключение reconnection")
-		io.open();
 	});
 });
 
