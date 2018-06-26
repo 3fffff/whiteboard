@@ -114,20 +114,11 @@ io.on('connection', (socket) => {
 				io.to(user.room).emit('updateUserList', users.getUserList(user.room));
 				io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
 			}
-		} else io.socket.reconnect()
+		} else {
+			console.log("переподключение")
+			io.socket.reconnect()
+		}
 	})
-	socket.on('reconnect', (attemptNumber) => {
-		console.log("переподключение")
-		io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-		io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} переподключился`));
-	});
-	socket.on('reconnect_error', (error) => {
-		console.log("ошибка переподключения")
-		console.log(error)
-	});
-	socket.on('reconnecting', (attemptNumber) => {
-		console.log("переподключение reconnection")
-	});
 });
 
 server.listen(port, () => {
