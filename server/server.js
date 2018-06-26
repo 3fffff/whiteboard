@@ -114,9 +114,10 @@ io.on('connection', (socket) => {
 					io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
 				}
 			} else {
+				var user = users.getUser(socket.id);
 				io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} timeout`));
 			}
-		})
+		}, 3000)
 	})
 });
 
