@@ -1,5 +1,9 @@
 var tools = {
-	socket: io(),
+	socket: io({
+		'reconnection': true,
+		'reconnectionDelay': 50000,
+		'reconnectionAttempts': 300
+	}),
 	username: null,
 	roomname: null,
 	visible: true
@@ -59,6 +63,9 @@ class rtSocket {
 				tools.visible = params["name"]
 			}
 		});
+	}
+	static reconnect() {
+
 	}
 
 	static restoreCall(data) {
@@ -189,6 +196,14 @@ document.getElementById("ready").addEventListener("click", function () {
 		tools.socket.emit('updateUser', document.getElementById("name").value);
 	}
 })
+socket.on('disconnect', (reason) => {
+	console.log(reason)
+	socket.connect();
+});
+tools.socket.on('reconnect_failed', () => {
+	console.log("reconnect_failed")
+
+});
 rtSocket.createSocket()
 rtSocket.broadcastFile()
 rtSocket.broadcastMessage()

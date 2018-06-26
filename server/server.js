@@ -12,11 +12,7 @@ var app = express();
 
 /* Создаем http-сервер для использования его вместе с socket.io */
 var server = http.createServer(app);
-var io = socketIO(server, {
-	'reconnection': true,
-	'reconnectionDelay': 50000,
-	'reconnectionAttempts': 300
-});
+var io = socketIO(server);
 
 var users = new Users();
 
