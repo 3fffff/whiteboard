@@ -103,13 +103,14 @@ io.on('connection', (socket) => {
 	/* Клиент отключился от сервера */
 	socket.on('disconnect', (reason) => {
 		console.log(reason)
-		var user = users.removeUser(socket.id);
-		if (user) {
-			/* Отправляем всем в определенной комнате */
-			io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-			io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
+		if (reason !== "ping timeout") {
+			var user = users.removeUser(socket.id);
+			if (user) {
+				/* Отправляем всем в определенной комнате */
+				io.to(user.room).emit('updateUserList', users.getUserList(user.room));
+				io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
+			}
 		}
-
 	})
 });
 
