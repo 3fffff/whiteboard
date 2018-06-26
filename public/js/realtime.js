@@ -196,7 +196,7 @@ document.getElementById("ready").addEventListener("click", function () {
 		tools.socket.emit('updateUser', document.getElementById("name").value);
 	}
 })
-socket.on('disconnect', (reason) => {
+tools.socket.on('disconnect', (reason) => {
 	console.log(reason)
 	socket.connect();
 });
