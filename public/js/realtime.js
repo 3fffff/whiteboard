@@ -104,25 +104,28 @@ class rtSocket {
 			board.transform(boardTools.ctx)
 		} else rtSocket.restoreImage(data)
 	}
-	tools.socket.on('base64 file', function (message) {
-		var type = message.type.split("/")
-		var messagesContainer = document.getElementsByClassName('messages')[0];
-		if (type[0] === "image")
-			messagesContainer.innerHTML += '<li class="other">' + '<img class="image_chat" width=150 height=150 src=' + message.file + '>' + '</li>'
-		else messagesContainer.innerHTML += '<li class="other">' + '<a download href=' + message.file + '>' + message.fileName + '</a>' + '</li>'
-		sessionStorage.setItem("messages", messagesContainer.innerHTML)
-		var other = document.getElementsByClassName('other')
-		other[other.length - 1].scrollIntoView();
-	});
+	static broadcastFile() {
+		tools.socket.on('base64 file', function (message) {
+			var type = message.type.split("/")
+			var messagesContainer = document.getElementsByClassName('messages')[0];
+			if (type[0] === "image")
+				messagesContainer.innerHTML += '<li class="other">' + '<img class="image_chat" width=150 height=150 src=' + message.file + '>' + '</li>'
+			else messagesContainer.innerHTML += '<li class="other">' + '<a download href=' + message.file + '>' + message.fileName + '</a>' + '</li>'
+			sessionStorage.setItem("messages", messagesContainer.innerHTML)
+			var other = document.getElementsByClassName('other')
+			other[other.length - 1].scrollIntoView();
+		});
+	}
 
-
-	tools.socket.on('newMessage', function (message) {
-		var messagesContainer = document.getElementsByClassName('messages')[0];
-		messagesContainer.innerHTML += '<li class="other">' + message.text + '</li>'
-		sessionStorage.setItem("messages", messagesContainer.innerHTML)
-		var other = document.getElementsByClassName('other')
-		other[other.length - 1].scrollIntoView();
-	});
+	static broadcastMessage() {
+		tools.socket.on('newMessage', function (message) {
+			var messagesContainer = document.getElementsByClassName('messages')[0];
+			messagesContainer.innerHTML += '<li class="other">' + message.text + '</li>'
+			sessionStorage.setItem("messages", messagesContainer.innerHTML)
+			var other = document.getElementsByClassName('other')
+			other[other.length - 1].scrollIntoView();
+		});
+	}
 	static drawFromSocket(dd) {
 		if (!dd)
 			return
@@ -187,5 +190,7 @@ document.getElementById("ready").addEventListener("click", function () {
 	}
 })
 rtSocket.createSocket()
+rtSocket.broadcastFile()
+rtSocket.broadcastMessage()
 document.getElementById("canvas").width = document.body.clientWidth
 document.getElementById("canvas").height = document.body.clientHeight
