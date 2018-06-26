@@ -113,9 +113,10 @@ io.on('connection', (socket) => {
 					io.to(user.room).emit('updateUserList', users.getUserList(user.room));
 					io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} покинул чат`));
 				}
+				socket.disconnect(true)
 			} else {
 				disconnectUser = users.getUser(socket.id);
-				socket.join(disconnectUser.room);
+				socket.disconnect(false)
 				io.to(disconnectUser.room).emit('newMessage', generateMessage('Сервер', `${disconnectUser.name} timeout`));
 			}
 		}, 3000)
