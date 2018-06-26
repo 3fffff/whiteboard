@@ -116,7 +116,7 @@ io.on('connection', (socket) => {
 			}
 		} else {
 			console.log("переподключение")
-			io.socket.reconnect()
+			socket.open();
 		}
 	})
 });
