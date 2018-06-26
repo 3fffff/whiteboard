@@ -112,6 +112,13 @@ io.on('connection', (socket) => {
 			}
 		}
 	})
+	socket.on('reconnect', (attemptNumber) => {
+		io.to(user.room).emit('updateUserList', users.getUserList(user.room));
+		io.to(user.room).emit('newMessage', generateMessage('Сервер', `${user.name} переподключился`));
+	});
+	socket.on('reconnect_error', (error) => {
+		console.log(error)
+	});
 });
 
 server.listen(port, () => {
