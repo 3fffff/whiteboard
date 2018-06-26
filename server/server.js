@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
 	});
 
 	/* Клиент отключился от сервера */
-	socket.on('disconnect', (reason) => {
+	socket.on('disconnecting', (reason) => {
 		console.log(reason)
 		setTimeout(function () {
 			if (reason === "transport close") {
