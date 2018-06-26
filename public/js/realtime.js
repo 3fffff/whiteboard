@@ -198,10 +198,19 @@ document.getElementById("ready").addEventListener("click", function () {
 })
 tools.socket.on('disconnect', (reason) => {
 	console.log(reason)
+	rtSocket.join({
+		"room": tools.roomname,
+		"name": tools.username,
+	})
 	tools.socket.connect();
 });
 tools.socket.on('reconnect', (attemptNumber) => {
+	rtSocket.join({
+		"room": tools.roomname,
+		"name": tools.username,
+	})
 	tools.socket.connect();
+	console.log("reconnect")
 });
 tools.socket.on('reconnect_failed', () => {
 	console.log("reconnect_failed")
