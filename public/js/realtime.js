@@ -25,9 +25,6 @@ class rtSocket {
 				console.log(params)
 				if (sessionStorage.getItem("messages"))
 					document.getElementsByClassName('messages')[0].innerHTML = sessionStorage.getItem("messages")
-				tools.username = params["room"];
-				tools.roomname = params["name"]
-				tools.visible = params["name"]
 				rtSocket.join(params)
 			} else {
 				var result = "Anonymous"
@@ -35,8 +32,6 @@ class rtSocket {
 				params["name"] = result
 				document.getElementsByClassName("dm-overlay")[0].style.display = "block"
 				sessionStorage.setItem("name", result)
-				tools.username = params["room"];
-				tools.roomname = params["name"]
 				rtSocket.join(params)
 			}
 		} else {
@@ -49,9 +44,6 @@ class rtSocket {
 				sessionStorage.setItem("name", params["name"])
 			window.history.pushState(null, null, "w.html?" + params["room"])
 			console.log(params)
-			tools.username = params["room"];
-			tools.roomname = params["name"]
-			tools.visible = params["name"]
 			rtSocket.join(params)
 		}
 		tools.socket.on('drawingRestore', this.restoreDraw);
@@ -203,24 +195,10 @@ document.getElementById("ready").addEventListener("click", function () {
 })
 tools.socket.on('connect', () => {
 	console.log("подключились")
-	rtSocket.join({
-		"room": tools.roomname,
-		"name": tools.username,
-	})
+	rtSocket.createSocket()
 });
 tools.socket.on('disconnect', (reason) => {
 	console.log(reason)
-	tools.socket.connect();
-});
-tools.socket.on('reconnect', (attemptNumber) => {
-	tools.socket.connect();
-	console.log("reconnect")
-});
-tools.socket.on('reconnect_failed', () => {
-	console.log("reconnect_failed")
-
-});
-tools.socket.on('reconnecting', (attemptNumber) => {
 	tools.socket.connect();
 });
 tools.socket.on('connect_error', (error) => {
@@ -231,13 +209,7 @@ tools.socket.on('error', (error) => {
 	console.log("ошибка")
 	tools.socket.connect();
 });
-window.onfocus = function () {
-	rtSocket.join({
-		"room": tools.roomname,
-		"name": tools.username,
-	})
-}
-rtSocket.createSocket()
+
 rtSocket.broadcastFile()
 rtSocket.broadcastMessage()
 document.getElementById("canvas").width = document.body.clientWidth
