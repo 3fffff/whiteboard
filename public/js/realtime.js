@@ -25,6 +25,9 @@ class rtSocket {
 				console.log(params)
 				if (sessionStorage.getItem("messages"))
 					document.getElementsByClassName('messages')[0].innerHTML = sessionStorage.getItem("messages")
+				tools.username = params["room"];
+				tools.roomname = params["name"]
+				tools.visible = params["name"]
 				rtSocket.join(params)
 			} else {
 				var result = "Anonymous"
@@ -32,6 +35,8 @@ class rtSocket {
 				params["name"] = result
 				document.getElementsByClassName("dm-overlay")[0].style.display = "block"
 				sessionStorage.setItem("name", result)
+				tools.username = params["room"];
+				tools.roomname = params["name"]
 				rtSocket.join(params)
 			}
 		} else {
@@ -44,6 +49,9 @@ class rtSocket {
 				sessionStorage.setItem("name", params["name"])
 			window.history.pushState(null, null, "w.html?" + params["room"])
 			console.log(params)
+			tools.username = params["room"];
+			tools.roomname = params["name"]
+			tools.visible = params["name"]
 			rtSocket.join(params)
 		}
 		tools.socket.on('drawingRestore', this.restoreDraw);
@@ -63,9 +71,6 @@ class rtSocket {
 				tools.visible = params["name"]
 			}
 		});
-	}
-	static reconnect() {
-
 	}
 
 	static restoreCall(data) {
