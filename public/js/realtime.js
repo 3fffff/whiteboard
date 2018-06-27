@@ -198,7 +198,7 @@ document.getElementById("ready").addEventListener("click", function () {
 })
 tools.socket.on('disconnect', (reason) => {
 	console.log(reason)
-	tools.socket.reconnection(true)
+	tools.socket.reconnection
 	tools.socket.connect();
 });
 tools.socket.on('reconnect', (attemptNumber) => {
