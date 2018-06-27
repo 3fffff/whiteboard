@@ -216,6 +216,15 @@ tools.socket.on('reconnect_failed', () => {
 	console.log("reconnect_failed")
 
 });
+socket.on('reconnecting', (attemptNumber) => {
+	tools.socket.connect();
+});
+window.onfocus = function () {
+	rtSocket.join({
+		"room": tools.roomname,
+		"name": tools.username,
+	})
+}
 rtSocket.createSocket()
 rtSocket.broadcastFile()
 rtSocket.broadcastMessage()
