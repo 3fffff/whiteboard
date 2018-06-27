@@ -197,33 +197,32 @@ document.getElementById("ready").addEventListener("click", function () {
 	}
 })
 socket.on('connect', () => {
-	rtSocket.createSocket()
-	rtSocket.broadcastFile()
-	rtSocket.broadcastMessage()
-	tools.socket.on('disconnect', (reason) => {
-		console.log(reason)
-		tools.socket.reconnection
-		tools.socket.connect();
-	});
-	tools.socket.on('reconnect', (attemptNumber) => {
-		tools.socket.reconnect();
-		console.log("reconnect")
-	});
-	tools.socket.on('reconnect_failed', () => {
-		console.log("reconnect_failed")
-
-	});
-	tools.socket.on('reconnecting', (attemptNumber) => {
-		tools.socket.connect();
-	});
+	console.log("подключились")
 });
+tools.socket.on('disconnect', (reason) => {
+	console.log(reason)
+	tools.socket.reconnection
+	tools.socket.connect();
+});
+tools.socket.on('reconnect', (attemptNumber) => {
+	tools.socket.connect();
+	console.log("reconnect")
+});
+tools.socket.on('reconnect_failed', () => {
+	console.log("reconnect_failed")
 
+});
+tools.socket.on('reconnecting', (attemptNumber) => {
+	tools.socket.connect();
+});
 window.onfocus = function () {
 	rtSocket.join({
 		"room": tools.roomname,
 		"name": tools.username,
 	})
 }
-
+rtSocket.createSocket()
+rtSocket.broadcastFile()
+rtSocket.broadcastMessage()
 document.getElementById("canvas").width = document.body.clientWidth
 document.getElementById("canvas").height = document.body.clientHeight
