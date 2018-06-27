@@ -214,6 +214,14 @@ tools.socket.on('reconnect_failed', () => {
 tools.socket.on('reconnecting', (attemptNumber) => {
 	tools.socket.connect();
 });
+tools.socket.on('connect_error', (error) => {
+	console.log("ошибка соединения")
+	tools.socket.connect();
+});
+tools.socket.on('error', (error) => {
+	console.log("ошибка")
+	tools.socket.connect();
+});
 window.onfocus = function () {
 	rtSocket.join({
 		"room": tools.roomname,
