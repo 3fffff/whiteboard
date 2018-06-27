@@ -198,6 +198,10 @@ document.getElementById("ready").addEventListener("click", function () {
 })
 tools.socket.on('connect', () => {
 	console.log("подключились")
+	rtSocket.join({
+		"room": tools.roomname,
+		"name": tools.username,
+	})
 });
 tools.socket.on('disconnect', (reason) => {
 	console.log(reason)
