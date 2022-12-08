@@ -20,6 +20,7 @@ var boardTools = {
 			y: 0
 		}
 	},
+	dSnap = 2,
 	touchDown: false,
 	canvas: document.getElementById("canvas"),
 	ctx: document.getElementById("canvas").getContext('2d'),
@@ -61,6 +62,10 @@ class board {
 		for (var i = 0; i < boardTools.draw.length; i++)
 			rtSocket.drawFromSocket(boardTools.draw[i])
 		ctx.restore();
+	}
+	
+	static  snap(x) {
+		return Math.floor((x + 0.5) / boardTools.dSnap) * boardTools.dSnap;
 	}
 
 	static MousePosScale(canvas, e) {
