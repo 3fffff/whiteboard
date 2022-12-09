@@ -20,7 +20,7 @@ var boardTools = {
 			y: 0
 		}
 	},
-	dSnap = 2,
+	dSnap: 10,
 	touchDown: false,
 	canvas: document.getElementById("canvas"),
 	ctx: document.getElementById("canvas").getContext('2d'),
@@ -63,9 +63,31 @@ class board {
 			rtSocket.drawFromSocket(boardTools.draw[i])
 		ctx.restore();
 	}
-	
-	static  snap(x) {
+
+	static snap(x) {
 		return Math.floor((x + 0.5) / boardTools.dSnap) * boardTools.dSnap;
+	}
+
+	static grid(ctx) {
+		const xmin = -boardTools.canvas.clientWidth * boardTools.scale / 2;
+		const xmax = boardTools.canvas.clientWidth * boardTools.scale + xmin;
+		const ymin = -boardTools.canvas.clientHeight * boardTools.scale / 2;
+		const ymax = boardTools.canvas.clientHeight * boardTools.scale + ymin;
+		const xToCoord = function (x) { return (x - xmin) / (xmax - xmin) * boardTools.canvas.clientWidth };
+		const yToCoord = function (y) { return (y - ymin) / (ymax - ymin) * boardTools.canvas.clientHeight };
+		ctx.strokeStyle = "rgba(160, 160, 255, .5)";
+		const xstart = Math.floor(xmin / boardTools.dSnap) * boardTools.dSnap;
+		for (let x = xstart; x < xmax; x += boardTools.dSnap * boardTools.scale) {
+			ctx.moveTo(xToCoord(x), yToCoord(ymin));
+			ctx.lineTo(xToCoord(x), yToCoord(ymax));
+
+		}
+		const ystart = Math.floor(ymin / boardTools.dSnap) * boardTools.dSnap;
+		for (let y = ystart; y < ymax; y += boardTools.dSnap * boardTools.scale) {
+			ctx.moveTo(xToCoord(xmin), yToCoord(y));
+			ctx.lineTo(xToCoord(xmax), yToCoord(y));
+		}
+		ctx.stroke();
 	}
 
 	static MousePosScale(canvas, e) {
@@ -176,6 +198,11 @@ class board {
 	}
 
 	static line(ctx, x1, y1, x2, y2) {
+		console.log(x2)
+		x1 = board.snap(x1)
+		x2 = board.snap(x2)
+		y1 = board.snap(y1)
+		y2 = board.snap(y2)
 		ctx.beginPath();
 		ctx.moveTo(x1, y1);
 		ctx.lineTo(x2, y2);
@@ -312,6 +339,7 @@ function drawStart(e) {
 }
 
 function drawEnd(e) {
+	board.grid(boardTools.ctx)
 	boardTools.mouse.mouseDown = false;
 	boardTools.touchDown = false;
 	e.preventDefault()
@@ -319,6 +347,7 @@ function drawEnd(e) {
 	if (!boardTools.dragged) {
 		removeBlock("dop")
 		if ((e.type === "mouseup") || (boardTools.mouse.pos.final.x !== null && boardTools.mouse.pos.final.y !== null && !boardTools.scroll)) {
+			if (!boardTools.mouse.pos.initial.x || !boardTools.mouse.pos.initial.y || !boardTools.mouse.pos.final.x || !boardTools.mouse.pos.final.y) return
 			switch (boardTools.tool) {
 				case 'line':
 					board.line(boardTools.ctx, boardTools.mouse.pos.initial.x, boardTools.mouse.pos.initial.y, boardTools.mouse.pos.final.x, boardTools.mouse.pos.final.y);
